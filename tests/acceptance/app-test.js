@@ -3,17 +3,11 @@ import moduleForAcceptance from 'client/tests/helpers/module-for-acceptance';
 
 moduleForAcceptance('Acceptance | app');
 
-test('visiting index', function(assert) {
-  visit('/');
-
-  andThen(function() {
-    assert.equal(currentURL(), '/');
-  });
-});
-
 test('should redirect to songs route', function(assert){
   visit('/');
-  assert.equal(currentURL(), '/songs', 'should redirect automatically');
+  andThen(function(){
+    assert.equal(currentURL(), '/songs', 'should redirect automatically');
+  });
 });
 
 test('should list all transcribed songs', function(assert){
