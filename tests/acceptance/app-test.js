@@ -36,7 +36,7 @@ test('should link to information about project', function(assert){
   click('a:contains("About")');
   andThen(function(){
     assert.equal(currentURL(), '/about', 'should navigate to about');
-  })
+  });
 });
 
 // additional tests to add:
