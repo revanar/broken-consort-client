@@ -9,6 +9,8 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('about');
   this.route('songs');
+  this.route('books');
+  this.route('collections');
 });
 
 export default Router;
