@@ -1,6 +1,30 @@
 <div>
     <h2>Transcribed Renaissance Music</h2>
-    <p>Content goes here</p>
+    <table>
+        <tr>
+            <th>Song</th>
+            <th>Song #</th>
+            <th>Book</th>
+            <th>Editor</th>
+            <th>Year</th>
+            <th>Parts #</th>
+            <th>Has text?</th>
+        </tr>
+        {{#each model as |song|}}
+          {{#if song.is_transcribed}}
+            <tr>
+                <td>{{song.name}}</td>
+                <td>{{song.song_no}}</td>
+                <td>{{song.book.name}}</td>
+                <td>{{song.book.editor.name}}</td>
+                <td>{{song.book.year}}</td>
+                <td>{{song.parts_no}}</td>
+                <td>{{song.has_text}}</td>
+            </tr>
+          {{/if}}
+        {{/each}}
+    </table>
+
 </div>
 
 
