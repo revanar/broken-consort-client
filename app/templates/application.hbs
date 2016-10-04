@@ -1,0 +1,12 @@
+<div class="container">
+    {{#link-to 'index'}}<h1>Broken Consort</h1>{{/link-to}}
+    <ul class="menu">
+        <li>{{#link-to 'songs'}}Songs{{/link-to}}</li>
+        <li>{{#link-to 'books'}}Books{{/link-to}}</li>
+        <li>{{#link-to 'collections'}}Collections{{/link-to}}</li>
+        <li>{{#link-to 'about'}}About{{/link-to}}</li>
+    </ul>
+    <div class="body">
+        {{outlet}}
+    </div>
+</div>
