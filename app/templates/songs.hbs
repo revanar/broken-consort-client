@@ -12,7 +12,7 @@
         </tr>
         {{#each model as |song|}}
           {{#if song.is_transcribed}}
-            <tr>
+            <tr class="listing">
                 <td>{{song.name}}</td>
                 <td>{{song.song_no}}</td>
                 <td>{{song.book.name}}</td>

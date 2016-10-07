@@ -1,2 +1,17 @@
-<h2>Books</h2>
-<p>Content Goes Here</p>
+<div>
+    <h2>Books</h2>
+    <table>
+        <tr>
+            <th>Book (abbr)</th>
+            <th>Editor</th>
+            <th>Year</th>
+        </tr>
+      {{#each model as |book|}}
+          <tr class="listing">
+              <td>{{book.name}} ({{book.abbr}})</td>
+              <td>{{book.editor.name}}</td>
+              <td>{{book.year}}</td>
+          </tr>
+      {{/each}}
+    </table>
+</div>
