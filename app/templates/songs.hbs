@@ -11,7 +11,7 @@
             <th>Has text?</th>
         </tr>
         {{#each model as |song|}}
-          {{#if song.is_transcribed}}
+
             <tr class="listing">
                 <td>{{song.name}}</td>
                 <td>{{song.song_no}}</td>
@@ -20,8 +20,9 @@
                 <td>{{song.book.year}}</td>
                 <td>{{song.parts_no}}</td>
                 <td>{{song.has_text}}</td>
+                <td><a href={{song.pdf_path.pdf_path.url}}>pdf</a></td>
             </tr>
-          {{/if}}
+
         {{/each}}
     </table>
 
