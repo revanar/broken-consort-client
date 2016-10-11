@@ -6,9 +6,10 @@ export default DS.Model.extend({
   parts_no: DS.attr(),
   has_text: DS.attr(),
   is_transcribed: DS.attr(),
-  pdf_path: DS.attr(),
+  pdf: DS.attr(),
 
   composer: DS.belongsTo('composer'),
   book: DS.belongsTo('book'),
+  language: DS.belongsTo('language'),
   tags: DS.hasMany('tag')
 });
