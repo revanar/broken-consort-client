@@ -2,7 +2,7 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('composer', 'Unit | Model | composer', {
   // Specify the other units that are required for this test.
-  needs: []
+  needs: ['model:song']
 });
 
 test('it exists', function(assert) {

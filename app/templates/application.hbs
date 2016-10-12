@@ -1,12 +1,24 @@
-<div class="container">
-  <h1>{{link-to "Broken Consort" 'index'}}</h1>
-    <ul class="menu">
-        <li>{{link-to "Songs" 'songs'}}</li>
-        <li>{{link-to "Books" 'books'}}</li>
-        <li>{{link-to "Collections" 'collections'}}</li>
-        <li>{{link-to "About" 'about'}}</li>
-    </ul>
-    <div class="body">
-      {{outlet}}
-    </div>
+<div class="site-container">
+    <header>
+        <h1>{{link-to "Broken Consort" 'index'}}</h1>
+    </header>
+    <nav>
+      <ul class="menu">
+          <li>{{link-to "Songs" 'songs'}} {{link-to "(edit)" 'songs.edit'}}</li>
+          <li>{{link-to "Books" 'books'}}</li>
+          <li>{{link-to "Collections" 'collections'}}</li>
+      </ul>
+    </nav>
+    <main>
+        {{outlet}}
+    </main>
+    <footer>
+        <p>Transcriptions by Emma Badowski, website by Matthew Barry. Questions or comments? Email us at
+            <a href="mailto:contact@brokenconsort.net">contact@brokenconsort.net</a>.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+        </a><br />
+        This work is licensed under a
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </footer>
 </div>

@@ -2,7 +2,7 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('editor', 'Unit | Model | editor', {
   // Specify the other units that are required for this test.
-  needs: []
+  needs: ['model:book']
 });
 
 test('it exists', function(assert) {

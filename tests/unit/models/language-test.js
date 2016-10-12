@@ -1,8 +1,8 @@
 import { moduleForModel, test } from 'ember-qunit';
 
-moduleForModel('song', 'Unit | Model | song', {
+moduleForModel('language', 'Unit | Model | language', {
   // Specify the other units that are required for this test.
-  needs: ['model:composer', 'model:book', 'model:language', 'model:tag']
+  needs: ['model:song']
 });
 
 test('it exists', function(assert) {

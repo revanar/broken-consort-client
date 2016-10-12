@@ -12,7 +12,9 @@ test('should redirect to songs route', function(assert){
 
 test('should list all transcribed songs', function(assert){
   visit('/');
-  assert.equal(find('.listing').length, 3, 'should see 3 listings');
+  andThen(function () {
+    assert.equal(find('.listing').length, 5, 'should see 5 listings');
+  });
 });
 
 test('should link to list of books', function(assert){
@@ -31,13 +33,6 @@ test('should link to list of collections', function(assert){
   });
 });
 
-test('should link to information about project', function(assert){
-  visit('/');
-  click('a:contains("About")');
-  andThen(function(){
-    assert.equal(currentURL(), '/about', 'should navigate to about');
-  });
-});
 
 // additional tests to add:
 //   checking that each different type of filter works on songs
