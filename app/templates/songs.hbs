@@ -22,7 +22,9 @@
                 <td>{{song.parts_no}}</td>
                 <td>
                   {{#each song.languages as |language|}}
-                    <span>{{language.name}}, </span>
+                    {{language.name}},
+                  {{else}}
+                    <i>No lyrics</i>
                   {{/each}}
                 </td>
                 <td><a href={{song.pdf.pdf_path.url}}>pdf</a></td>
