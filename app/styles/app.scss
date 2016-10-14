@@ -1,1 +1,33 @@
 @import "ember-power-select";
+
+//flex formatting for full site to push header to top and footer to bottom
+.site-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 98vh;
+  .flex-spacer {
+    flex-grow: 1;
+  }
+}
+footer{
+  text-align: center;
+}
+
+//formatting for .table on edit pages
+.table {
+  display:table;
+  * {
+    display:table-row;
+    * {
+      display:table-cell;
+      margin: 5px;
+    }
+  }
+  .table-header {
+    display:table-header-group;
+    * {
+      font-weight:bold;
+    }
+  }
+}

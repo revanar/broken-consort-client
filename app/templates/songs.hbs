@@ -8,8 +8,7 @@
             <th>Editor</th>
             <th>Year</th>
             <th>Parts #</th>
-            <th>Has text?</th>
-            <th>Language</th>
+            <th>Song Text <br />Languages</th>
             <th>Download</th>
         </tr>
         {{#each model as |song|}}
@@ -21,8 +20,11 @@
                 <td>{{song.book.editor.name}}</td>
                 <td>{{song.book.year}}</td>
                 <td>{{song.parts_no}}</td>
-                <td>{{song.has_text}}</td>
-                <td>{{song.language.name}}</td>
+                <td>
+                  {{#each song.languages as |language|}}
+                    <span>{{language.name}}, </span>
+                  {{/each}}
+                </td>
                 <td><a href={{song.pdf.pdf_path.url}}>pdf</a></td>
             </tr>
           {{/if}}

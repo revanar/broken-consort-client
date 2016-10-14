@@ -1,23 +1,33 @@
 <div>
     <h2>Edit Songs</h2>
     <div class="table">
-        <div>
+        <div class="table-header">
             <span>Song</span>
             <span>Song #</span>
             <span>Parts #</span>
-            <span>Has Text?</span>
-            <span>Language</span>
+            <span>Song Text <br /> Languages</span>
             <span>PDF</span>
             <span>Composer</span>
             <span>Book</span>
+            <span>Tags</span>
             <!--<span>Tags</span>-->
         </div>
         {{#each model.songs as |song|}}
           <form {{action "update" song on="submit"}}>
-              {{input type="text" value=song.name}}
-              {{input type="text" value=song.song_no}}
-              {{input type="text" value=song.has_text}}
-              {{input type="text" value=song.language.name}}
+              <span >{{input type="text" value=song.name}}</span>
+              <span>{{input type="number" min="1" max="99" size="2" value=song.song_no}}</span>
+              <span>{{input type="number" min="1" max="9" size="1" value=song.parts_no}}</span>
+              {{#power-select-multiple
+                  selected=song.languages
+                  options=model.languages
+                  placeholder="Select languages of song lyrics"
+                  onchange=(action (mut song.languages))
+                  onkeydown=(action "createOnEnter" song)
+                  searchField="name"
+                  as |language|
+              }}
+                {{language.name}}
+              {{/power-select-multiple}}
               {{input type="text" value=song.pdf.pdf_path.url}} <!--currently posts full link.  change out for thing that shows if pdf exists, allows upload of new one or deletion of current one-->
               {{#power-select-with-create
                   selected=song.composer
@@ -36,13 +46,14 @@
                   searchField="name"
                   as |book|
               }}
-                {{book.name}}
+                {{book.name}} | {{book.editor.name}} | {{book.year}}
               {{/power-select}}
               {{#power-select-multiple
                   selected=song.tags
                   options=model.tags
                   placeholder="Select tags for this song"
                   onchange=(action (mut song.tags))
+                  onkeydown=(action "createOnEnter" song)
                   searchField="name"
                   as |tag|
               }}

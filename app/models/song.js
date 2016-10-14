@@ -9,6 +9,6 @@ export default DS.Model.extend({
 
   composer: DS.belongsTo('composer'),
   book: DS.belongsTo('book'),
-  language: DS.belongsTo('language'),
+  languages: DS.hasMany('language'),
   tags: DS.hasMany('tag')
 });
