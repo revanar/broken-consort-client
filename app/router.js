@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('songs.edit', {path: '/songs/edit'});
   this.route('books');
   this.route('collections');
+  this.route('songs2');
 });
 
 export default Router;

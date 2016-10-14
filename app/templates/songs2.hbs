@@ -1,0 +1,35 @@
+<div>
+    <h2>Transcribed Renaissance Music</h2>
+    {{#each model.books as |book|}}
+      {{#if book.songs}}
+      <h3>{{book.name}}</h3>
+      <p>{{book.year}} | {{book.editor.name}}</p>
+
+      <table>
+          <tr>
+              <th>Song #</th>
+              <th>Name</th>
+              <th>Parts #</th>
+              <th>Song Text <br />Languages</th>
+              <th>Download</th>
+          </tr>
+          {{#each model.songs as |song|}}
+            {{#if (eq song.book.id book.id)}}
+              <tr>
+                  <td>{{song.song_no}}</td>
+                  <td>{{song.name}}</td>
+                  <td>{{song.parts_no}}</td>
+                  <td>
+                    {{#each song.languages as |language|}}
+                      {{language.name}},
+                    {{else}}
+                      <em>No lyrics</em>
+                    {{/each}}
+                  </td>
+              </tr>
+            {{/if}}
+          {{/each}}
+      </table>
+      {{/if}}
+    {{/each}}
+</div>
