@@ -32,11 +32,12 @@ export default Ember.Controller.extend({
     },
     update(song){
       song.save();
+      $('*[id^=pdf-progress-]').empty(); //clears any pdf loading percentages for cosmetic reasons
     },
     uploadPDF(song, file){
-      this.set('isUploading', true); //disables submit until uploading is finished
-      var toggle = this; //pushes 'this' into a variable so I can use it in a function
-      var reader = new FileReader(); //instantiates the FileReader
+      let toggle = this; //pushes 'this' into a variable so I can use it in a function
+      toggle.set('isUploading', true); //disables submit until uploading is finished
+      let reader = new FileReader(); //instantiates the FileReader
 
       reader.onload = function(e){
         song.set('pdf', reader.result); //puts the base64 data url into the model
@@ -45,8 +46,8 @@ export default Ember.Controller.extend({
 
       reader.onprogress = function(data){
         if (data.lengthComputable){
-          var progress = parseInt(((data.loaded/data.total)*100),10);
-          $('.pdf-progress-'+song.id).text(progress+'%'); //shows progress percentage when uploading
+          let progress = parseInt(((data.loaded/data.total)*100),10);
+          $('#pdf-progress-'+song.id).text(progress+'%'); //shows progress percentage when uploading
         }
       };
       reader.readAsDataURL(file[0]); //converts file to uploadable format

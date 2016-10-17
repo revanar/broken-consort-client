@@ -69,13 +69,13 @@
             <div class="table-cell">
               {{#if song.pdf.pdf_path.url}}
                   <div><a href={{song.pdf.pdf_path.url}}>pdf</a></div>
-                  <label for={{concat "delete-pdf-" song.id}}>Delete</label>
-                  {{input id=(concat "delete-pdf-" song.id) type="checkbox" name="Delete PDF" checked=song.remove_pdf_path}}
+                  <label for={{concat "pdf-delete-" song.id}}>Delete</label>
+                  {{input id=(concat "pdf-delete-" song.id) type="checkbox" name="Delete PDF" checked=song.remove_pdf_path}}
               {{/if}}
               {{x-file-input action=(action "uploadPDF" song) accept="application/pdf" class="upload-button"}}
             </div>
             <div class="table-cell">{{input type="submit" disabled=isUploading}}</div>
-            <span class="pdf-progress-{{song.id}}"></span>
+            <span id="pdf-progress-{{song.id}}"></span>
           </form>
         {{/each}}
     </div>
