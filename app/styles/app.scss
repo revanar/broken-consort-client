@@ -33,8 +33,25 @@ footer{
   }
 }
 
+//makes the upload button on the edit page look like a button.  change this later when you want to actually make it look good
 .upload-button label {
   -webkit-appearance: button;
   -moz-appearance: button;
   appearance: button;
+}
+
+//a list environment for providing comma separated values, such as for the list of song languages or tags
+.csv {
+  padding: 0;
+  display: inline;
+  list-style: none;
+  li{
+    display: inline;
+    &:after {
+      content: ', ';
+    }
+    &:last-of-type:after {
+      content: '';
+    }
+  }
 }
