@@ -6,6 +6,7 @@ export default DS.Model.extend({
   parts_no: DS.attr(),
   has_text: DS.attr(),
   pdf: DS.attr(),
+  remove_pdf_path: DS.attr(),
 
   composer: DS.belongsTo('composer'),
   book: DS.belongsTo('book'),

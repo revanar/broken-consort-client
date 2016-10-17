@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  isUploading: false,
   actions: {
     createComposer(song, composer){
       this.get('store').createRecord('composer', {
@@ -31,6 +32,24 @@ export default Ember.Controller.extend({
     },
     update(song){
       song.save();
+    },
+    uploadPDF(song, file){
+      this.set('isUploading', true); //disables submit until uploading is finished
+      var toggle = this; //pushes 'this' into a variable so I can use it in a function
+      var reader = new FileReader(); //instantiates the FileReader
+
+      reader.onload = function(e){
+        song.set('pdf', reader.result); //puts the base64 data url into the model
+        toggle.set('isUploading', false); //re-enables submitting
+      };
+
+      reader.onprogress = function(data){
+        if (data.lengthComputable){
+          var progress = parseInt(((data.loaded/data.total)*100),10);
+          $('.pdf-progress-'+song.id).text(progress+'%'); //shows progress percentage when uploading
+        }
+      };
+      reader.readAsDataURL(file[0]); //converts file to uploadable format
     }
   }
 });

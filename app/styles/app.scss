@@ -17,17 +17,24 @@ footer{
 //formatting for .table on edit pages
 .table {
   display:table;
-  * {
+  .table-row {
     display:table-row;
-    * {
-      display:table-cell;
+    .table-cell {
+      display: table-cell;
       margin: 5px;
     }
   }
   .table-header {
     display:table-header-group;
     * {
+      display: table-cell;
       font-weight:bold;
     }
   }
+}
+
+.upload-button label {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
 }

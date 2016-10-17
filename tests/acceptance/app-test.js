@@ -33,6 +33,13 @@ test('should link to list of collections', function(assert){
   });
 });
 
+test('should show books in alpabetical order, followed by songs in alphabetical order', function(assert){
+  visit('/');
+  andThen(function(){
+    assert.equal(find('.listing > td').first().text().trim(), "First Book of Songs");
+    assert.equal(find('.listing').last().find('td').first().text().trim(), "Pavans Galliards Almains");
+  });
+});
 
 // additional tests to add:
 //   checking that each different type of filter works on songs
