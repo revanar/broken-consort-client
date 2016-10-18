@@ -1,52 +1,14 @@
 <div>
     <h2>Transcribed Renaissance Music</h2>
-    <table>
-        <tr>
-            <th colspan="3">Book</th>
-            <th colspan="6">Song</th>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <th>Editor</th>
-            <th>Year</th>
-            <th>#</th>
-            <th>Name</th>
-            <th>Parts #</th>
-            <th>Text Language</th>
-            <th>Download</th>
-            <th>Tags</th>
-        </tr>
-        {{#each model as |song|}}
-          {{#if song.pdf.pdf_path.url}}
-            <tr class="listing">
-                <td>{{song.book.name}}</td>
-                <td>{{song.book.editor.name}}</td>
-                <td>{{song.book.year}}</td>
-                <td>{{song.song_no}}</td>
-                <td>{{song.name}}</td>
-                <td>{{song.parts_no}}</td>
-                <td>
-                    <ul class="csv">
-                    {{#each song.languages as |language|}}
-                      <li>{{language.name}}</li>
-                    {{else}}
-                      <li><em>No lyrics</em></li>
-                    {{/each}}
-                    </ul>
-                </td>
-                <td><a href={{song.pdf.pdf_path.url}}>pdf</a></td>
-                <td>
-                    <ul class="csv">
-                      {{#each song.tags as |tag|}}
-                          <li>{{tag.name}}</li>
-                      {{/each}}
-                    </ul>
-                </td>
-            </tr>
-          {{/if}}
-        {{/each}}
-    </table>
 
+ {{models-table
+    data=model
+    columns=columns
+    groupedHeaders=groupedHeaders
+    showColumnsDropdown=false
+    filteringIgnoreCase=true
+    showTableFooter=false
+ }}
 </div>
 
 
