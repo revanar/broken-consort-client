@@ -1,0 +1,40 @@
+<div>
+    <h2>Edit Books</h2>
+    <div class="div-table">
+        <div class="table-header">
+            <span>Name</span>
+            <span>Editor</span>
+            <span>Year</span>
+            <span>PDF</span>
+        </div>
+      {{#each model.books as |book|}}
+        <form class="table-row" {{action "update" book on="submit"}}>
+              <div class="table-cell">{{input type="text" value=book.name}}</div>
+              <div class="table-cell">
+                {{#power-select-with-create
+                  selected=book.editor
+                  placeholder="unknown editor"
+                  options=model.editors
+                  onchange=(action (mut book.editor))
+                  oncreate=(action "createEditor" book)
+                  searchField="name"
+                as |editor|
+                }}
+                  {{editor.name}}
+                {{/power-select-with-create}}
+              </div>
+              <div class="table-cell">{{input type="number" min="600" max="1800" size="4" value=book.year}}</div>
+              <div class="table-cell">
+                {{#if book.pdf.pdf_path.url}}
+                    <div><a href={{book.pdf.pdf_path.url}}>pdf</a></div>
+                    <label for={{concat "pdf-delete-" book.id}}>Delete</label>
+                  {{input id=(concat "pdf-delete-" book.id) type="checkbox" name="Delete PDF" checked=book.remove_pdf_path}}
+                {{/if}}
+                {{x-file-input action=(action "uploadPDF" book) accept="application/pdf" class="upload-button"}}
+              </div>
+              <div class="table-cell">{{input type="submit" disabled=isUploading}}</div>
+              <span id="pdf-progress-{{book.id}}"></span>
+          </form>
+      {{/each}}
+    </div>
+</div>
