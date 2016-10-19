@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('songs');
   this.route('songs.edit', {path: '/songs/edit'});
   this.route('books');
+  this.route('books.edit', {path: '/books/edit'});
   this.route('collections');
   this.route('songs2');
 });
