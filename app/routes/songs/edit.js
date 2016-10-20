@@ -9,5 +9,10 @@ export default Ember.Route.extend({
       tags: this.store.findAll('tag'),
       languages: this.store.findAll('language')
     });
+  },
+
+  deactivate() {
+    this.controller.send('saveOnExit');
+    alert("check the console!");
   }
 });
