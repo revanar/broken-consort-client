@@ -12,7 +12,6 @@ export default Ember.Route.extend({
   },
 
   deactivate() {
-    this.controller.send('saveOnExit');
-    alert("check the console!");
+    this.controller.send('saveAll');
   }
 });

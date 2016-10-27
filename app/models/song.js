@@ -12,4 +12,6 @@ export default DS.Model.extend({
   book: DS.belongsTo('book'),
   languages: DS.hasMany('language'),
   tags: DS.hasMany('tag')
+
 });
+

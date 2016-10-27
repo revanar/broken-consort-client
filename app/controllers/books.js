@@ -3,6 +3,9 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   columns: [
     {
+      template:'custom/pdfthumb',
+      title:'Download'
+    },{
       propertyName:'name',
       title:'Title'
     },{
@@ -11,9 +14,6 @@ export default Ember.Controller.extend({
     },{
       propertyName:'year',
       title:'Year'
-    },{
-      template:'custom/pdflink',
-      title:'Download'
     }
   ]
 });
