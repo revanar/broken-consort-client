@@ -13,6 +13,11 @@ You will need the following things properly installed on your computer.
 * [Ember CLI](http://ember-cli.com/)
 * [PhantomJS](http://phantomjs.org/)
 
+## Server
+
+This project is running with the server found at [broken-consort-server](https://github.com/revanar/broken-consort-server).
+It is listening at localhost:3000
+
 ## Installation
 
 * `git clone <repository-url>` this repository
