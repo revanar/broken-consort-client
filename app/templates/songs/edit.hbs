@@ -1,7 +1,7 @@
 
 <h2>Edit Songs</h2>
 <button {{action "saveAll"}}>Save All</button>
-<div class="div-table">
+<div class="div-table table">
     <div class="table-header">
         <span>Book</span>
         <span>Song #</span>
@@ -18,7 +18,7 @@
           {{#power-select
             selected=song.book
             options=model.books
-            onchange=(action "updateField" song "book")
+            onchange=(action "updateOne" song "book")
             searchField="name"
             as |book|
           }}
@@ -32,8 +32,8 @@
             selected=song.composer
             placeholder="unknown composer"
             options=model.composers
-            onchange=(action "updateField" song "composer")
-            oncreate=(action "createRelation" song "composer")
+            onchange=(action "updateOne" song "composer")
+            oncreate=(action "createOne" song "composer")
             searchField="name"
             as |composer|
           }}
@@ -46,8 +46,8 @@
             selected=song.languages
             options=model.languages
             placeholder="Select languages of song lyrics"
-            onchange=(action "updateHasMany" song "languages")
-            onkeydown=(action "createOnEnter" song "language")
+            onchange=(action "updateMany" song "language")
+            onkeydown=(action "createMany" song "language")
             searchField="name"
             as |language|
           }}
@@ -59,8 +59,8 @@
             selected=song.tags
             options=model.tags
             placeholder="Select tags for this song"
-            onchange=(action "updateHasMany" song "tags")
-            onkeydown=(action "createOnEnter" song "tag")
+            onchange=(action "updateMany" song "tag")
+            onkeydown=(action "createMany" song "tag")
             searchField="name"
             as |tag|
           }}
@@ -69,11 +69,12 @@
         </div>
         <div class="table-cell">
           {{#if song.pdf.pdf_path.url}}
-              <div><a href={{song.pdf.pdf_path.url}}>pdf</a></div>
-              <label for={{concat "pdf-delete-" song.id}}>Delete</label>
-              {{input id=(concat "pdf-delete-" song.id) type="checkbox" name="Delete PDF" checked=song.remove_pdf_path}}
+              <div><a class="btn btn-default" href={{song.pdf.pdf_path.url}}>View PDF</a></div>
+              <label for={{concat "pdf-delete-" song.id}} class="btn btn-danger">
+                {{input id=(concat "pdf-delete-" song.id) type="checkbox" name="Delete PDF" checked=song.remove_pdf_path}} Delete
+              </label>
           {{/if}}
-          {{x-file-input action=(action "uploadPDF" song) accept="application/pdf" class="upload-button"}}
+          {{x-file-input action=(action "uploadPDF" song) accept="application/pdf" class="btn btn-default"}}
         </div>
         <span id="pdf-progress-{{song.id}}"></span>
         <span id="save-flash-{{song.id}}" class="save-flash">Saved!</span>

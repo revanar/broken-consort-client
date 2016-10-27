@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   isUploading: false,
   actions: {
-    createRelation(song, type, value){ //RENAME: createHasOne
+    createOne(song, type, value){
       let e = this;
       e.get('store').createRecord(type, {
           name: value
@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
         e.send('autoSave');
       });
     },
-    createOnEnter(song, type, select, key){ //RENAME: createHasMany
+    createMany(song, type, select, key){
       let e = this;
       if (key.keyCode === 13 && select.isOpen &&
       !select.highlighted && !Ember.isBlank(select.searchText)) {
@@ -26,17 +26,26 @@ export default Ember.Controller.extend({
         });
       }
     },
-    updateField(song, type, value){ //RENAME: updateHasOne
+    updateOne(song, type, value){
       console.log("updating field");
       song.set(type, value);
       song.send('becomeDirty');
       this.send('autoSave');
     },
-    updateHasMany(song, type, values){
-      let array = values.mapBy('id'); //NEXT UP: compare the values with the song's existing relations, use removeObjec to remove ones that no longer exist, and pushObject to add new ones.
-      console.log(array.sort());
-      values.forEach(function(value){
-        song.get(type).pushObject(value);
+    updateMany(song, type, values){
+      let e = this;
+      let updateSet = new Set(values.mapBy('id')); //creates set based on new set of values
+      let existingSet = new Set(song.get(type+'s').mapBy('id'));//creates set based on existing set of values
+      let addSet = new Set([...updateSet].filter(x => !existingSet.has(x))); //create addSet based on values that are in updateSet but not existingSet
+      addSet.forEach(function(id){ //add relationships from addSet
+        let record = e.get('store').peekRecord(type, id);
+        song.get(type+'s').pushObject(record);
+        song.send('becomeDirty');
+      });
+      let removeSet = new Set([...existingSet].filter(x => !updateSet.has(x))); //create removeSet based on values that are in the existingSet but not in updateSet
+      removeSet.forEach(function(id){ //remove relationships from removeSet
+        let record = e.get('store').peekRecord(type, id);
+        song.get(type+'s').removeObject(record);
         song.send('becomeDirty');
       });
       this.send('autoSave');

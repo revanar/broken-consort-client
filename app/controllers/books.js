@@ -4,7 +4,8 @@ export default Ember.Controller.extend({
   columns: [
     {
       template:'custom/pdfthumb',
-      title:'Download'
+      title:'Download',
+      className: 'pdfthumb'
     },{
       propertyName:'name',
       title:'Title'

@@ -6,5 +6,6 @@ export default Ember.Route.extend({
       books: this.store.findAll('book'),
       editors: this.store.findAll('editor')
     });
-  }
+  },
+
 });
