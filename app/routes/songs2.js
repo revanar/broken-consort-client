@@ -6,5 +6,6 @@ export default Ember.Route.extend({
       songs: this.store.findAll('song', {include: 'book,book.editor,composer,languages,tags'}),
       books: this.store.findAll('book')
     });
-  }
+  },
+  controllerName: 'test-controller'
 });

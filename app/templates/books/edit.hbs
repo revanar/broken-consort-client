@@ -1,22 +1,23 @@
 <h2>Edit Books</h2>
-<button {{action "saveAll"}}>Save All</button>
+<button {{action "saveAll" "book"}}>Save All</button>
 <div class="div-table table">
     <div class="table-header">
         <span>Name</span>
         <span>Editor</span>
         <span>Year</span>
         <span>PDF</span>
+        <span>Thumb</span>
     </div>
   {{#each model.books as |book|}}
-    <form class="table-row" {{action "update" book on="submit"}}>
+    <form class="table-row" {{action "autoSave" "book" on="change"}}>
           <div class="table-cell">{{input type="text" value=book.name}}</div>
           <div class="table-cell">
             {{#power-select-with-create
               selected=book.editor
               placeholder="unknown editor"
               options=model.editors
-              onchange=(action "updateOne" book "editor")
-              oncreate=(action "createOne" book "editor")
+              onchange=(action "updateOne" "book" book "editor")
+              oncreate=(action "createOne" "book" book "editor")
               searchField="name"
             as |editor|
             }}

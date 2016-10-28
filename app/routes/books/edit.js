@@ -7,5 +7,8 @@ export default Ember.Route.extend({
       editors: this.store.findAll('editor')
     });
   },
-
+  controllerName: 'edit',
+  deactivate() {
+    this.controller.send('saveAll', 'book');
+  }
 });

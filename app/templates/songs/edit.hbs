@@ -1,6 +1,6 @@
 
 <h2>Edit Songs</h2>
-<button {{action "saveAll"}}>Save All</button>
+<button {{action "saveAll" "song"}}>Save All</button>
 <div class="div-table table">
     <div class="table-header">
         <span>Book</span>
@@ -13,12 +13,12 @@
         <span>PDF</span>
     </div>
     {{#each model.songs as |song|}}
-      <form class="table-row" {{action "autoSave" song on="change"}}>
+      <form class="table-row" {{action "autoSave" "song" on="change"}}>
         <div class="table-cell">
           {{#power-select
             selected=song.book
             options=model.books
-            onchange=(action "updateOne" song "book")
+            onchange=(action "updateOne" "song" song "book")
             searchField="name"
             as |book|
           }}
@@ -32,8 +32,8 @@
             selected=song.composer
             placeholder="unknown composer"
             options=model.composers
-            onchange=(action "updateOne" song "composer")
-            oncreate=(action "createOne" song "composer")
+            onchange=(action "updateOne" "song" song "composer")
+            oncreate=(action "createOne" "song" song "composer")
             searchField="name"
             as |composer|
           }}
@@ -46,8 +46,8 @@
             selected=song.languages
             options=model.languages
             placeholder="Select languages of song lyrics"
-            onchange=(action "updateMany" song "language")
-            onkeydown=(action "createMany" song "language")
+            onchange=(action "updateMany" "song" song "language")
+            onkeydown=(action "createMany" "song" song "language")
             searchField="name"
             as |language|
           }}
@@ -59,8 +59,8 @@
             selected=song.tags
             options=model.tags
             placeholder="Select tags for this song"
-            onchange=(action "updateMany" song "tag")
-            onkeydown=(action "createMany" song "tag")
+            onchange=(action "updateMany" "song" song "tag")
+            onkeydown=(action "createMany" "song" song "tag")
             searchField="name"
             as |tag|
           }}
