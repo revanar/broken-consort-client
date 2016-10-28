@@ -27,7 +27,7 @@
           <div class="table-cell">
               <div>
                 {{#if book.pdf.pdf_path.url}}
-                    <a href={{book.pdf.pdf_path.url}}><img src={{book.pdf.pdf_path.thumb.url}}></a>
+                    <a href={{book.pdf.pdf_path.url}}>pdf</a>
                 {{/if}}
                   <div>
                     {{#if book.pdf.pdf_path.url}}
@@ -39,6 +39,21 @@
                   </div>
               </div>
           </div>
+        <div class="table-cell">
+            <div>
+              {{#if (not-eq book.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
+                  <a href={{book.thumb.thumb_path.url}}>thumb</a>
+              {{/if}}
+                <div>
+                  {{#if (not-eq book.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
+                      <label for={{concat "thumb-delete-" book.id}} class="btn btn-danger">
+                    {{input id=(concat "thumb-delete-" book.id) type="checkbox" name="Delete Thumb" checked=book.remove_thumb_path}} Delete
+                      </label>
+                  {{/if}}
+                  {{x-file-input action=(action "uploadThumb" book) accept="image/png,image/jpg" class="btn btn-default" value="Upload"}}
+                </div>
+            </div>
+        </div>
         <span id="pdf-progress-{{book.id}}"></span>
         <span id="save-flash-{{book.id}}" class="save-flash">Saved!</span>
       </form>

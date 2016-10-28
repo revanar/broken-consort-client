@@ -69,7 +69,7 @@
         </div>
         <div class="table-cell">
           {{#if song.pdf.pdf_path.url}}
-              <div><a class="btn btn-default" href={{song.pdf.pdf_path.url}}>View PDF</a></div>
+              <div><a href={{song.pdf.pdf_path.url}}>pdf</a></div>
               <label for={{concat "pdf-delete-" song.id}} class="btn btn-danger">
                 {{input id=(concat "pdf-delete-" song.id) type="checkbox" name="Delete PDF" checked=song.remove_pdf_path}} Delete
               </label>

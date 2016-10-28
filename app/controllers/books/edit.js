@@ -27,7 +27,26 @@ export default Ember.Controller.extend({
       reader.onload = function(){
         song.set('pdf', reader.result); //puts the base64 data url into the model
         e.set('isUploading', false); //re-enables submitting
-        e.send('autoSave');
+        e.send('save',song);
+      };
+
+      reader.onprogress = function(data){
+        if (data.lengthComputable){
+          let progress = parseInt(((data.loaded/data.total)*100),10);
+          $('#pdf-progress-'+song.id).text(progress+'%'); //shows progress percentage when uploading
+        }
+      };
+      reader.readAsDataURL(file[0]); //converts file to uploadable format
+    },
+    uploadThumb(song, file){
+      let e = this; //pushes 'this' into a variable so I can use it in a function
+      e.set('isUploading', true); //disables submit until uploading is finished currently not implimented.  Re-add as feature to keep user from leaving the page
+      let reader = new FileReader(); //instantiates the FileReader
+
+      reader.onload = function(){
+        song.set('thumb', reader.result); //puts the base64 data url into the model
+        e.set('isUploading', false); //re-enables submitting
+        e.send('save', song);
       };
 
       reader.onprogress = function(data){
@@ -58,6 +77,9 @@ export default Ember.Controller.extend({
           e.set('queuedSave', false);
         }
       });
+    },
+    save(song){
+      song.save();
     }
   }
 });

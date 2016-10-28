@@ -58,7 +58,7 @@ export default Ember.Controller.extend({
       reader.onload = function(){
         song.set('pdf', reader.result); //puts the base64 data url into the model
         e.set('isUploading', false); //re-enables submitting
-        e.send('autoSave');
+        e.send('save', song); //save immediately
       };
 
       reader.onprogress = function(data){
@@ -89,6 +89,11 @@ export default Ember.Controller.extend({
           e.set('queuedSave', false);
         }
       });
+    },
+    save(song){
+      song.save();
+      $('*[id=save-flash-'+song.id).show(500).delay(1000).hide(500);
+      $('*[id^=pdf-progress-]').empty();
     }
   }
 });
