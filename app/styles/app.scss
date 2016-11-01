@@ -71,3 +71,16 @@ footer{
 .pdfthumb {
   width: 146px;
 }
+
+//styles the headers of sortable list elements
+.list-sortable{
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  &:link, &:hover {
+    text-decoration: none;
+  }
+}

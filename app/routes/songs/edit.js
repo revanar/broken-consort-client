@@ -11,16 +11,7 @@ export default Ember.Route.extend({
     });
   },
   controllerName: 'edit',
-  actions: {
-    willTransition(transition) {
-      if (this.controller.get('queuedSave') &&
-        !confirm('Are you sure you want to abandon progress?')) {
-        transition.abort();
-      } else {
-        // Bubble the `willTransition` action so that
-        // parent routes can decide whether or not to abort.
-        return true;
-      }
-    }
+  deactivate() {
+    this.controller.send('saveAll', 'song');
   }
 });

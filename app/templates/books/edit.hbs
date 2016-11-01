@@ -1,5 +1,5 @@
 <h2>Edit Books</h2>
-<button {{action "saveAll" "book"}}>Save All</button>
+<button class="btn btn-success" {{action "saveAll" "book"}}>Save All</button>
 <div class="div-table table">
     <div class="table-header">
         <span>Name</span>
@@ -7,6 +7,7 @@
         <span>Year</span>
         <span>PDF</span>
         <span>Thumb</span>
+        <span></span>
     </div>
   {{#each model.books as |book|}}
     <form class="table-row" {{action "autoSave" "book" on="change"}}>
@@ -55,8 +56,10 @@
                 </div>
             </div>
         </div>
+        <button class="btn btn-danger" {{action "deleteRecord" book}}>Delete Book</button>
         <span id="pdf-progress-{{book.id}}"></span>
         <span id="save-flash-{{book.id}}" class="save-flash">Saved!</span>
       </form>
   {{/each}}
+  <button class="btn btn-default" {{action "createRecord" "book"}}>Create New Book</button>
 </div>

@@ -1,6 +1,6 @@
 
 <h2>Edit Songs</h2>
-<button {{action "saveAll" "song"}}>Save All</button>
+<button class="btn btn-success" {{action "saveAll" "song"}}>Save All</button>
 <div class="div-table table">
     <div class="table-header">
         <span>Book</span>
@@ -70,14 +70,16 @@
         <div class="table-cell">
           {{#if song.pdf.pdf_path.url}}
               <div><a href={{song.pdf.pdf_path.url}}>pdf</a></div>
-              <label for={{concat "pdf-delete-" song.id}} class="btn btn-danger">
+              <label class="btn btn-danger" for={{concat "pdf-delete-" song.id}} >
                 {{input id=(concat "pdf-delete-" song.id) type="checkbox" name="Delete PDF" checked=song.remove_pdf_path}} Delete
               </label>
           {{/if}}
           {{x-file-input action=(action "uploadPDF" song) accept="application/pdf" class="btn btn-default"}}
         </div>
+        <button class="btn btn-danger" {{action "deleteRecord" song}}>Delete Song</button>
         <span id="pdf-progress-{{song.id}}"></span>
         <span id="save-flash-{{song.id}}" class="save-flash">Saved!</span>
       </form>
     {{/each}}
+    <button class="btn btn-default" {{action "createRecord" "song"}}>Create New Song</button>
 </div>

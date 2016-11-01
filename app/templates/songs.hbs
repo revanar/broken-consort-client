@@ -1,16 +1,42 @@
 <div>
     <h2>Transcribed Renaissance Music</h2>
+  <label>Filter By:</label>
+  {{input type="text" value=searchTerm}}
 
- {{models-table
-    data=model
-    columns=columns
-    groupedHeaders=groupedHeaders
-    showColumnsDropdown=false
-    filteringIgnoreCase=true
-    showTableFooter=false
-    pageSize=x
-    showGlobalFilter=false
- }}
+  <table class="table">
+    <thead>
+    <tr>
+        <th colspan="3">Book</th>
+        <th colspan="5">Song</th>
+    </tr>
+    <tr>
+      {{list-sortable onclick=(action "setSortBy" "book.name") anchorId="book-name" value="Title"}}
+      {{list-sortable onclick=(action "setSortBy" "book.editor.name") anchorId="book-editor" value="Editor"}}
+      {{list-sortable onclick=(action "setSortBy" "book.year") anchorId = "book-year" value="Year"}}
+      {{list-sortable onclick=(action "setSortBy" "song_no") anchorId = "song_no" value="No."}}
+      {{list-sortable onclick=(action "setSortBy" "name") anchorId = "name" value="Name"}}
+        <th>Text Languages</th>
+        <th>Tags</th>
+        <th>Download</th>
+    </tr>
+
+    </thead>
+    <tbody>
+    {{#each sortedSongs as |song|}}
+        <tr>
+            <td>{{song.book.name}}</td>
+            <td>{{song.book.editor.name}}</td>
+            <td>{{song.book.year}}</td>
+            <td>{{song.song_no}}</td>
+            <td>{{song.name}}</td>
+            <td>{{list-languages song}}</td>
+            <td>{{list-tags song}}</td>
+            <td>{{list-pdf-link song}}</td>
+        </tr>
+    {{/each}}
+    </tbody>
+  </table>
+
 </div>
 
 
