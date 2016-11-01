@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
   }),
   //filters model based on searchTerm value
   filteredModel: Ember.computed('model', 'searchTerm', function(){
-    let model = this.get('model');
+    let model = this.get('model').filterBy('pdf.pdf_path.url'); //removes all records that don't have a pdf uploaded
     let regExp = new RegExp(this.get('searchTerm'), 'i');
     return model.filter(function(model){
       let langRes = model.get('languages').filter(item => {return regExp.test(item.get('name'));});
