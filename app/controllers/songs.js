@@ -21,9 +21,18 @@ export default Ember.Controller.extend({
   searchTerm: '',
   //when searchTerm changes, ensures the model updates
   searchTermChanged: Ember.observer('searchTerm', function(){
-    Ember.run.schedule("afterRender",this,function(){
-      this.get('filteredModel').notifyPropertyChange('searchTerm');
-    });
+    //looks to see if search term contains only letters, numbers, and spaces
+    let _this = this;
+    let regExp = new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$');
+    if (!regExp.test(this.get('searchTerm'))) {
+      //if illegal characters are detected, prevents them from appearing in queryparams
+      this.set('searchTerm', this.get('searchTerm').slice(0, -1));
+    } else {
+      //otherwise, notify the model that its filter has been updated
+      Ember.run.schedule("afterRender", this, function () {
+        _this.get('filteredModel').notifyPropertyChange('searchTerm');
+      });
+    }
   }),
   //filters model based on searchTerm value
   filteredModel: Ember.computed('model', 'searchTerm', function(){
@@ -45,7 +54,9 @@ export default Ember.Controller.extend({
   sortedSongs: Ember.computed.sort('filteredModel', 'sortDefinition').property('filteredModel', 'sortDefinition'),
   //when sortBy changes, ensures the model updates
   sortDefinition: Ember.computed('sortBy', function(){
+    //add validation to check that sortby is a sortable value.  If yes,
     return [this.get('sortBy')];
+    //if no, this.set('sortBy','');
   }),
   actions: {
     //action that occurs when you click on a sortable column header

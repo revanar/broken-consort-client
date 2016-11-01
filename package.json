@@ -51,6 +51,7 @@
     "loader.js": "^4.0.1"
   },
   "dependencies": {
-    "ember-cli-sass": "^5.5.2"
+    "ember-cli-sass": "^5.5.2",
+    "escape-string-regexp": "^1.0.5"
   }
 }
