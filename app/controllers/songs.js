@@ -1,4 +1,4 @@
-import Ember from 'ember';
+ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   init(){
@@ -6,13 +6,13 @@ export default Ember.Controller.extend({
     Ember.run.schedule("afterRender",this,function() {
       //after page is rendered, add glyphicons based on sort order
       //translates from model syntax to id syntax
-      let qp = ((!!this.get('sortBy')) ? this.get('sortBy').replace(/./g,'-') : '');
+      let qp = ((!!this.get('sortBy')) ? this.get('sortBy').replace(/\./g,'-') : '');
       if (qp.includes(':asc')){
         let q = qp.slice(0,-4);
-        Ember.$('#'+q).append('<span class="glyphicon glyphicon-triangle-bottom"> </span>');
+        Ember.$('#'+q).addClass('sort-asc');
       } else if (qp.includes(':desc')){
         let q = qp.slice(0,-5);
-        Ember.$('#'+q).append('<span class="glyphicon glyphicon-triangle-top"> </span>');
+        Ember.$('#'+q).addClass('sort-desc');
       }
     });
   },
@@ -65,18 +65,18 @@ export default Ember.Controller.extend({
       //translates between id syntax and model syntax
       //note: val is passed from list-sortable component
       let value = val.replace(/-/g, '.');
-      Ember.$('.list-sortable').find('span').remove();
+      Ember.$('.list-sortable').removeClass('sort-asc sort-desc');
       if (this.get('sortBy') === value + ':asc') {
         //if currently sorted asc, change to desc
         this.set('sortBy', value + ':desc');
-        Ember.$(event.target).append('<span class="glyphicon glyphicon-triangle-top"> </span>');
+        Ember.$(event.target).addClass('sort-desc');
       } else if (this.get('sortBy') === value + ':desc') {
         //if currently sorted desc, change to null
         this.set('sortBy', '');
       } else {
         //otherwise, change to asc
         this.set('sortBy', value + ':asc');
-        Ember.$(event.target).append('<span class="glyphicon glyphicon-triangle-bottom"> </span>');
+        Ember.$(event.target).addClass('sort-asc');
       }
     }
   }

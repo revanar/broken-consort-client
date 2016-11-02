@@ -83,5 +83,13 @@ footer{
   &:link, &:hover {
     text-decoration: none;
   }
+  background: url('images/sort_both.gif') no-repeat center right;
+  padding-right: 21px;
+}
+.sort-desc {
+  background-image: url('images/sort_desc.gif');
+}
+.sort-asc {
+  background-image: url('images/sort_asc.gif');
 }
 

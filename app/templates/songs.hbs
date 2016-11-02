@@ -10,6 +10,7 @@
         <th colspan="5">Song</th>
     </tr>
     <tr>
+        <!-- note: for sortable columns, id=dasherized-model-property", onclick=(action "setSortBy")-->
         <th>{{#list-sortable id="book-name" onclick=(action "setSortBy")}}Title{{/list-sortable}}</th>
         <th>{{#list-sortable id="book-editor-name" onclick=(action "setSortBy")}}Editor{{/list-sortable}}</th>
         <th>{{#list-sortable id="book-year" onclick=(action "setSortBy")}}Year{{/list-sortable}}</th>
