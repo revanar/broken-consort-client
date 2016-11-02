@@ -1,17 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  init () {
-    this._super();
-    //adds the glyphicons to rows that have already been sorted on page load
+  init(){
+    this._super(...arguments);
     Ember.run.schedule("afterRender",this,function() {
-      let param = this.get('sortBy').replace('.', '-');
-      if (param.includes(':asc')){
-        let x = param.slice(0,-4);
-        Ember.$('#'+x).append('<span class="glyphicon glyphicon-triangle-bottom" />');
-      } else if (param.includes(':desc')){
-        let x = param.slice(0,-5);
-        Ember.$('#'+x).append('<span class="glyphicon glyphicon-triangle-top" />');
+      //after page is rendered, add glyphicons based on sort order
+      //translates from model syntax to id syntax
+      let qp = ((!!this.get('sortBy')) ? this.get('sortBy').replace(/./g,'-') : '');
+      if (qp.includes(':asc')){
+        let q = qp.slice(0,-4);
+        Ember.$('#'+q).append('<span class="glyphicon glyphicon-triangle-bottom"> </span>');
+      } else if (qp.includes(':desc')){
+        let q = qp.slice(0,-5);
+        Ember.$('#'+q).append('<span class="glyphicon glyphicon-triangle-top"> </span>');
       }
     });
   },
@@ -60,21 +61,22 @@ export default Ember.Controller.extend({
   }),
   actions: {
     //action that occurs when you click on a sortable column header
-    setSortBy(value){
+    setSortBy(val){
+      //translates between id syntax and model syntax
+      //note: val is passed from list-sortable component
+      let value = val.replace(/-/g, '.');
+      Ember.$('.list-sortable').find('span').remove();
       if (this.get('sortBy') === value + ':asc') {
-        //if sorted asc, change to desc
-        Ember.$(event.target).find('span').remove();
-        Ember.$(event.target).append('<span class="glyphicon glyphicon-triangle-top" />');
+        //if currently sorted asc, change to desc
         this.set('sortBy', value + ':desc');
+        Ember.$(event.target).append('<span class="glyphicon glyphicon-triangle-top"> </span>');
       } else if (this.get('sortBy') === value + ':desc') {
-        //if sorted desc, change back to default sorting
-        Ember.$(event.target).find('span').remove();
+        //if currently sorted desc, change to null
         this.set('sortBy', '');
       } else {
-        //if default sorting, change to asc
-        Ember.$('.list-sortable').find('span').remove();
-        Ember.$(event.target).append('<span class="glyphicon glyphicon-triangle-bottom" />');
+        //otherwise, change to asc
         this.set('sortBy', value + ':asc');
+        Ember.$(event.target).append('<span class="glyphicon glyphicon-triangle-bottom"> </span>');
       }
     }
   }

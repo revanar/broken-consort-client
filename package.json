@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "ember-cli-sass": "^5.5.2",
+    "ember-query-params": "^2.1.0",
     "escape-string-regexp": "^1.0.5"
   }
 }

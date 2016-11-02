@@ -10,11 +10,11 @@
         <th colspan="5">Song</th>
     </tr>
     <tr>
-      {{list-sortable onclick=(action "setSortBy" "book.name") anchorId="book-name" value="Title"}}
-      {{list-sortable onclick=(action "setSortBy" "book.editor.name") anchorId="book-editor" value="Editor"}}
-      {{list-sortable onclick=(action "setSortBy" "book.year") anchorId = "book-year" value="Year"}}
-      {{list-sortable onclick=(action "setSortBy" "song_no") anchorId = "song_no" value="No."}}
-      {{list-sortable onclick=(action "setSortBy" "name") anchorId = "name" value="Name"}}
+        <th>{{#list-sortable id="book-name" onclick=(action "setSortBy")}}Title{{/list-sortable}}</th>
+        <th>{{#list-sortable id="book-editor-name" onclick=(action "setSortBy")}}Editor{{/list-sortable}}</th>
+        <th>{{#list-sortable id="book-year" onclick=(action "setSortBy")}}Year{{/list-sortable}}</th>
+        <th>{{#list-sortable id="song_no" onclick=(action "setSortBy")}}No.{{/list-sortable}}</th>
+        <th>{{#list-sortable id="name" onclick=(action "setSortBy")}}Name{{/list-sortable}}</th>
         <th>Text Languages</th>
         <th>Tags</th>
         <th>Download</th>
@@ -23,14 +23,14 @@
     </thead>
     <tbody>
     {{#each sortedSongs as |song|}}
-        <tr>
+        <tr class="listing">
             <td>{{song.book.name}}</td>
             <td>{{song.book.editor.name}}</td>
             <td>{{song.book.year}}</td>
             <td>{{song.song_no}}</td>
             <td>{{song.name}}</td>
-            <td>{{list-languages song}}</td>
-            <td>{{list-tags song}}</td>
+            <td>{{csv-list song "languages"}}</td>
+            <td>{{csv-list song "tags"}}</td>
             <td>{{list-pdf-link song}}</td>
         </tr>
     {{/each}}

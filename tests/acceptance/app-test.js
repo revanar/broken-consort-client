@@ -3,6 +3,7 @@ import moduleForAcceptance from 'client/tests/helpers/module-for-acceptance';
 
 moduleForAcceptance('Acceptance | app');
 
+//tests for /songs
 test('should redirect to songs route', function(assert){
   visit('/');
   andThen(function(){
@@ -40,6 +41,7 @@ test('should show books in alpabetical order, followed by songs in alphabetical 
     assert.equal(find('.listing').last().find('td').first().text().trim(), "Pavans Galliards Almains");
   });
 });
+
 
 // additional tests to add:
 //   checking that each different type of filter works on songs
