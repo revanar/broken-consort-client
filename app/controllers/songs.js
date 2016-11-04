@@ -17,40 +17,49 @@ export default Ember.Controller.extend({
     });
   },
   //query parameters
-  queryParams: ['sortBy', 'searchTerm'],
+  queryParams: ['sortBy', 'q_all','q_title','q_creator','q_editor','q_song_no','q_book_title','q_year','q_languages','q_tags'],
   sortBy: '',
-  searchTerm: '',
-  //when searchTerm changes, ensures the model updates
-  searchTermChanged: Ember.observer('searchTerm', function(){
-    //looks to see if search term contains only letters, numbers, and spaces
-    let _this = this;
-    let regExp = new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$');
-    if (!regExp.test(this.get('searchTerm'))) {
-      //if illegal characters are detected, prevents them from appearing in queryparams
-      this.set('searchTerm', this.get('searchTerm').slice(0, -1));
-    } else {
-      //otherwise, notify the model that its filter has been updated
-      Ember.run.schedule("afterRender", this, function () {
-        _this.get('filteredModel').notifyPropertyChange('searchTerm');
-      });
-    }
-  }),
+  filters: ['q_all','q_title','q_creator','q_editor','q_song_no','q_book_title','q_year','q_languages','q_tags'],
+  q_all: '',
+  q_title: '',
+  q_creator: '',
+  q_editor: '',
+  q_song_no: '',
+  q_book_title: '',
+  q_year: '',
+  q_languages: '',
+  q_tags: '',
   //filters model based on searchTerm value
-  filteredModel: Ember.computed('model', 'searchTerm', function(){
+  filteredModel: Ember.computed('model', 'q_all', 'q_title', 'q_song_no', 'q_editor', 'q_creator', 'q_book_title', 'q_year', 'q_languages', 'q_tags', function(){
     let model = this.get('model').filterBy('pdf.pdf_path.url'); //removes all records that don't have a pdf uploaded
-    let regExp = new RegExp(this.get('searchTerm'), 'i');
-    return model.filter(function(model){
-      let langRes = model.get('languages').filter(item => {return regExp.test(item.get('name'));});
-      let tagRes = model.get('tags').filter(item => {return regExp.test(item.get('name'));});
-      return langRes.length > 0 ||
-        tagRes.length > 0 ||
-        regExp.test(model.get('name')) ||
-        regExp.test(model.get('song_no')) ||
-        regExp.test(model.get('book').get('name')) ||
-        regExp.test(model.get('book').get('editor').get('name')) ||
-        regExp.test(model.get('book').get('year'));
+    this.get('filters').forEach((filter)=> { // for each possible filter
+      if (this.get(filter).length > 0) { //if the filter has content
+        //guardian pattern to prevent invalid inputs
+        let valid = new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$');
+        while (!valid.test(this.get(filter))){
+          this.set(filter, this.get(filter).slice(0,-1));
+        }
+        //filtering bit
+        let regExp = new RegExp(this.get(filter), 'i'); //filter model on fields based on what the filter name is
+        model = model.filter(function (model) {
+          //filters for hasMany relationships
+          let languages = (filter === "q_all" || filter === "q_languages") ?
+            model.get('languages').filter(item => {return regExp.test(item.get('name'));}) : false;
+          let tags = (filter === "q_all" || filter === "q_tags") ?
+            model.get('tags').filter(item => {return regExp.test(item.get('name'));}) : false;
+          //returns true for any data items that need to be kept
+          return languages.length > 0 || tags.length > 0 ||
+            ((filter === "q_all" || filter === "q_title") ? regExp.test(model.get('name')) : false) ||
+            ((filter === "q_all" || filter === "q_song_no") ? regExp.test(model.get('song_no')) : false) ||
+            ((filter === "q_all" || filter === "q_editor") ? regExp.test(model.get('book').get('editor').get('name')) : false) ||
+            ((filter === "q_all" || filter === "q_creator") ? regExp.test(model.get('composer').get('name')) : false) ||
+            ((filter === "q_all" || filter === "q_book_title") ? regExp.test(model.get('book').get('name')) : false) ||
+            ((filter === "q_all" || filter === "q_year") ? regExp.test(model.get('book').get('year')) : false);
+        });
+      }
     });
-  }).property('searchTerm'),
+    return model;
+  }),
   //this is the model after filters and sorting have been applied
   sortedSongs: Ember.computed.sort('filteredModel', 'sortDefinition').property('filteredModel', 'sortDefinition'),
   //when sortBy changes, ensures the model updates
