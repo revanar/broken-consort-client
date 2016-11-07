@@ -1,13 +1,32 @@
 <div>
     <h2>Books</h2>
 
-  {{models-table
-    data=model
-    columns=columns
-    showColumnsDropdown=false
-    filteringIgnoreCase=true
-    showTableFooter=false
-    pageSize=x
-    showGlobalFilter=false
-  }}
+    <div><label> Filter All: {{input value=q_all }}</label></div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{#list-sortable sortBy "name"}}Title{{/list-sortable}}</th>
+            <th>{{#list-sortable sortBy "editor.name"}}Editor{{/list-sortable}}</th>
+            <th>{{#list-sortable sortBy "year"}}Year{{/list-sortable}}</th>
+            <th>Download</th>
+        </tr>
+        <tr>
+            <th><label class="hidden"> Title: </label>{{input value=q_title }}</th>
+            <th><label class="hidden"> Editor: </label>{{input value=q_editor }}</th>
+            <th><label class="hidden"> Year: </label>{{input type="number" min="600" max="1800" size="4" value=q_year }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each sortedBooks as |book|}}
+            <tr class="listing">
+                <td>{{book.name}}</td>
+                <td>{{book.editor.name}}</td>
+                <td>{{book.year}}</td>
+                <td>{{link-to-pdf book}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
 </div>

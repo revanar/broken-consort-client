@@ -2,7 +2,6 @@
     <h2>Transcribed Renaissance Music</h2>
 
     <div><label> Filter All: {{input value=q_all }}</label></div>
-
     <table class="table">
       <thead>
       <tr>
@@ -10,12 +9,11 @@
           <th colspan="5">Song</th>
       </tr>
       <tr>
-          <!-- note: for sortable columns, id=dasherized-model-property", onclick=(action "setSortBy")-->
-          <th>{{#list-sortable id="book-name" onclick=(action "setSortBy")}}Title{{/list-sortable}}</th>
-          <th>{{#list-sortable id="book-editor-name" onclick=(action "setSortBy")}}Editor{{/list-sortable}}</th>
-          <th>{{#list-sortable id="book-year" onclick=(action "setSortBy")}}Year{{/list-sortable}}</th>
-          <th>{{#list-sortable id="song_no" onclick=(action "setSortBy")}}No.{{/list-sortable}}</th>
-          <th>{{#list-sortable id="name" onclick=(action "setSortBy")}}Name{{/list-sortable}}</th>
+          <th>{{#list-sortable sortBy "book.name"}}Title{{/list-sortable}}</th>
+          <th>{{#list-sortable sortBy "book.editor.name"}}Editor{{/list-sortable}}</th>
+          <th>{{#list-sortable sortBy "book.year"}}Year{{/list-sortable}}</th>
+          <th>{{#list-sortable sortBy "song_no"}}No.{{/list-sortable}}</th>
+          <th>{{#list-sortable sortBy "name"}}Name{{/list-sortable}}</th>
           <th>Text Languages</th>
           <th>Tags</th>
           <th>Download</th>
@@ -29,6 +27,7 @@
           <th><label class="hidden"> Song Name: </label>{{input value=q_title }}</th>
           <th><label class="hidden"> Languages: </label>{{input value=q_languages }}</th>
           <th><label class="hidden"> Tags: </label>{{input value=q_tags }}</th>
+          <th></th>
       </tr>
 
       </thead>

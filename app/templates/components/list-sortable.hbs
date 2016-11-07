@@ -1,1 +1,13 @@
-{{yield}}
+{{#if (eq queryParam (concat sortBy ":asc"))}}
+  {{#link-to (query-params sortBy=(concat sortBy ":desc"))}}
+    {{yield}}
+  {{/link-to}}
+{{else if (eq queryParam (concat sortBy ":desc"))}}
+  {{#link-to (query-params sortBy="")}}
+    {{yield}}
+  {{/link-to}}
+{{else}}
+  {{#link-to (query-params sortBy=(concat sortBy ":asc"))}}
+    {{yield}}
+  {{/link-to}}
+{{/if}}

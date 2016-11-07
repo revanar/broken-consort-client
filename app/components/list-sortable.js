@@ -1,12 +1,31 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
+const ListSortableComponent = Ember.Component.extend({
 
-  tagName: 'a',
+  didReceiveAttrs(){
+    let queryParam = this.get('queryParam');
+    let sortBy = this.get('sortBy');
+    let isAsc = sortBy + ':asc';
+    let isDesc = sortBy + ':desc';
+    if (queryParam === isAsc){
+      this.set('sortDesc', false);
+      this.set('sortAsc', true);
+    } else if (queryParam === isDesc){
+      this.set('sortAsc', false);
+      this.set('sortDesc', true);
+    } else {
+      this.set('sortAsc', false);
+      this.set('sortDesc', false);
+    }
+  },
   classNames: ['list-sortable'],
-
-  click() {
-    //invoke controller function to set sort order
-    this.get('onclick')(this.get('id'));
-  }
+  classNameBindings: ['sortDesc', 'sortAsc'],
+  sortDesc: false,
+  sortAsc: false,
 });
+
+ListSortableComponent.reopenClass({
+  positionalParams: ['queryParam', 'sortBy']
+});
+
+export default ListSortableComponent;
