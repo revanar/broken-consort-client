@@ -2,7 +2,7 @@
     <h2>Books</h2>
 
     <div><label> Filter All: {{input value=q_all }}</label></div>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
         <tr>
             <th>{{#list-sortable sortBy "name"}}Title{{/list-sortable}}</th>
@@ -19,11 +19,14 @@
         </thead>
         <tbody>
         {{#each sortedBooks as |book|}}
-            <tr class="listing">
+            <tr class="listing" {{action "toggleDisplay" book.id}}>
                 <td>{{book.name}}</td>
                 <td>{{book.editor.name}}</td>
                 <td>{{book.year}}</td>
                 <td>{{link-to-pdf book}}</td>
+            </tr>
+            <tr id="data-toggle-{{book.id}}" class="hidden">
+                <td colspan="5"><strong>Songs in this book: </strong>{{csv-list book "songs"}}</td>
             </tr>
         {{/each}}
         </tbody>

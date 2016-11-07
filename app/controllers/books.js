@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   //query params
+  collapsed: true,
   queryParams: ['sortBy', 'q_all', 'q_title', 'q_editor', 'q_year'],
   sortBy: '',
   q_all: '',
@@ -30,5 +31,10 @@ export default Ember.Controller.extend({
   sortedBooks: Ember.computed.sort('filteredModel', 'sortDefinition').property('filteredModel', 'sortDefinition'),
   sortDefinition: Ember.computed('sortBy', function(){
     return [this.get('sortBy')];
-  })
+  }),
+  actions: {
+    toggleDisplay(id){
+      Ember.$('#data-toggle-'+id).toggleClass('hidden');
+    }
+  }
 });

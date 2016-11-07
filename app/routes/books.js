@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return this.get('store').findAll('book', {include: 'editor'});
+    return this.get('store').findAll('book', {include: 'editor,songs'});
   },
   queryParams: {
     sortBy: {as:'s', replace:true},
