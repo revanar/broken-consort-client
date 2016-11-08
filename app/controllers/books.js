@@ -32,6 +32,9 @@ export default Ember.Controller.extend({
   sortDefinition: Ember.computed('sortBy', function(){
     return [this.get('sortBy')];
   }),
+  noResults: Ember.computed('filteredModel', function(){
+    return !(this.get('filteredModel').length > 0);
+  }).property('filteredModel'),
   actions: {
     toggleDisplay(id){
       Ember.$('#data-toggle-'+id).toggleClass('hidden');

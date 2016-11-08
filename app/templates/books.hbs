@@ -18,17 +18,23 @@
         </tr>
         </thead>
         <tbody>
-        {{#each sortedBooks as |book|}}
-            <tr class="listing" {{action "toggleDisplay" book.id}}>
-                <td>{{book.name}}</td>
-                <td>{{book.editor.name}}</td>
-                <td>{{book.year}}</td>
-                <td>{{link-to-pdf book}}</td>
-            </tr>
-            <tr id="data-toggle-{{book.id}}" class="hidden">
-                <td colspan="5"><strong>Songs in this book: </strong>{{csv-list book "songs"}}</td>
-            </tr>
-        {{/each}}
+        {{#if noResults}}
+          <tr>
+              <td colspan="4">No books found.  Try removing some filters!</td>
+          </tr>
+        {{else}}
+          {{#each sortedBooks as |book|}}
+              <tr class="listing" {{action "toggleDisplay" book.id}}>
+                  <td>{{book.name}}</td>
+                  <td>{{book.editor.name}}</td>
+                  <td>{{book.year}}</td>
+                  <td>{{link-to-pdf book}}</td>
+              </tr>
+              <tr id="data-toggle-{{book.id}}" class="hidden">
+                  <td colspan="5"><strong>Songs in this book: </strong>{{csv-list book "songs"}}</td>
+              </tr>
+          {{/each}}
+        {{/if}}
         </tbody>
     </table>
 

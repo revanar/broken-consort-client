@@ -1,3 +1,7 @@
+{{!-- call list-sortable with the syntax "{{list-sortable sortBy "sortProperty"}}Column Title{{/list-sortable}} --}}
+{{!-- eg {{list-sortable sortBy "editor.name"}}Editor{{/list-sortable}}--}}
+{{!-- IMPORTANT: your controller MUST have the queryparam "sortBy"--}}
+{{!-- to make sort function, use Ember.computed.sort with "sortBy" as your sort param--}}
 {{#if (eq queryParam (concat sortBy ":asc"))}}
   {{#link-to (query-params sortBy=(concat sortBy ":desc"))}}
     {{yield}}
