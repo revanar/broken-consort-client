@@ -1,5 +1,4 @@
 <h2>Edit Books</h2>
-<button class="btn btn-success" {{action "saveAll" "book"}}>Save All</button>
 <div class="div-table table">
     <div class="table-header">
         <span>Name</span>
@@ -31,6 +30,7 @@
                 {{#if book.pdf.pdf_path.url}}
                     <a href={{book.pdf.pdf_path.url}}>pdf</a>
                 {{/if}}
+                  <span id="pdf-progress-{{book.id}}"></span>
                   <div>
                     {{#if book.pdf.pdf_path.url}}
                         <label for={{concat "pdf-delete-" book.id}} class="btn btn-danger">
@@ -46,6 +46,7 @@
               {{#if (not-eq book.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
                   <a href={{book.thumb.thumb_path.url}}>thumb</a>
               {{/if}}
+                <span id="thumb-progress-{{book.id}}"></span>
                 <div>
                   {{#if (not-eq book.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
                       <label for={{concat "thumb-delete-" book.id}} class="btn btn-danger">
@@ -57,9 +58,9 @@
             </div>
         </div>
         <button class="btn btn-danger" {{action "deleteRecord" book}}>Delete Book</button>
-        <span id="pdf-progress-{{book.id}}"></span>
-        <span id="save-flash-{{book.id}}" class="save-flash">Saved!</span>
+
       </form>
   {{/each}}
   <button class="btn btn-default" {{action "createRecord" "book"}}>Create New Book</button>
 </div>
+

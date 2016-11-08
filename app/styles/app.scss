@@ -1,4 +1,6 @@
 @import "ember-power-select";
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
 
 //flex formatting for full site to push header to top and footer to bottom
 .site-container{
@@ -53,9 +55,8 @@ footer{
   }
 }
 
-.save-flash {
+.file-upload-success {
   color: green;
-  display: none;
 }
 
 .flex {
@@ -100,4 +101,3 @@ footer{
     background-image: url('images/sort_asc.gif');
   }
 }
-
