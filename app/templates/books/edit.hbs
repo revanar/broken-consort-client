@@ -9,7 +9,7 @@
         <span></span>
     </div>
   {{#each model.books as |book|}}
-    <form class="table-row" {{action "autoSave" "book" on="change"}}>
+    <form class="table-row" {{action "autoSave" "book" on="change"}} onsubmit={{action "prevent"}}>
           <div class="table-cell">{{input type="text" value=book.name}}</div>
           <div class="table-cell">
             {{#power-select-with-create
@@ -17,7 +17,8 @@
               placeholder="unknown editor"
               options=model.editors
               onchange=(action "updateOne" "book" book "editor")
-              oncreate=(action "createOne" "book" book "editor")
+              oncreate=(action "createOne" "book
+              " book "editor")
               searchField="name"
             as |editor|
             }}
@@ -57,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-danger" {{action "deleteRecord" book}}>Delete Book</button>
+        <button type="button" class="btn btn-danger" {{action "deleteRecord" book}}>Delete Book</button>
 
       </form>
   {{/each}}

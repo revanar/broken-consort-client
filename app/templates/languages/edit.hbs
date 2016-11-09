@@ -1,0 +1,16 @@
+<h2>Edit Languages</h2>
+<div class="div-table table">
+    <div class="table-header">
+        <span>Name</span>
+        <span>Language for</span>
+        <span></span>
+    </div>
+    {{#each model as |language|}}
+      <form class="table-row" {{action "autoSave" "language" on="change"}} >
+          <div class="table-cell">{{input type="text" value=language.name}}</div>
+          <div class="table-cell">{{csv-list language "songs"}}</div>
+          <div class="btn btn-danger" {{action "deleteRecord" language}}>Delete Language</div>
+      </form>
+    {{/each}}
+    <button type="button" class="btn btn-default" {{action "createRecord" "language"}}>Add New Language</button>
+</div>

@@ -1,0 +1,16 @@
+<h2>Edit Tags</h2>
+<div class="div-table table">
+    <div class="table-header">
+        <span>Name</span>
+        <span>Tag For</span>
+        <span></span>
+    </div>
+    {{#each model as |tag|}}
+      <form class="table-row" {{action "autoSave" "tag" on="change"}} >
+          <div class="table-cell">{{input type="text" value=tag.name}}</div>
+          <div class="table-cell">{{csv-list tag "songs"}}</div>
+          <button class="btn btn-danger" {{action "deleteRecord" tag}}>Delete Tag</button>
+      </form>
+    {{/each}}
+    <button type="button" class="btn btn-default" {{action "createRecord" "tag"}}>Create New Tag</button>
+</div>

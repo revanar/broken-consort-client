@@ -11,7 +11,7 @@
         <span>PDF</span>
     </div>
     {{#each model.songs as |song|}}
-      <form class="table-row" {{action "autoSave" "song" on="change"}}>
+      <form class="table-row" {{action "autoSave" "song" on="change"}} >
         <div class="table-cell">
           {{#power-select
             selected=song.book
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-danger" {{action "deleteRecord" song}}>Delete Song</button>
+        <button type="button" class="btn btn-danger" {{action "deleteRecord" song}}>Delete Song</button>
       </form>
     {{/each}}
     <button class="btn btn-default" {{action "createRecord" "song"}}>Create New Song</button>
