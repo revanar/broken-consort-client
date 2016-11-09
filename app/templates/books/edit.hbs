@@ -9,7 +9,7 @@
         <span></span>
     </div>
   {{#each model.books as |book|}}
-    <form class="table-row" {{action "autoSave" "book" on="change"}} onsubmit={{action "prevent"}}>
+    <form class="table-row" {{action "autoSave" "book" on="change"}}>
           <div class="table-cell">{{input type="text" value=book.name}}</div>
           <div class="table-cell">
             {{#power-select-with-create
