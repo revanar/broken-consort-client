@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   notify: Ember.inject.service('notify'),
   isUploading: false,
-  modalClasses: ['modal-save-flash'],
   actions: {
     autoSave(type){
       if (!this.get('queuedSave') && !this.get('isUploading')) {
