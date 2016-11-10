@@ -50,10 +50,12 @@ export default Ember.Controller.extend({
 
     },
     saveAll(type){
+      let didSave = false;
       //non-RSVP
       if (this.get('model.' + type + 's') === undefined) {
         this.get('model').forEach((record) => {
           if (record.get('hasDirtyAttributes')) {
+            didSave = true;
             record.save();
           }
         });
@@ -61,12 +63,13 @@ export default Ember.Controller.extend({
       } else {
         this.get('model.' + type + 's').forEach((record) => {
           if (record.get('hasDirtyAttributes')) {
+            didSave = true;
             record.save();
           }
         });
       }
       this.set('queuedSave', false);
-      this.get('notify').success(`All ${type}s saved!`);
+      (didSave === true)? this.get('notify').success(`All ${type}s saved!`):'';
     },
     updateMany(type, record, rel_type, rel_values){
       let updateSet = new Set(rel_values.mapBy('id')); //creates set based on new set of values
