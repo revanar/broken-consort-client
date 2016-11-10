@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
       if (!this.get('queuedSave') && !this.get('isUploading')) {
         this.get('notify').warning(`Saving all ${type}s...`);
         Ember.run.later(this, function () { //auto-saves data 5 seconds after an auto-save request is recieved
-                    this.send('saveAll', type);
+          this.send('saveAll', type);
         }, 3000);
         this.set('queuedSave', true); //if an autosave is already queued, don't bother queueing another one.
       }
@@ -51,7 +51,7 @@ export default Ember.Controller.extend({
     },
     saveAll(type){
       //non-RSVP
-      if (this.get('model.' + type + 's') === undefined){
+      if (this.get('model.' + type + 's') === undefined) {
         this.get('model').forEach((record) => {
           if (record.get('hasDirtyAttributes')) {
             record.save();
@@ -67,72 +67,72 @@ export default Ember.Controller.extend({
       }
       this.set('queuedSave', false);
       this.get('notify').success(`All ${type}s saved!`);
+    },
+    updateMany(type, record, rel_type, rel_values){
+      let updateSet = new Set(rel_values.mapBy('id')); //creates set based on new set of values
+      let existingSet = new Set(record.get(rel_type + 's').mapBy('id'));//creates set based on existing set of values
+      let addSet = new Set([...updateSet].filter(x => !existingSet.has(x))); //create addSet based on values that are in updateSet but not existingSet
+      addSet.forEach((id) => { //add relationships from addSet
+        let rel = this.get('store').peekRecord(rel_type, id);
+        record.get(rel_type + 's').pushObject(rel);
+        record.send('becomeDirty');
+      });
+      let removeSet = new Set([...existingSet].filter(x => !updateSet.has(x))); //create removeSet based on values that are in the existingSet but not in updateSet
+      removeSet.forEach((id) => { //remove relationships from removeSet
+        let rel = this.get('store').peekRecord(rel_type, id);
+        record.get(rel_type + 's').removeObject(rel);
+        record.send('becomeDirty');
+      });
+      this.send('autoSave', type);
+    },
+    updateOne(type, record, rel_type, rel_value){
+      record.set(rel_type, rel_value);
+      record.send('becomeDirty');
+      this.send('autoSave', type);
+    },
+    uploadPDF(record, file){
+      this.set('isUploading', true); //disables submit until uploading is finished currently not implimented.  Re-add as feature to keep user from leaving the page
+      let reader = new FileReader(); //instantiates the FileReader
+
+      reader.onload = () => {
+        record.set('pdf', reader.result); //puts the base64 data url into the model
+        this.set('isUploading', false); //re-enables submitting
+        this.send('save', record);
+        Ember.$('#pdf-progress-' + record.id).addClass('file-upload-success').text(`File uploaded!`);
+        Ember.run.later(this, function () {
+          Ember.$('#pdf-progress-' + record.id).removeClass('save-flash').empty();
+        }, 2500);
+      };
+
+      reader.onprogress = function (data) {
+        if (data.lengthComputable) {
+          let progress = parseInt(((data.loaded / data.total) * 100), 10);
+          Ember.$('#pdf-progress-' + record.id).text(progress + '%'); //shows progress percentage when uploading
+        }
+      };
+      reader.readAsDataURL(file[0]); //converts file to uploadable format
+    },
+    uploadThumb(record, file){
+      this.set('isUploading', true); //disables submit until uploading is finished currently not implimented.  Re-add as feature to keep user from leaving the page
+      let reader = new FileReader(); //instantiates the FileReader
+
+      reader.onload = () => {
+        record.set('thumb', reader.result); //puts the base64 data url into the model
+        this.set('isUploading', false); //re-enables submitting
+        this.send('save', record);
+        Ember.$('#thumb-progress-' + record.id).addClass('file-upload-success').text(`File uploaded!`);
+        Ember.run.later(this, function () {
+          Ember.$('#thumb-progress-' + record.id).removeClass('save-flash').empty();
+        }, 2500);
+      };
+
+      reader.onprogress = function (data) {
+        if (data.lengthComputable) {
+          let progress = parseInt(((data.loaded / data.total) * 100), 10);
+          Ember.$('#thumb-progress-' + record.id).text(progress + '%'); //shows progress percentage when uploading
+        }
+      };
+      reader.readAsDataURL(file[0]); //converts file to uploadable format
     }
-  },
-  updateMany(type, record, rel_type, rel_values){
-    let updateSet = new Set(rel_values.mapBy('id')); //creates set based on new set of values
-    let existingSet = new Set(record.get(rel_type + 's').mapBy('id'));//creates set based on existing set of values
-    let addSet = new Set([...updateSet].filter(x => !existingSet.has(x))); //create addSet based on values that are in updateSet but not existingSet
-    addSet.forEach((id) => { //add relationships from addSet
-      let rel = this.get('store').peekRecord(rel_type, id);
-      record.get(rel_type + 's').pushObject(rel);
-      record.send('becomeDirty');
-    });
-    let removeSet = new Set([...existingSet].filter(x => !updateSet.has(x))); //create removeSet based on values that are in the existingSet but not in updateSet
-    removeSet.forEach((id) => { //remove relationships from removeSet
-      let rel = this.get('store').peekRecord(rel_type, id);
-      record.get(rel_type + 's').removeObject(rel);
-      record.send('becomeDirty');
-    });
-    this.send('autoSave', type);
-  },
-  updateOne(type, record, rel_type, rel_value){
-    record.set(rel_type, rel_value);
-    record.send('becomeDirty');
-    this.send('autoSave', type);
-  },
-  uploadPDF(record, file){
-    this.set('isUploading', true); //disables submit until uploading is finished currently not implimented.  Re-add as feature to keep user from leaving the page
-    let reader = new FileReader(); //instantiates the FileReader
-
-    reader.onload = () => {
-      record.set('pdf', reader.result); //puts the base64 data url into the model
-      this.set('isUploading', false); //re-enables submitting
-      this.send('save', record);
-      Ember.$('#pdf-progress-'+record.id).addClass('file-upload-success').text(`File uploaded!`);
-      Ember.run.later(this, function() {
-        Ember.$('#pdf-progress-'+record.id).removeClass('save-flash').empty();
-      }, 2500);
-    };
-
-    reader.onprogress = function (data) {
-      if (data.lengthComputable) {
-        let progress = parseInt(((data.loaded / data.total) * 100), 10);
-        Ember.$('#pdf-progress-' + record.id).text(progress + '%'); //shows progress percentage when uploading
-      }
-    };
-    reader.readAsDataURL(file[0]); //converts file to uploadable format
-  },
-  uploadThumb(record, file){
-    this.set('isUploading', true); //disables submit until uploading is finished currently not implimented.  Re-add as feature to keep user from leaving the page
-    let reader = new FileReader(); //instantiates the FileReader
-
-    reader.onload = () => {
-      record.set('thumb', reader.result); //puts the base64 data url into the model
-      this.set('isUploading', false); //re-enables submitting
-      this.send('save', record);
-      Ember.$('#thumb-progress-'+record.id).addClass('file-upload-success').text(`File uploaded!`);
-      Ember.run.later(this, function() {
-        Ember.$('#thumb-progress-'+record.id).removeClass('save-flash').empty();
-      }, 2500);
-    };
-
-    reader.onprogress = function (data) {
-      if (data.lengthComputable) {
-        let progress = parseInt(((data.loaded / data.total) * 100), 10);
-        Ember.$('#thumb-progress-' + record.id).text(progress + '%'); //shows progress percentage when uploading
-      }
-    };
-    reader.readAsDataURL(file[0]); //converts file to uploadable format
   }
 });

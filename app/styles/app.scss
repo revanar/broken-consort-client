@@ -101,3 +101,10 @@ footer{
     background-image: url('images/sort_asc.gif');
   }
 }
+
+//style for delete modal
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

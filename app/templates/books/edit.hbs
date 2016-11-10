@@ -6,6 +6,7 @@
         <span>Year</span>
         <span>PDF</span>
         <span>Thumb</span>
+        <span>Book for</span>
         <span></span>
     </div>
   {{#each model.books as |book|}}
@@ -58,8 +59,8 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-danger" {{action "deleteRecord" book}}>Delete Book</button>
-
+        <div class="table-cell">{{csv-list book "songs"}}</div>
+        {{#delete-button name=book.name onconfirm=(action "deleteRecord" book)}}Delete Book{{/delete-button}}
       </form>
   {{/each}}
   <button class="btn btn-default" {{action "createRecord" "book"}}>Create New Book</button>

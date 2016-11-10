@@ -1,4 +1,5 @@
 <h2>Edit Tags</h2>
+{{link-to "Return to editing songs" 'songs.edit'}}
 <div class="div-table table">
     <div class="table-header">
         <span>Name</span>
@@ -6,11 +7,11 @@
         <span></span>
     </div>
     {{#each model as |tag|}}
-      <form class="table-row" {{action "autoSave" "tag" on="change"}} >
+      <form class="table-row" {{action "autoSave" "tag" on="submit"}} >
           <div class="table-cell">{{input type="text" value=tag.name}}</div>
           <div class="table-cell">{{csv-list tag "songs"}}</div>
-          <button class="btn btn-danger" {{action "deleteRecord" tag}}>Delete Tag</button>
+          {{#delete-button name=tag.name onconfirm=(action "deleteRecord" tag)}}Delete Tag{{/delete-button}}
       </form>
     {{/each}}
-    <button type="button" class="btn btn-default" {{action "createRecord" "tag"}}>Create New Tag</button>
+    <button class="btn btn-default" {{action "createRecord" "tag"}}>Create New Tag</button>
 </div>

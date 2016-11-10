@@ -1,4 +1,5 @@
 <h2>Edit Songs</h2>
+
 <div class="div-table table">
     <div class="table-header">
         <span>Book</span>
@@ -6,8 +7,8 @@
         <span>Name</span>
         <span>Composer</span>
         <span>Parts #</span>
-        <span>Text Languages</span>
-        <span>Tags</span>
+        <span>Text Languages {{link-to "(edit)" 'languages.edit'}}</span>
+        <span>Tags {{link-to "(edit)" 'tags.edit'}}</span>
         <span>PDF</span>
     </div>
     {{#each model.songs as |song|}}
@@ -81,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-danger" {{action "deleteRecord" song}}>Delete Song</button>
+        {{#delete-button name=song.name onconfirm=(action "deleteRecord" song)}}Delete Song{{/delete-button}}
       </form>
     {{/each}}
     <button class="btn btn-default" {{action "createRecord" "song"}}>Create New Song</button>
