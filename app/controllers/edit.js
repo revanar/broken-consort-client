@@ -4,6 +4,9 @@ export default Ember.Controller.extend({
   notify: Ember.inject.service('notify'),
   isUploading: false,
   actions: {
+    // Will call a saveAll action once after a 3-second delay.
+    // Helps throttle number of saveAll requests made when making multiple changes in a short period of time
+    //eg to save all songs, use {{action "autoSave" "song"}}
     autoSave(type){
       if (!this.get('queuedSave') && !this.get('isUploading')) {
         this.get('notify').warning(`Saving all ${type}s...`);
