@@ -1,2 +1,18 @@
 <h2>Collections</h2>
-<p>Content Goes Here</p>
+<div><label>Filter All: {{input value=q_all}}</label></div>
+<div>
+    {{#if noResults}}
+      <strong>No collections found. Try changing filter terms!</strong>
+    {{else}}
+      {{#each filteredModel as |collection|}}
+        <div class="listing book-list">
+            <div>{{link-to-pdf collection}}</div>
+            <div>
+                <h3>{{collection.name}}</h3>
+                <p class="author">Curated by {{collection.creator}}</p>
+                <p>{{collection.desc}}</p>
+            </div>
+        </div>
+      {{/each}}
+    {{/if}}
+</div>

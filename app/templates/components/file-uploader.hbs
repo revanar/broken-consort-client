@@ -1,0 +1,31 @@
+{{#if (eq type "thumb")}}
+  <div>
+    {{#if (not-eq model.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
+        <a href={{model.thumb.thumb_path.url}}>thumb</a>
+    {{/if}}
+      <span id="thumb-progress-{{model.id}}"></span>
+  </div>
+  <div>
+    {{#if (not-eq model.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
+        <label class="btn btn-danger" for="thumb-delete-{{model.id}}">
+          {{input id=(concat "thumb-delete-" model.id) type="checkbox" name="Delete Thumb" checked=model.remove_thumb_path}}Delete
+        </label>
+    {{/if}}
+    {{x-file-input action=(action "uploadThumb" model) accept=acceptTypes class="btn btn-default" value="Upload"}}
+  </div>
+{{else}}
+  <div>
+    {{#if model.pdf.pdf_path.url}}
+        <a href={{model.pdf.pdf_path.url}}>pdf</a>
+    {{/if}}
+      <span id="pdf-progress-{{model.id}}"></span>
+  </div>
+  <div>
+    {{#if model.pdf.pdf_path.url}}
+        <label class="btn btn-danger" for="pdf-delete-{{model.id}}">
+          {{input id=(concat "pdf-delete-" model.id) type="checkbox" name="Delete PDF" checked=model.remove_pdf_path}}Delete
+        </label>
+    {{/if}}
+    {{x-file-input action=(action "uploadPDF" model) accept=acceptTypes class="btn btn-default" value="Upload"}}
+  </div>
+{{/if}}

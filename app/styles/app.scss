@@ -16,7 +16,7 @@ footer{
   text-align: center;
 }
 
-//formatting for .table on edit pages
+//formatting for div table on edit pages
 .div-table {
   display:table;
   .table-row {
@@ -26,6 +26,9 @@ footer{
       margin: 5px;
       padding: 8px;
       border-top: 1px solid #ddd;
+      textarea {
+        display: block;
+      }
     }
   }
   .table-header {
@@ -59,18 +62,9 @@ footer{
   color: green;
 }
 
-.flex {
-  display: flex;
-}
-
 //removes weird spacing on x-file-input if rendering as button
 .x-file-input.btn > label {
   margin-bottom: 0;
-}
-
-//makes column displaying pdf thumbnail not awkwardly wide
-.pdfthumb {
-  width: 146px;
 }
 
 //styles the headers of sortable list elements
@@ -108,3 +102,43 @@ footer{
   flex-direction: column;
   align-items: center;
 }
+
+//styles for books and collections pages
+.div-hover {
+  * {
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+}
+
+.book-list {
+  display: flex;
+  border-top: 1px solid #ddd;
+  > * {
+    padding: 10px;
+  }
+}
+
+.author {
+  margin-top: -10px;
+  font: italic 1.3em normal;
+
+}
+
+//styling for song-list component (on books page)
+.song-list {
+  list-style: none;
+  padding-left: 4em;
+  li {
+    &:before {
+      content: attr(seq) ". ";
+      display: inline-block;
+      width: 4em;
+      margin-left: -4em;
+      text-align: right;
+      white-space: pre;
+    }
+  }
+}
+

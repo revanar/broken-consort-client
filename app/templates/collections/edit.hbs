@@ -1,0 +1,28 @@
+<h2>Edit Collections</h2>
+<div class="div-table table">
+    <div class="table-header">
+        <span>Name</span>
+        <span>Creator</span>
+        <span>Desc.</span>
+        <span>PDF</span>
+        <span>Thumb</span>
+        <span></span>
+    </div>
+    {{#each model as |collection|}}
+      <form class="table-row" {{action "autoSave" "collection" on="change"}}>
+          <div class="table-cell">{{input value=collection.name}}</div>
+          <div class="table-cell">{{input value=collection.creator}}</div>
+          <div class="table-cell">
+            {{textarea cols="40" rows="3" placeholder="Enter description here." value=collection.desc}}
+          </div>
+          <div class="table-cell">
+              {{file-uploader model=collection}}
+          </div>
+          <div class="table-cell">
+              {{file-uploader type="thumb" model=collection}}
+          </div>
+        {{#delete-button name=collection.name onconfirm=(action "deleteRecord" collection)}}Delete Collection{{/delete-button}}
+      </form>
+    {{/each}}
+    <button class="btn btn-default" {{action "createRecord" "collection"}}>Create New Collection</button>
+</div>

@@ -12,6 +12,7 @@ Router.map(function() {
   this.route('books');
   this.route('books.edit', {path: '/books/edit'});
   this.route('collections');
+  this.route('collections.edit', {path: '/collections/edit'});
   this.route('languages.edit', {path: 'languages/edit'});
   this.route('tags.edit', {path: 'tags/edit'});
 });

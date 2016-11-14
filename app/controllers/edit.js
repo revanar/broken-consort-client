@@ -8,7 +8,8 @@ export default Ember.Controller.extend({
     // Helps throttle number of saveAll requests made when making multiple changes in a short period of time
     //eg to save all songs, use {{action "autoSave" "song"}}
     autoSave(type){
-      if (!this.get('queuedSave') && !this.get('isUploading')) {
+      let isUploading = (Ember.$('.file-uploading').length); //don't trigger autosave on file uploads, since those save separately
+      if (!this.get('queuedSave') && !isUploading) {
         this.get('notify').warning(`Saving all ${type}s...`);
         Ember.run.later(this, function () { //auto-saves data 5 seconds after an auto-save request is recieved
           this.send('saveAll', type);
@@ -19,11 +20,6 @@ export default Ember.Controller.extend({
     //use to create a has-many relationship item
     //eg if you have a book and want to create a song for it, you could use {{action "createMany" "book" book "song"}}
     createMany(type, record, rel_type, select, key){
-      console.log(type);
-      console.log(record);
-      console.log(rel_type);
-      console.log(select);
-      console.log(key);
       if (key.keyCode === 13 && select.isOpen && !select.highlighted && !Ember.isBlank(select.searchText)) {
         this.get('store').createRecord(rel_type, {
           name: select.searchText
@@ -105,50 +101,6 @@ export default Ember.Controller.extend({
       record.set(rel_type, rel_value);
       record.send('becomeDirty');
       this.send('autoSave', type);
-    },
-    //Use to upload a PDF with x-file-input
-    //eg: {{x-file-input action=(action "uploadPDF" song) accept="application/pdf" class="btn btn-default"}}
-    uploadPDF(record, file){
-      this.set('isUploading', true); //disables submit until uploading is finished currently not implimented.  Re-add as feature to keep user from leaving the page
-      let reader = new FileReader(); //instantiates the FileReader
-      reader.onload = () => {
-        record.set('pdf', reader.result); //puts the base64 data url into the model
-        this.set('isUploading', false); //re-enables submitting
-        record.save();
-        Ember.$('#pdf-progress-' + record.id).addClass('file-upload-success').text(`File uploaded!`);
-        Ember.run.later(this, function () {
-          Ember.$('#pdf-progress-' + record.id).removeClass('save-flash').empty();
-        }, 2500);
-      };
-      reader.onprogress = function (data) {
-        if (data.lengthComputable) {
-          let progress = parseInt(((data.loaded / data.total) * 100), 10);
-          Ember.$('#pdf-progress-' + record.id).text(progress + '%'); //shows progress percentage when uploading
-        }
-      };
-      reader.readAsDataURL(file[0]); //converts file to uploadable format
-    },
-    //Use to upload a Thumb with x-file-input
-    //eg: {{x-file-input action=(action "uploadThumb" book) accept="image/png,image/jpg" class="btn btn-default" value="Upload"}}
-    uploadThumb(record, file){
-      this.set('isUploading', true); //disables submit until uploading is finished currently not implimented.  Re-add as feature to keep user from leaving the page
-      let reader = new FileReader(); //instantiates the FileReader
-      reader.onload = () => {
-        record.set('thumb', reader.result); //puts the base64 data url into the model
-        this.set('isUploading', false); //re-enables submitting
-        record.save();
-        Ember.$('#thumb-progress-' + record.id).addClass('file-upload-success').text(`File uploaded!`);
-        Ember.run.later(this, function () {
-          Ember.$('#thumb-progress-' + record.id).removeClass('save-flash').empty();
-        }, 2500);
-      };
-      reader.onprogress = function (data) {
-        if (data.lengthComputable) {
-          let progress = parseInt(((data.loaded / data.total) * 100), 10);
-          Ember.$('#thumb-progress-' + record.id).text(progress + '%'); //shows progress percentage when uploading
-        }
-      };
-      reader.readAsDataURL(file[0]); //converts file to uploadable format
     }
   }
 });

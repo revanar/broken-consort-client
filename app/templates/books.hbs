@@ -1,41 +1,25 @@
-<div>
-    <h2>Books</h2>
+<h2>Books</h2>
 
-    <div><label> Filter All: {{input value=q_all }}</label></div>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>{{#list-sortable sortBy "name"}}Title{{/list-sortable}}</th>
-            <th>{{#list-sortable sortBy "editor.name"}}Editor{{/list-sortable}}</th>
-            <th>{{#list-sortable sortBy "year"}}Year{{/list-sortable}}</th>
-            <th>Download</th>
-        </tr>
-        <tr>
-            <th><label class="hidden"> Title: </label>{{input value=q_title }}</th>
-            <th><label class="hidden"> Editor: </label>{{input value=q_editor }}</th>
-            <th><label class="hidden"> Year: </label>{{input type="number" min="600" max="1800" size="4" value=q_year }}</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#if noResults}}
-          <tr>
-              <td colspan="4">No books found.  Try removing some filters!</td>
-          </tr>
-        {{else}}
-          {{#each sortedBooks as |book|}}
-              <tr class="listing" {{action "toggleDisplay" book.id}}>
-                  <td>{{book.name}}</td>
-                  <td>{{book.editor.name}}</td>
-                  <td>{{book.year}}</td>
-                  <td>{{link-to-pdf book}}</td>
-              </tr>
-              <tr id="data-toggle-{{book.id}}" class="hidden">
-                  <td colspan="5"><strong>Songs in this book: </strong>{{csv-list book "songs"}}</td>
-              </tr>
-          {{/each}}
-        {{/if}}
-        </tbody>
-    </table>
+<div><label> Filter All: {{input value=q_all }}</label></div>
+<div class="div-hover">
+  {{#if noResults}}
+    <div>
+        <strong>No books found.  Try changing filter terms!</strong>
+    </div>
+  {{else}}
+    {{#each filteredModel as |book|}}
+      <div class="listing book-list" {{action "toggleDisplay" book.id}}>
+          <div>{{link-to-pdf book}}</div>
+          <div>
+              <h3>{{book.name}}</h3>
+              <p class="author">{{book.editor.name}} ({{book.year}})</p>
+              <p>{{book.desc}}</p>
+              <div id="data-toggle-{{book.id}}" class="hidden">
+                  {{#song-list model=book}}Songs in this book: {{/song-list}}
+              </div>
+          </div>
+      </div>
 
+    {{/each}}
+  {{/if}}
 </div>

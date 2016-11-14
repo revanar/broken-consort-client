@@ -4,6 +4,7 @@
         <span>Name</span>
         <span>Editor</span>
         <span>Year</span>
+        <span>Desc.</span>
         <span>PDF</span>
         <span>Thumb</span>
         <span>Book for</span>
@@ -27,37 +28,12 @@
             {{/power-select-with-create}}
           </div>
           <div class="table-cell">{{input type="number" min="600" max="1800" size="4" value=book.year}}</div>
+          <div class="table-cell">{{textarea cols="40" rows="3" placeholder="Enter description here." value=book.desc}}</div>
           <div class="table-cell">
-              <div>
-                {{#if book.pdf.pdf_path.url}}
-                    <a href={{book.pdf.pdf_path.url}}>pdf</a>
-                {{/if}}
-                  <span id="pdf-progress-{{book.id}}"></span>
-                  <div>
-                    {{#if book.pdf.pdf_path.url}}
-                        <label for={{concat "pdf-delete-" book.id}} class="btn btn-danger">
-                          {{input id=(concat "pdf-delete-" book.id) type="checkbox" name="Delete PDF" checked=book.remove_pdf_path}} Delete
-                        </label>
-                    {{/if}}
-                    {{x-file-input action=(action "uploadPDF" book) accept="application/pdf" class="btn btn-default" value="Upload"}}
-                  </div>
-              </div>
+             {{file-uploader model=book}}
           </div>
         <div class="table-cell">
-            <div>
-              {{#if (not-eq book.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
-                  <a href={{book.thumb.thumb_path.url}}>thumb</a>
-              {{/if}}
-                <span id="thumb-progress-{{book.id}}"></span>
-                <div>
-                  {{#if (not-eq book.thumb.thumb_path.url "http://localhost:3000/fallback/default.png")}}
-                      <label for={{concat "thumb-delete-" book.id}} class="btn btn-danger">
-                    {{input id=(concat "thumb-delete-" book.id) type="checkbox" name="Delete Thumb" checked=book.remove_thumb_path}} Delete
-                      </label>
-                  {{/if}}
-                  {{x-file-input action=(action "uploadThumb" book) accept="image/png,image/jpg" class="btn btn-default" value="Upload"}}
-                </div>
-            </div>
+            {{file-uploader type="thumb" model=book}}
         </div>
         <div class="table-cell">{{csv-list book "songs"}}</div>
         {{#delete-button name=book.name onconfirm=(action "deleteRecord" book)}}Delete Book{{/delete-button}}

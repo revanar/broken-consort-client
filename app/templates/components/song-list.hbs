@@ -1,0 +1,14 @@
+<strong>{{yield}}</strong>
+<ol class="song-list">
+{{#each sortedSongs as |song|}}
+  <li seq={{song.song_no}}>
+      {{#if song.pdf.pdf_path.url}}
+        {{#link-to "songs" (query-params q_title=song.name)}}
+          {{song.name}}
+        {{/link-to}}
+      {{else}}
+        {{song.name}}
+      {{/if}}
+  </li>
+{{/each}}
+</ol>

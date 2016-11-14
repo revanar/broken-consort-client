@@ -5,10 +5,6 @@ export default Ember.Route.extend({
     return this.get('store').findAll('book', {include: 'editor,songs'});
   },
   queryParams: {
-    sortBy: {as:'s', replace:true},
-    q_all: {replace:true},
-    q_title: {replace:true},
-    q_editor: {replace:true},
-    q_year: {replace:true}
+    q_all: {replace:true}
   }
 });

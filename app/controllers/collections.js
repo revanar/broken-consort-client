@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  //query params
-  collapsed: true,
   queryParams: ['q_all'],
   q_all: '',
   filteredModel: Ember.computed('model', 'q_all', function(){
@@ -17,8 +15,7 @@ export default Ember.Controller.extend({
         let regExp = new RegExp(this.get(filter), 'i');
         model = model.filter(function(model){
           return (filter === "q_all"  ? regExp.test(model.get('name')): false ) ||
-            (filter === "q_all"  ? regExp.test(model.get('editor').get('name')) : false ) ||
-            (filter === "q_all"  ? regExp.test(model.get('year')) : false);
+            (filter === "q_all"  ? regExp.test(model.get('creator')) : false);
         });
       }
     });
@@ -26,10 +23,5 @@ export default Ember.Controller.extend({
   }),
   noResults: Ember.computed('filteredModel', function(){
     return !(this.get('filteredModel').length > 0);
-  }).property('filteredModel'),
-  actions: {
-    toggleDisplay(id){
-      Ember.$('#data-toggle-'+id).toggleClass('hidden');
-    }
-  }
+  }).property('filteredModel')
 });
