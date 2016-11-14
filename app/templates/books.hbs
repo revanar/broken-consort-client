@@ -8,7 +8,7 @@
     </div>
   {{else}}
     {{#each filteredModel as |book|}}
-      <div class="listing book-list" {{action "toggleDisplay" book.id}}>
+      <div class="listing book-list" {{action "toggleDisplay" book.id preventDefault=false}}>
           <div>{{link-to-pdf book}}</div>
           <div>
               <h3>{{book.name}}</h3>
