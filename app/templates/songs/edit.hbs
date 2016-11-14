@@ -24,8 +24,8 @@
             {{book.name}} | {{book.editor.name}} | {{book.year}}
           {{/power-select}}
         </div>
-        <div class="table-cell">{{input type="number" min="1" max="99" size="2" value=song.song_no}}</div>
-        <div class="table-cell">{{input type="text" value=song.name}}</div>
+        <div class="table-cell">{{input class="form-control" type="number" min="1" max="99" size="2" value=song.song_no}}</div>
+        <div class="table-cell">{{input class="form-control" type="text" value=song.name}}</div>
         <div class="table-cell">
           {{#power-select-with-create
             selected=song.composer
@@ -39,7 +39,7 @@
             {{composer.name}}
           {{/power-select-with-create}}
         </div>
-        <div class="table-cell">{{input type="number" min="1" max="9" size="1" value=song.parts_no}}</div>
+        <div class="table-cell">{{input class="form-control" type="number" min="1" max="9" size="1" value=song.parts_no}}</div>
         <div class="table-cell"><!--next up: replace mut with "updateRelation" function-->
           {{#power-select-multiple
             selected=song.languages

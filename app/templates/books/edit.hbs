@@ -12,7 +12,7 @@
     </div>
   {{#each model.books as |book|}}
     <form class="table-row" {{action "autoSave" "book" on="change"}}>
-          <div class="table-cell">{{input type="text" value=book.name}}</div>
+          <div class="table-cell">{{input class="form-control" type="text" value=book.name}}</div>
           <div class="table-cell">
             {{#power-select-with-create
               selected=book.editor
@@ -27,15 +27,26 @@
               {{editor.name}}
             {{/power-select-with-create}}
           </div>
-          <div class="table-cell">{{input type="number" min="600" max="1800" size="4" value=book.year}}</div>
-          <div class="table-cell">{{textarea cols="40" rows="3" placeholder="Enter description here." value=book.desc}}</div>
+          <div class="table-cell">{{input class="form-control" type="number" min="600" max="1800" size="4" value=book.year}}</div>
+          <div class="table-cell">{{textarea class="form-control" cols="40" rows="3" placeholder="Enter description here." value=book.desc}}</div>
           <div class="table-cell">
              {{file-uploader model=book}}
           </div>
         <div class="table-cell">
             {{file-uploader type="thumb" model=book}}
         </div>
-        <div class="table-cell">{{csv-list book "songs"}}</div>
+        <div class="table-cell">
+            {{#power-select-multiple
+              selected=book.songs
+              options=model.songs
+              placeholder="Select songs for this book"
+              onchange=(action "updateMany" "book" book "song")
+              searchField="name"
+              as |song|
+            }}
+              {{song.song_no}}. {{song.name}}
+            {{/power-select-multiple}}
+        </div>
         {{#delete-button name=book.name onconfirm=(action "deleteRecord" book)}}Delete Book{{/delete-button}}
       </form>
   {{/each}}

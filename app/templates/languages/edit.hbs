@@ -6,10 +6,21 @@
         <span>Language for</span>
         <span></span>
     </div>
-    {{#each model as |language|}}
+    {{#each model.languages as |language|}}
       <form class="table-row" {{action "autoSave" "language" on="submit"}} >
-          <div class="table-cell">{{input type="text" value=language.name}}</div>
-          <div class="table-cell">{{csv-list language "songs"}}</div>
+          <div class="table-cell">{{input class="form-control" type="text" value=language.name}}</div>
+          <div class="table-cell">
+              {{#power-select-multiple
+                selected=language.songs
+                options=model.songs
+                placeholder="Select songs for this language"
+                onchange=(action "updateMany" "language" language "song")
+                searchField="name"
+                as |song|
+              }}
+                {{song.name}}
+              {{/power-select-multiple}}
+          </div>
           {{#delete-button name=language.name onconfirm=(action "deleteRecord" language)}}Delete Language{{/delete-button}}
       </form>
     {{/each}}

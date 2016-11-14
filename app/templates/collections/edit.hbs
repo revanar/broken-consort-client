@@ -10,10 +10,10 @@
     </div>
     {{#each model as |collection|}}
       <form class="table-row" {{action "autoSave" "collection" on="change"}}>
-          <div class="table-cell">{{input value=collection.name}}</div>
-          <div class="table-cell">{{input value=collection.creator}}</div>
+          <div class="table-cell">{{input class="form-control" value=collection.name}}</div>
+          <div class="table-cell">{{input class="form-control" value=collection.creator}}</div>
           <div class="table-cell">
-            {{textarea cols="40" rows="3" placeholder="Enter description here." value=collection.desc}}
+            {{textarea class="form-control" cols="40" rows="3" placeholder="Enter description here." value=collection.desc}}
           </div>
           <div class="table-cell">
               {{file-uploader model=collection}}

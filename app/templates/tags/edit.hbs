@@ -6,10 +6,21 @@
         <span>Tag For</span>
         <span></span>
     </div>
-    {{#each model as |tag|}}
+    {{#each model.tags as |tag|}}
       <form class="table-row" {{action "autoSave" "tag" on="submit"}} >
-          <div class="table-cell">{{input type="text" value=tag.name}}</div>
-          <div class="table-cell">{{csv-list tag "songs"}}</div>
+          <div class="table-cell">{{input class="form-control" type="text" value=tag.name}}</div>
+          <div class="table-cell">
+              {{#power-select-multiple
+                selected=tag.songs
+                options=model.songs
+                placeholder="Select songs for this tag"
+                onchange=(action "updateMany" "tag" tag "song")
+                searchField="name"
+                as |song|
+              }}
+                {{song.name}}
+              {{/power-select-multiple}}
+          </div>
           {{#delete-button name=tag.name onconfirm=(action "deleteRecord" tag)}}Delete Tag{{/delete-button}}
       </form>
     {{/each}}

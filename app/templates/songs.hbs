@@ -1,6 +1,6 @@
 <h2>Transcribed Renaissance Music</h2>
 
-<div><label> Filter All: {{input value=q_all }}</label></div>
+<div><label> Filter All: {{input class="form-control" value=q_all }}</label></div>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -19,13 +19,13 @@
   </tr>
 
   <tr>
-      <th><label class="hidden"> Book Title: </label>{{input value=q_book_title }}</th>
-      <th><label class="hidden"> Editor: </label>{{input value=q_editor }}</th>
-      <th><label class="hidden"> Year: </label>{{input type="number" min="600" max="1800" size="4" value=q_year }}</th>
-      <th><label class="hidden"> Song Number: </label>{{input type="number" min="1" max="99" size="2" value=q_song_no }}</th>
-      <th><label class="hidden"> Song Name: </label>{{input value=q_title }}</th>
-      <th><label class="hidden"> Languages: </label>{{input value=q_languages }}</th>
-      <th><label class="hidden"> Tags: </label>{{input value=q_tags }}</th>
+      <th><label class="hidden"> Book Title: </label>{{input class="form-control" value=q_book_title }}</th>
+      <th><label class="hidden"> Editor: </label>{{input class="form-control" value=q_editor }}</th>
+      <th><label class="hidden"> Year: </label>{{input class="form-control" type="number" min="600" max="1800" size="4" value=q_year }}</th>
+      <th><label class="hidden"> Song Number: </label>{{input class="form-control" type="number" min="1" max="99" size="2" value=q_song_no }}</th>
+      <th><label class="hidden"> Song Name: </label>{{input class="form-control" value=q_title }}</th>
+      <th><label class="hidden"> Languages: </label>{{input class="form-control" value=q_languages }}</th>
+      <th><label class="hidden"> Tags: </label>{{input class="form-control" value=q_tags }}</th>
       <th></th>
   </tr>
 
