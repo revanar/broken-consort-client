@@ -1,28 +1,36 @@
 <h2>Edit Tags</h2>
-{{link-to "Return to editing songs" 'songs.edit'}}
-<div class="div-table table">
-    <div class="table-header">
-        <span>Name</span>
-        <span>Tag For</span>
-        <span></span>
+
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+        <div class="input-long">Songs {{link-to "(edit)" 'songs.edit'}}</div>
     </div>
     {{#each model.tags as |tag|}}
-      <form class="table-row" {{action "autoSave" "tag" on="submit"}} >
-          <div class="table-cell">{{input class="form-control" type="text" value=tag.name}}</div>
-          <div class="table-cell">
-              {{#power-select-multiple
-                selected=tag.songs
-                options=model.songs
-                placeholder="Select songs for this tag"
-                onchange=(action "updateMany" "tag" tag "song")
-                searchField="name"
-                as |song|
-              }}
-                {{song.name}}
-              {{/power-select-multiple}}
-          </div>
-          {{#delete-button name=tag.name onconfirm=(action "deleteRecord" tag)}}Delete Tag{{/delete-button}}
-      </form>
+      <div class="edit-table item input-group-sm" {{action "autoSave" "language" on="change"}}>
+          <label for="tag-name-{{tag.id}}" class="sr-only">Name</label>
+          {{input
+            id=(concat "tag-name-" tag.id)
+            class="input-med form-control"
+            value=tag.name
+            placeholder="unnamed tag"
+          }}
+          <label for="tag-songs-{{tag.id}}" class="sr-only">Songs</label>
+          {{#power-select-multiple
+            id=(concat "tags-songs-" tag.id)
+            tagName="div"
+            class="input-long"
+            selected=tag.songs
+            options=model.songs
+            placeholder="no songs"
+            onchange=(action "updateMany" tag "song")
+            searchField="name"
+            as |song|
+          }}
+            {{song.name}}
+          {{/power-select-multiple}}
+          {{#delete-button classes="btn-sm" name=tag.name onconfirm=(action "deleteRecord" tag)}}Delete{{/delete-button}}
+      </div>
     {{/each}}
-    <button class="btn btn-default" {{action "createRecord" "tag"}}>Create New Tag</button>
 </div>
+
+<button class="btn btn-default" {{action "createRecord" "tag"}}>Add New Tag</button>

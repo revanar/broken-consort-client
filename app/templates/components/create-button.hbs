@@ -1,0 +1,7 @@
+<form class="input-group {{classes}}">
+    <label class="input-group-addon" for="createRecord">{{yield}}</label>
+  {{input id="createRecord" class="form-control" placeholder="enter name" value=userInput}}
+    <span class="input-group-btn">
+        <button class="btn btn-default" {{action 'createRecord' type userInput}}>Create</button>
+    </span>
+</form>

@@ -1,28 +1,42 @@
 <h2>Edit Collections</h2>
-<div class="div-table table">
-    <div class="table-header">
-        <span>Name</span>
-        <span>Creator</span>
-        <span>Desc.</span>
-        <span>PDF</span>
-        <span>Thumb</span>
-        <span></span>
+
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+        <div class="input-med">Creator</div>
+        <div class="input-xlong">Description</div>
+        <div class="input-button">PDF</div>
+        <div class="input-button">Thumb</div>
     </div>
-    {{#each model as |collection|}}
-      <form class="table-row" {{action "autoSave" "collection" on="change"}}>
-          <div class="table-cell">{{input class="form-control" value=collection.name}}</div>
-          <div class="table-cell">{{input class="form-control" value=collection.creator}}</div>
-          <div class="table-cell">
-            {{textarea class="form-control" cols="40" rows="3" placeholder="Enter description here." value=collection.desc}}
-          </div>
-          <div class="table-cell">
-              {{file-uploader model=collection}}
-          </div>
-          <div class="table-cell">
-              {{file-uploader type="thumb" model=collection}}
-          </div>
-        {{#delete-button name=collection.name onconfirm=(action "deleteRecord" collection)}}Delete Collection{{/delete-button}}
-      </form>
-    {{/each}}
-    <button class="btn btn-default" {{action "createRecord" "collection"}}>Create New Collection</button>
+  {{#each model as |collection|}}
+      <div class="edit-table item input-group-sm" {{action "autoSave" "collection" on="change"}}>
+          <label for="collection-name-{{collection.id}}" class="sr-only">Name</label>
+          {{input
+            id=(concat "collection-name-" collection.id)
+            class="input-med form-control"
+            value=collection.name
+            placeholder="unknown name"
+          }}
+          <label for="collection-creator-{{collection.id}}" class="sr-only">Creator</label>
+          {{input
+            id=(concat "collection-creator-" collection.id)
+            class="input-med form-control"
+            value=collection.creator
+            placeholder="unknown creator"
+          }}
+          <label for="collection-desc-{{collection.id}}" class="sr-only">Description</label>
+          {{textarea
+            id=(concat "collection-desc-" collection.id)
+            class="input-xlong form-control"
+            cols="40" rows="1"
+            placeholder="no description"
+            value=collection.desc
+          }}
+          {{file-uploader data-toggle="buttons" model=collection}}
+          {{file-uploader data-toggle="buttons" type="thumb" model=collection}}
+          {{#delete-button classes="btn-sm" name=collection.name onconfirm=(action "deleteRecord" collection)}}Delete{{/delete-button}}
+      </div>
+  {{/each}}
 </div>
+
+<button class="btn btn-default" {{action "createRecord" "collection"}}>Create New Collection</button>

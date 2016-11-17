@@ -28,7 +28,7 @@ footer{
   display: flex;
   &.item{
     &:nth-child(odd){
-      div, input{
+      .ember-power-select-trigger, input, textarea, .btn-default{
         background-color: #f9f9f9;
       }
     }
@@ -44,21 +44,6 @@ footer{
   &.input-group-sm {
     input{font-size:14px;}
   }
-  .song-book{width: 350px;}
-  .song-no{width: 75px;}
-  .song-name{width: 250px;}
-  .song-composer{width: 250px;}
-  .song-parts-no{width: 90px;}
-  .song-languages{width:300px;}
-  .song-tags{width:300px;}
-
-  .book-name{width: 250px;}
-  .book-editor{width: 250px;}
-  .book-year{width:75px};
-  .book-desc{width: 500px;}
-  .book-songs{width: 300px;}
-
-  .edit-button{width:141px;}
 }
 .edit-table-box {
   padding: 3px 0px;
@@ -66,6 +51,12 @@ footer{
 .flex-row{
   display:flex;
 }
+.input-xshort{width:75px;}
+.input-short{width:125px;}
+.input-med{width:225px;}
+.input-long{width:325px;}
+.input-xlong{width:500px;}
+.input-button{width:141px;}
 
 //a list environment for providing comma separated values, such as for the list of song languages or tags
 .csv {

@@ -20,7 +20,8 @@ export default Ember.Controller.extend({
     },
     //use to create a has-many relationship item
     //eg if you have a book and want to create a song for it, you could use {{action "createMany" "book" book "song"}}
-    createMany(type, record, rel_type, select, key){
+    createMany(record, rel_type, select, key){
+      let type = record.constructor.modelName;
       if (key.keyCode === 13 && select.isOpen && !select.highlighted && !Ember.isBlank(select.searchText)) {
         this.get('store').createRecord(rel_type, {
           name: select.searchText
@@ -33,7 +34,8 @@ export default Ember.Controller.extend({
     },
     //use to create a has-one relationship item
     //eg if you have a book and want to create an editor for it, you could use {{action "createOne" "book" book "editor"}}
-    createOne(type, record, rel_type, rel_value){
+    createOne(record, rel_type, rel_value){
+      let type = record.constructor.modelName;
       this.get('store').createRecord(rel_type, {
         name: rel_value
       }).save().then((result) => {
@@ -41,12 +43,6 @@ export default Ember.Controller.extend({
         record.send('becomeDirty');
         this.send('autoSave', type);
       });
-    },
-    //used for creating as new record without relation to an existing record
-    //eg if you want to create a new song, you could use {{action "createRecord" "song"}}
-    //Note: does not add any content to newly created record
-    createRecord(type){
-      this.get('store').createRecord(type).save();
     },
     //use for deleting an existing record
     //eg if you want to delete a song, you could use {{action "deleteRecord" song}}
@@ -56,6 +52,7 @@ export default Ember.Controller.extend({
     //Immediately saves any modified records of the specified type to the server
     //eg if you want to save all songs, you could use {{action "saveAll" "song"}}
     saveAll(type){
+      console.log('saving all' + type);
       let didSave = false;
       //non-RSVP
       if (this.get('model.' + type + 's') === undefined) {
@@ -79,7 +76,8 @@ export default Ember.Controller.extend({
     },
     //Used to add and/or remove has-many relations from a record
     //eg if you wanted to change the tags relation of songs, you could use {{action "updateMany" "song" song "tag"}}
-    updateMany(type, record, rel_type, rel_values){
+    updateMany(record, rel_type, rel_values){
+      let type = record.constructor.modelName;
       let updateSet = new Set(rel_values.mapBy('id')); //creates set based on new set of values
       let existingSet = new Set(record.get(rel_type + 's').mapBy('id'));//creates set based on existing set of values
       let addSet = new Set([...updateSet].filter(x => !existingSet.has(x))); //create addSet based on values that are in updateSet but not existingSet
@@ -98,15 +96,15 @@ export default Ember.Controller.extend({
     },
     //Used to change between exsisting has-one relations for a record
     //eg if you wanted to switch a book's editor from one value to another, you could use {{action "updateOne" "book" book "editor"}}
-    updateOne(type, record, rel_type, rel_value){
+    updateOne(record, rel_type, rel_value){
+      let type = record.constructor.modelName;
       record.set(rel_type, rel_value);
       record.send('becomeDirty');
       this.send('autoSave', type);
     },
-    testAction(param1, param2, param3){
-      console.log(param1);
-      console.log(param2);
-      console.log(param3);
+    testAction(){
+      console.log('test action fired');
+      this.get('target.router').refresh();
     }
   }
 });

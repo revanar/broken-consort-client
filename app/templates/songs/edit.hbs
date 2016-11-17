@@ -2,14 +2,14 @@
 
 <div class="edit-table-box table-responsive">
   <div class="edit-table header">
-    <div class="song-book">Book</div>
-    <div class="song-no">Song No.</div>
-    <div class="song-name">Name</div>
-    <div class="song-composer">Composer</div>
-    <div class="song-parts-no">No. of Parts</div>
-    <div class="song-languages">Languages</div>
-    <div class="song-tags">Tags</div>
-    <div class="edit-button">PDF</div>
+    <div class="input-long">Book {{link-to "(edit)" 'books.edit'}}</div>
+    <div class="input-xshort">Song No.</div>
+    <div class="input-med">Name</div>
+    <div class="input-med">Composer {{link-to "(edit)" 'composers.edit'}}</div>
+    <div class="input-xshort">Parts No.</div>
+    <div class="input-long">Languages {{link-to "(edit)" 'languages.edit'}}</div>
+    <div class="input-long">Tags {{link-to "(edit)" 'tags.edit'}}</div>
+    <div class="input-button">PDF</div>
   </div>
   {{#each model.songs as |song|}}
     <div class="edit-table item input-group-sm" {{action "autoSave" "song" on="change"}}>
@@ -17,11 +17,11 @@
         {{#power-select
           id=(concat "song-book-" song.id)
           tagName="div"
-          class="song-book"
+          class="input-long"
           selected=song.book
           options=model.books
           placeholder="unknown book"
-          onchange=(action "updateOne" "song" song "book")
+          onchange=(action "updateOne" song "book")
           searchField="name"
         as |book|
         }}
@@ -30,7 +30,7 @@
         <label for="song-no-{{song.id}}" class="sr-only">Song No.</label>
         {{input
           id=(concat "song-no-" song.id)
-          class="song-no form-control"
+          class="input-xshort form-control"
           type="number" min="1" max="99"
           value=song.song_no
           placeholder="?"
@@ -38,7 +38,7 @@
         <label for="song-name-{{song.id}}" class="sr-only">Name</label>
         {{input
           id=(concat "song-name-" song.id)
-          class="song-name form-control"
+          class="input-med form-control"
           value=song.name
           placeholder="unknown name"
         }}
@@ -46,12 +46,12 @@
         {{#power-select-with-create
           id=(concat "song-composer-" song.id)
           tagName="div"
-          class="song-composer"
+          class="input-med"
           selected=song.composer
           options=model.composers
           placeholder="unknown composer"
-          onchange=(action "updateOne" "song" song "composer")
-          oncreate=(action "createOne" "song" song "composer")
+          onchange=(action "updateOne" song "composer")
+          oncreate=(action "createOne" song "composer")
           searchField="name"
         as |composer|
         }}
@@ -60,7 +60,7 @@
         <label for="song-parts-no-{{song.id}}" class="sr-only">Number of Parts</label>
         {{input
           id=(concat "song-parts-no-" song.id)
-          class="song-parts-no form-control"
+          class="input-xshort form-control"
           type="number" min="1" max="9"
           value=song.parts_no
           placeholder="?"
@@ -69,12 +69,12 @@
         {{#power-select-multiple
           id=(concat "song-languages-" song.id)
           tagName="div"
-          class="song-languages"
+          class="input-long"
           selected=song.languages
           options=model.languages
           placeholder="no languages"
-          onchange=(action "updateMany" "song" song "language")
-          onkeydown=(action "createMany" "song" song "language")
+          onchange=(action "updateMany" song "language")
+          onkeydown=(action "createMany" song "language")
           searchField="name"
           as |language|
         }}
@@ -84,12 +84,12 @@
         {{#power-select-multiple
           id=(concat "song-tags-" song.id)
           tagName="div"
-          class="song-tags"
+          class="input-long"
           selected=song.tags
           options=model.tags
           placeholder="no tags"
-          onchange=(action "updateMany" "song" song "tag")
-          onkeydown=(action "createMany" "song" song "tag")
+          onchange=(action "updateMany" song "tag")
+          onkeydown=(action "createMany" song "tag")
           searchField="name"
           as |tag|
         }}
@@ -101,6 +101,9 @@
   {{/each}}
 </div>
 
-<button class="btn btn-default" {{action "createRecord" "song"}}>Create New Song</button>
+{{#create-button type="song" classes="input-long" model=model}}New Song{{/create-button}}
+
+
+
 
 

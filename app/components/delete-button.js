@@ -7,8 +7,8 @@ export default Ember.Component.extend({
       this.toggleProperty('showModal');
     },
     sendAction(){
+      this.send('toggleModal');
       this.get('onconfirm')();
-      this.send(toggleModal);
     }
   }
 });

@@ -15,6 +15,8 @@ Router.map(function() {
   this.route('collections.edit', {path: '/collections/edit'});
   this.route('languages.edit', {path: 'languages/edit'});
   this.route('tags.edit', {path: 'tags/edit'});
+  this.route('composers.edit', {path: 'composers/edit'});
+  this.route('editors.edit', {path: 'editors/edit'});
 });
 
 export default Router;

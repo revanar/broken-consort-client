@@ -2,20 +2,20 @@
 
 <div class="edit-table-box table-responsive">
     <div class="edit-table header">
-        <div class="book-name">Title</div>
-        <div class="book-editor">Editor</div>
-        <div class="book-year">Year</div>
-        <div class="book-desc">Description</div>
-        <div class="edit-button">PDF</div>
-        <div class="edit-button">Thumb</div>
-        <div class="book-songs">Book Songs</div>
+        <div class="input-med">Title</div>
+        <div class="input-med">Editor {{link-to "(edit)" 'editors.edit'}}</div>
+        <div class="input-xshort">Year</div>
+        <div class="input-xlong">Description</div>
+        <div class="input-button">PDF</div>
+        <div class="input-button">Thumb</div>
+        <div class="input-long">Songs {{link-to "(edit)" 'songs.edit'}}</div>
     </div>
     {{#each model.books as |book|}}
       <div class="edit-table item input-group-sm" {{action "autoSave" "book" on="change"}}>
           <label for="book-name-{{book.id}}" class="sr-only">Title</label>
           {{input
             id=(concat "book-name-" book.id)
-            class="book-name form-control"
+            class="input-med form-control"
             value=book.name
             placeholder="unknown title"
             }}
@@ -23,7 +23,7 @@
           {{#power-select-with-create
             id=(concat "book-editor-" book.id)
             tagName="div"
-            class="book-editor"
+            class="input-med"
             selected=book.editor
             options=model.editors
             placeholder="unknown editor"
@@ -37,7 +37,7 @@
           <label for="book-year-{{book.id}}" class="sr-only">Year</label>
           {{input
             id=(concat "book-year-" book.id)
-            class="book-year form-control"
+            class="input-xshort form-control"
             type="number" min="600" max="1800"
             value=book.year
             placeholder="????"
@@ -45,7 +45,7 @@
           <label for="book-desc-{{book.id}}" class="sr-only">Description</label>
           {{textarea
             id=(concat "book-desc-" book.id)
-            class="book-desc form-control"
+            class="input-xlong form-control"
             cols="40" rows="1"
             placeholder="no description"
             value=book.desc
@@ -54,7 +54,7 @@
           {{file-uploader data-toggle="buttons" type="thumb" model=book}}
           {{#power-select-multiple
             tagName="div"
-            class="book-songs"
+            class="input-long"
             selected=book.songs
             options=model.songs
             placeholder="no songs for this book"

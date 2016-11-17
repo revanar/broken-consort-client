@@ -1,0 +1,36 @@
+<h2>Edit Editors</h2>
+
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+        <div class="input-long">Books {{link-to "(edit)" 'books.edit'}}</div>
+    </div>
+  {{#each model.editors as |editor|}}
+      <div class="edit-table item input-group-sm" {{action "autoSave" "editor" on="change"}}>
+          <label for="editor-name-{{editor.id}}" class="sr-only">Name</label>
+        {{input
+          id=(concat "editor-name-" editor.id)
+          class="input-med form-control"
+          value=editor.name
+          placeholder="unnamed editor"
+        }}
+          <label for="editor-books-{{editor.id}}" class="sr-only">Books</label>
+        {{#power-select-multiple
+          id=(concat "editor-books-" editor.id)
+          tagName="div"
+          class="input-long"
+          selected=editor.books
+          options=model.books
+          placeholder="no books"
+          onchange=(action "updateMany" editor "book")
+          searchField="name"
+        as |book|
+        }}
+          {{book.name}}
+        {{/power-select-multiple}}
+        {{#delete-button classes="btn-sm" name=editor.name onconfirm=(action "deleteRecord" editor)}}Delete{{/delete-button}}
+      </div>
+  {{/each}}
+</div>
+
+<button class="btn btn-default" {{action "createRecord" "editor"}}>Add New Editor</button>

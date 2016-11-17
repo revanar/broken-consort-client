@@ -1,28 +1,36 @@
 <h2>Edit Languages</h2>
-{{link-to "Return to Editing Songs" "songs.edit"}}
-<div class="div-table table">
-    <div class="table-header">
-        <span>Name</span>
-        <span>Language for</span>
-        <span></span>
+
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+        <div class="input-long">Songs {{link-to "(edit)" 'songs.edit'}}</div>
     </div>
     {{#each model.languages as |language|}}
-      <form class="table-row" {{action "autoSave" "language" on="submit"}} >
-          <div class="table-cell">{{input class="form-control" type="text" value=language.name}}</div>
-          <div class="table-cell">
-              {{#power-select-multiple
-                selected=language.songs
-                options=model.songs
-                placeholder="Select songs for this language"
-                onchange=(action "updateMany" "language" language "song")
-                searchField="name"
-                as |song|
-              }}
-                {{song.name}}
-              {{/power-select-multiple}}
-          </div>
-          {{#delete-button name=language.name onconfirm=(action "deleteRecord" language)}}Delete Language{{/delete-button}}
-      </form>
+      <div class="edit-table item input-group-sm" {{action "autoSave" "language" on="change"}}>
+          <label for="language-name-{{language.id}}" class="sr-only">Name</label>
+          {{input
+            id=(concat "language-name-" language.id)
+            class="input-med form-control"
+            value=language.name
+            placeholder="unnamed language"
+          }}
+          <label for="language-songs-{{language.id}}" class="sr-only">Songs</label>
+          {{#power-select-multiple
+            id=(concat "language-songs-" language.id)
+            tagName="div"
+            class="input-long"
+            selected=language.songs
+            options=model.songs
+            placeholder="no songs"
+            onchange=(action "updateMany" language "song")
+            searchField="name"
+            as |song|
+          }}
+            {{song.name}}
+          {{/power-select-multiple}}
+          {{#delete-button classes="btn-sm" name=language.name onconfirm=(action "deleteRecord" language)}}Delete{{/delete-button}}
+      </div>
     {{/each}}
-    <button class="btn btn-default" {{action "createRecord" "language"}}>Add New Language</button>
 </div>
+
+<button class="btn btn-default" {{action "createRecord" "language"}}>Add New Language</button>
