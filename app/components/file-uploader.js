@@ -1,14 +1,16 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
-  //{{file-uploader model=book type="pdf" action=(action "uploadPDF" book)}}
+const FileUploaderComponent = Ember.Component.extend({
+  //{{file-uploader data-toggle="buttons" model=book type="pdf" action=(action "uploadPDF" book)}}
   //type is optional, defaults to pdf
+  tagName: 'div',
+  classNames: ['btn-group', 'btn-group-sm'],
   type: 'pdf',
   acceptTypes: Ember.computed('type', function(){
     if (this.get('type') === 'pdf'){
-      return 'application/pdf'
+      return 'application/pdf';
     } else if (this.get('type') === 'thumb'){
-      return 'image/png,image/jpg'
+      return 'image/png,image/jpg';
     }
   }),
   actions: {
@@ -18,9 +20,9 @@ export default Ember.Component.extend({
       reader.onload = () => {
         record.set('pdf', reader.result); //puts the base64 data url into the model
         record.save();
-        Ember.$('#pdf-progress-' + record.id).addClass('file-upload-success').text(`File uploaded!`);
+        Ember.$('#pdf-progress-' + record.id).addClass('file-upload-success').text(`Success!`);
         Ember.run.later(this, function () {
-          Ember.$('#pdf-progress-' + record.id).removeClass('file-upload-success file-uploading').empty();
+          Ember.$('#pdf-progress-' + record.id).removeClass('file-upload-success file-uploading').text(`View PDF`);
         }, 2500);
       };
       reader.onprogress = function (data) {
@@ -37,9 +39,9 @@ export default Ember.Component.extend({
       reader.onload = () => {
         record.set('thumb', reader.result); //puts the base64 data url into the model
         record.save();
-        Ember.$('#thumb-progress-' + record.id).addClass('file-upload-success').text(`File uploaded!`);
+        Ember.$('#thumb-progress-' + record.id).addClass('file-upload-success').text(`Success!`);
         Ember.run.later(this, function () {
-          Ember.$('#thumb-progress-' + record.id).removeClass('file-upload-success file-uploading').empty();
+          Ember.$('#thumb-progress-' + record.id).removeClass('file-upload-success file-uploading').text(`Thumb`);
         }, 2500);
       };
       reader.onprogress = function (data) {
@@ -51,5 +53,10 @@ export default Ember.Component.extend({
       reader.readAsDataURL(file[0]); //converts file to uploadable format
     }
   }
-
 });
+
+FileUploaderComponent.reopen({
+  attributeBindings: ['data-toggle']
+});
+
+export default FileUploaderComponent;

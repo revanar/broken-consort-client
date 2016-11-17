@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-danger" {{action 'toggleModal'}}>{{yield}}</button>
+<button type="button" class="btn btn-danger delete-button {{classes}}" {{action 'toggleModal'}}>{{yield}}</button>
 {{#if showModal}}
   {{#modal-dialog close='toggleModal' translucentOverlay=true container-class='modal-container'}}
     <p><strong>Delete {{name}}?</strong></p>

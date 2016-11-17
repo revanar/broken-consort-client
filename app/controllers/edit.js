@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   notify: Ember.inject.service('notify'),
   isUploading: false,
+  textTest: [],
   actions: {
     // Will call a saveAll action once after a 3-second delay.
     // Helps throttle number of saveAll requests made when making multiple changes in a short period of time
@@ -101,6 +102,11 @@ export default Ember.Controller.extend({
       record.set(rel_type, rel_value);
       record.send('becomeDirty');
       this.send('autoSave', type);
+    },
+    testAction(param1, param2, param3){
+      console.log(param1);
+      console.log(param2);
+      console.log(param3);
     }
   }
 });

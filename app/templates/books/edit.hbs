@@ -1,55 +1,72 @@
 <h2>Edit Books</h2>
-<div class="div-table table">
-    <div class="table-header">
-        <span>Name</span>
-        <span>Editor</span>
-        <span>Year</span>
-        <span>Desc.</span>
-        <span>PDF</span>
-        <span>Thumb</span>
-        <span>Book for</span>
-        <span></span>
+
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="book-name">Title</div>
+        <div class="book-editor">Editor</div>
+        <div class="book-year">Year</div>
+        <div class="book-desc">Description</div>
+        <div class="edit-button">PDF</div>
+        <div class="edit-button">Thumb</div>
+        <div class="book-songs">Book Songs</div>
     </div>
-  {{#each model.books as |book|}}
-    <form class="table-row" {{action "autoSave" "book" on="change"}}>
-          <div class="table-cell">{{input class="form-control" type="text" value=book.name}}</div>
-          <div class="table-cell">
-            {{#power-select-with-create
-              selected=book.editor
-              placeholder="unknown editor"
-              options=model.editors
-              onchange=(action "updateOne" "book" book "editor")
-              oncreate=(action "createOne" "book
-              " book "editor")
-              searchField="name"
+    {{#each model.books as |book|}}
+      <div class="edit-table item input-group-sm" {{action "autoSave" "book" on="change"}}>
+          <label for="book-name-{{book.id}}" class="sr-only">Title</label>
+          {{input
+            id=(concat "book-name-" book.id)
+            class="book-name form-control"
+            value=book.name
+            placeholder="unknown title"
+            }}
+          <label for="book-editor-{{book.id}}" class="sr-only">Editor</label>
+          {{#power-select-with-create
+            id=(concat "book-editor-" book.id)
+            tagName="div"
+            class="book-editor"
+            selected=book.editor
+            options=model.editors
+            placeholder="unknown editor"
+            onchange=(action "updateOne" "book" book "editor")
+            oncreate=(action "createOne" "book" book "editor")
+            searchField="name"
             as |editor|
-            }}
-              {{editor.name}}
-            {{/power-select-with-create}}
-          </div>
-          <div class="table-cell">{{input class="form-control" type="number" min="600" max="1800" size="4" value=book.year}}</div>
-          <div class="table-cell">{{textarea class="form-control" cols="40" rows="3" placeholder="Enter description here." value=book.desc}}</div>
-          <div class="table-cell">
-             {{file-uploader model=book}}
-          </div>
-        <div class="table-cell">
-            {{file-uploader type="thumb" model=book}}
-        </div>
-        <div class="table-cell">
-            {{#power-select-multiple
-              selected=book.songs
-              options=model.songs
-              placeholder="Select songs for this book"
-              onchange=(action "updateMany" "book" book "song")
-              searchField="name"
-              as |song|
-            }}
-              {{song.song_no}}. {{song.name}}
-            {{/power-select-multiple}}
-        </div>
-        {{#delete-button name=book.name onconfirm=(action "deleteRecord" book)}}Delete Book{{/delete-button}}
-      </form>
-  {{/each}}
-  <button class="btn btn-default" {{action "createRecord" "book"}}>Create New Book</button>
+          }}
+            {{editor.name}}
+          {{/power-select-with-create}}
+          <label for="book-year-{{book.id}}" class="sr-only">Year</label>
+          {{input
+            id=(concat "book-year-" book.id)
+            class="book-year form-control"
+            type="number" min="600" max="1800"
+            value=book.year
+            placeholder="????"
+          }}
+          <label for="book-desc-{{book.id}}" class="sr-only">Description</label>
+          {{textarea
+            id=(concat "book-desc-" book.id)
+            class="book-desc form-control"
+            cols="40" rows="1"
+            placeholder="no description"
+            value=book.desc
+          }}
+          {{file-uploader data-toggle="buttons" model=book}}
+          {{file-uploader data-toggle="buttons" type="thumb" model=book}}
+          {{#power-select-multiple
+            tagName="div"
+            class="book-songs"
+            selected=book.songs
+            options=model.songs
+            placeholder="no songs for this book"
+            onchange=(action "updateMany" "book" book "song")
+            searchField="name"
+            as |song|
+          }}
+            {{song.song_no}}. {{song.name}}
+          {{/power-select-multiple}}
+          {{#delete-button classes="btn-sm" name=book.name onconfirm=(action "deleteRecord" book)}}Delete{{/delete-button}}
+      </div>
+    {{/each}}
 </div>
 
+<button class="btn btn-default" {{action "createRecord" "book"}}>Create New Book</button>

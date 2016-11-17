@@ -3,6 +3,12 @@
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 
+
+
+.test{
+  display: flex;
+}
+
 //flex formatting for full site to push header to top and footer to bottom
 .site-container{
   display: flex;
@@ -18,29 +24,47 @@ footer{
 }
 
 //formatting for div table on edit pages
-.div-table {
-  display:table;
-  .table-row {
-    display:table-row;
-    .table-cell {
-      display: table-cell;
-      margin: 5px;
-      padding: 8px;
-      border-top: 1px solid #ddd;
-      textarea {
-        display: block;
+.edit-table {
+  display: flex;
+  &.item{
+    &:nth-child(odd){
+      div, input{
+        background-color: #f9f9f9;
       }
     }
   }
-  .table-header {
-    display:table-header-group;
+  &.header{
     * {
-      display: table-cell;
-      font-weight:bold;
-      padding: 8px;
-      margin: 5px;
+      font-weight: bold;
     }
   }
+  * {
+    flex-shrink: 0;
+  }
+  &.input-group-sm {
+    input{font-size:14px;}
+  }
+  .song-book{width: 350px;}
+  .song-no{width: 75px;}
+  .song-name{width: 250px;}
+  .song-composer{width: 250px;}
+  .song-parts-no{width: 90px;}
+  .song-languages{width:300px;}
+  .song-tags{width:300px;}
+
+  .book-name{width: 250px;}
+  .book-editor{width: 250px;}
+  .book-year{width:75px};
+  .book-desc{width: 500px;}
+  .book-songs{width: 300px;}
+
+  .edit-button{width:141px;}
+}
+.edit-table-box {
+  padding: 3px 0px;
+}
+.flex-row{
+  display:flex;
 }
 
 //a list environment for providing comma separated values, such as for the list of song languages or tags
@@ -96,8 +120,14 @@ footer{
     background-image: url('images/sort_asc.gif');
   }
 }
-
+//style for upload button
+.view-btn{
+  width: 75px;
+}
 //style for delete modal
+.delete-button{
+  margin-left: 10px;
+}
 .modal-container {
   display: flex;
   flex-direction: column;

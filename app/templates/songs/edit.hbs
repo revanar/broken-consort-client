@@ -1,76 +1,106 @@
 <h2>Edit Songs</h2>
 
-<div class="div-table table">
-    <div class="table-header">
-        <span>Book</span>
-        <span>Song #</span>
-        <span>Name</span>
-        <span>Composer</span>
-        <span>Parts #</span>
-        <span>Text Languages {{link-to "(edit)" 'languages.edit'}}</span>
-        <span>Tags {{link-to "(edit)" 'tags.edit'}}</span>
-        <span>PDF</span>
+<div class="edit-table-box table-responsive">
+  <div class="edit-table header">
+    <div class="song-book">Book</div>
+    <div class="song-no">Song No.</div>
+    <div class="song-name">Name</div>
+    <div class="song-composer">Composer</div>
+    <div class="song-parts-no">No. of Parts</div>
+    <div class="song-languages">Languages</div>
+    <div class="song-tags">Tags</div>
+    <div class="edit-button">PDF</div>
+  </div>
+  {{#each model.songs as |song|}}
+    <div class="edit-table item input-group-sm" {{action "autoSave" "song" on="change"}}>
+        <label for="song-book-{{song.id}}" class="sr-only">Book</label>
+        {{#power-select
+          id=(concat "song-book-" song.id)
+          tagName="div"
+          class="song-book"
+          selected=song.book
+          options=model.books
+          placeholder="unknown book"
+          onchange=(action "updateOne" "song" song "book")
+          searchField="name"
+        as |book|
+        }}
+          {{book.name}} by {{book.editor.name}} ({{book.year}})
+        {{/power-select}}
+        <label for="song-no-{{song.id}}" class="sr-only">Song No.</label>
+        {{input
+          id=(concat "song-no-" song.id)
+          class="song-no form-control"
+          type="number" min="1" max="99"
+          value=song.song_no
+          placeholder="?"
+        }}
+        <label for="song-name-{{song.id}}" class="sr-only">Name</label>
+        {{input
+          id=(concat "song-name-" song.id)
+          class="song-name form-control"
+          value=song.name
+          placeholder="unknown name"
+        }}
+        <label for="song-composer-{{song.id}}" class="sr-only">Composer</label>
+        {{#power-select-with-create
+          id=(concat "song-composer-" song.id)
+          tagName="div"
+          class="song-composer"
+          selected=song.composer
+          options=model.composers
+          placeholder="unknown composer"
+          onchange=(action "updateOne" "song" song "composer")
+          oncreate=(action "createOne" "song" song "composer")
+          searchField="name"
+        as |composer|
+        }}
+          {{composer.name}}
+        {{/power-select-with-create}}
+        <label for="song-parts-no-{{song.id}}" class="sr-only">Number of Parts</label>
+        {{input
+          id=(concat "song-parts-no-" song.id)
+          class="song-parts-no form-control"
+          type="number" min="1" max="9"
+          value=song.parts_no
+          placeholder="?"
+        }}
+        <label for="song-languages-{{song.id}}" class="sr-only">Languages</label>
+        {{#power-select-multiple
+          id=(concat "song-languages-" song.id)
+          tagName="div"
+          class="song-languages"
+          selected=song.languages
+          options=model.languages
+          placeholder="no languages"
+          onchange=(action "updateMany" "song" song "language")
+          onkeydown=(action "createMany" "song" song "language")
+          searchField="name"
+          as |language|
+        }}
+          {{language.name}}
+        {{/power-select-multiple}}
+        <label for="song-tags-{{song.id}}" class="sr-only">Tags</label>
+        {{#power-select-multiple
+          id=(concat "song-tags-" song.id)
+          tagName="div"
+          class="song-tags"
+          selected=song.tags
+          options=model.tags
+          placeholder="no tags"
+          onchange=(action "updateMany" "song" song "tag")
+          onkeydown=(action "createMany" "song" song "tag")
+          searchField="name"
+          as |tag|
+        }}
+          {{tag.name}}
+        {{/power-select-multiple}}
+        {{file-uploader data-toggle="buttons" model=song}}
+        {{#delete-button classes="btn-sm" name=song.name onconfirm=(action "deleteRecord" song)}}Delete{{/delete-button}}
     </div>
-    {{#each model.songs as |song|}}
-      <form class="table-row" {{action "autoSave" "song" on="change"}} >
-        <div class="table-cell">
-          {{#power-select
-            selected=song.book
-            options=model.books
-            onchange=(action "updateOne" "song" song "book")
-            searchField="name"
-            as |book|
-          }}
-            {{book.name}} | {{book.editor.name}} | {{book.year}}
-          {{/power-select}}
-        </div>
-        <div class="table-cell">{{input class="form-control" type="number" min="1" max="99" size="2" value=song.song_no}}</div>
-        <div class="table-cell">{{input class="form-control" type="text" value=song.name}}</div>
-        <div class="table-cell">
-          {{#power-select-with-create
-            selected=song.composer
-            placeholder="unknown composer"
-            options=model.composers
-            onchange=(action "updateOne" "song" song "composer")
-            oncreate=(action "createOne" "song" song "composer")
-            searchField="name"
-            as |composer|
-          }}
-            {{composer.name}}
-          {{/power-select-with-create}}
-        </div>
-        <div class="table-cell">{{input class="form-control" type="number" min="1" max="9" size="1" value=song.parts_no}}</div>
-        <div class="table-cell"><!--next up: replace mut with "updateRelation" function-->
-          {{#power-select-multiple
-            selected=song.languages
-            options=model.languages
-            placeholder="Select languages of song lyrics"
-            onchange=(action "updateMany" "song" song "language")
-            onkeydown=(action "createMany" "song" song "language")
-            searchField="name"
-            as |language|
-          }}
-            {{language.name}}
-          {{/power-select-multiple}}
-        </div>
-        <div class="table-cell">
-          {{#power-select-multiple
-            selected=song.tags
-            options=model.tags
-            placeholder="Select tags for this song"
-            onchange=(action "updateMany" "song" song "tag")
-            onkeydown=(action "createMany" "song" song "tag")
-            searchField="name"
-            as |tag|
-          }}
-            {{tag.name}}
-          {{/power-select-multiple}}
-        </div>
-        <div class="table-cell">
-            {{file-uploader model=song}}
-        </div>
-        {{#delete-button name=song.name onconfirm=(action "deleteRecord" song)}}Delete Song{{/delete-button}}
-      </form>
-    {{/each}}
-    <button class="btn btn-default" {{action "createRecord" "song"}}>Create New Song</button>
+  {{/each}}
 </div>
+
+<button class="btn btn-default" {{action "createRecord" "song"}}>Create New Song</button>
+
+
