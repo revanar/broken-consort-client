@@ -27,8 +27,8 @@
             selected=book.editor
             options=model.editors
             placeholder="unknown editor"
-            onchange=(action "updateOne" "book" book "editor")
-            oncreate=(action "createOne" "book" book "editor")
+            onchange=(action "updateOne" book "editor")
+            oncreate=(action "createOne" book "editor")
             searchField="name"
             as |editor|
           }}
@@ -58,7 +58,7 @@
             selected=book.songs
             options=model.songs
             placeholder="no songs for this book"
-            onchange=(action "updateMany" "book" book "song")
+            onchange=(action "updateMany" book "song")
             searchField="name"
             as |song|
           }}
@@ -68,5 +68,3 @@
       </div>
     {{/each}}
 </div>
-
-<button class="btn btn-default" {{action "createRecord" "book"}}>Create New Book</button>

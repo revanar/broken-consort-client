@@ -57,7 +57,7 @@ export default Ember.Controller.extend({
       //non-RSVP
       if (this.get('model.' + type + 's') === undefined) {
         this.get('model').forEach((record) => {
-          if (record.get('hasDirtyAttributes')) {
+          if (record.get('isDirty')) {
             didSave = true;
             record.save();
           }
@@ -72,27 +72,29 @@ export default Ember.Controller.extend({
         });
       }
       this.set('queuedSave', false);
-      (didSave === true)? this.get('notify').success(`All ${type}s saved!`):'';
+      if(didSave === true){
+        this.get('notify').success(`All ${type}s saved!`);
+      }
     },
     //Used to add and/or remove has-many relations from a record
     //eg if you wanted to change the tags relation of songs, you could use {{action "updateMany" "song" song "tag"}}
+    //note: CHANGED TO UPDATE FROM RELATION INSTEAD OF FROM RECORD. THIS WORKS AND I DON'T KNOW WHY
     updateMany(record, rel_type, rel_values){
-      let type = record.constructor.modelName;
       let updateSet = new Set(rel_values.mapBy('id')); //creates set based on new set of values
       let existingSet = new Set(record.get(rel_type + 's').mapBy('id'));//creates set based on existing set of values
       let addSet = new Set([...updateSet].filter(x => !existingSet.has(x))); //create addSet based on values that are in updateSet but not existingSet
       addSet.forEach((id) => { //add relationships from addSet
         let rel = this.get('store').peekRecord(rel_type, id);
         record.get(rel_type + 's').pushObject(rel);
-        record.send('becomeDirty');
+        rel.send('becomeDirty');
       });
       let removeSet = new Set([...existingSet].filter(x => !updateSet.has(x))); //create removeSet based on values that are in the existingSet but not in updateSet
       removeSet.forEach((id) => { //remove relationships from removeSet
         let rel = this.get('store').peekRecord(rel_type, id);
         record.get(rel_type + 's').removeObject(rel);
-        record.send('becomeDirty');
+        rel.send('becomeDirty');
       });
-      this.send('autoSave', type);
+      this.send('autoSave', rel_type);
     },
     //Used to change between exsisting has-one relations for a record
     //eg if you wanted to switch a book's editor from one value to another, you could use {{action "updateOne" "book" book "editor"}}
@@ -101,10 +103,6 @@ export default Ember.Controller.extend({
       record.set(rel_type, rel_value);
       record.send('becomeDirty');
       this.send('autoSave', type);
-    },
-    testAction(){
-      console.log('test action fired');
-      this.get('target.router').refresh();
     }
   }
 });
