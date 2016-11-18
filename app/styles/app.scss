@@ -26,6 +26,9 @@ footer{
 //formatting for div table on edit pages
 .edit-table {
   display: flex;
+  &.wrappable{
+    flex-wrap: wrap;
+  }
   &.item{
     &:nth-child(odd){
       .ember-power-select-trigger, input, textarea, .btn-default{
@@ -50,6 +53,10 @@ footer{
 }
 .flex-row{
   display:flex;
+}
+.flex-col{
+  display: flex;
+  flex-direction: column;
 }
 .input-xshort{width:75px;}
 .input-short{width:125px;}

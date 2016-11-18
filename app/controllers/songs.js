@@ -1,9 +1,14 @@
  import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  didTransition(){
+    console.log('test');
+    this.send('setColumnVisibility');
+  },
   //query parameters
-  queryParams: ['sortBy', 'q_all','q_title','q_creator','q_editor','q_song_no','q_book_title','q_year','q_languages','q_tags'],
+  queryParams: ['sortBy', 'hidden', 'q_all','q_title','q_creator','q_editor','q_song_no','q_book_title','q_year','q_languages','q_tags'],
   sortBy: '',
+  hidden: '',
   q_all: '',
   q_title: '',
   q_creator: '',
@@ -13,11 +18,80 @@ export default Ember.Controller.extend({
   q_year: '',
   q_languages: '',
   q_tags: '',
+
+  tableColumns:[
+    {
+      name: 'Title',
+      value: 'title',
+      model: 'book.name',
+      type:'book',
+      sortable: true
+    },{
+      name: 'Editor',
+      value: 'editor',
+      model: 'book.editor.name',
+      type: 'book',
+      sortable: true
+    },{
+      name: 'Year',
+      value: 'year',
+      model: 'book.year',
+      type: 'book',
+      sortable: true
+    },{
+      name: 'Song No.',
+      value: 'song-no',
+      model: 'song_no',
+      type: 'song',
+      sortable: true
+    },{
+      name: 'Name',
+      value: 'name',
+      model: 'name',
+      type: 'song',
+      sortable: true
+    },{
+      name: 'Text Languages',
+      value: 'languages',
+      type: 'song',
+      sortable: false
+    },{
+      name: 'Tags',
+      value: 'tags',
+      type: 'song',
+      sortable: false
+    },{
+      name: 'Download',
+      value: 'download',
+      type: 'song',
+      sortable: false
+    }
+  ],
+  visibleColumns: Ember.computed('hidden', 'tableColumns', function(){
+    let visibleColumns = this.get('tableColumns').filter((table)=>{
+      let regExp = new RegExp(table.value, 'i');
+      return !regExp.test(this.get('hidden'));
+    });
+    return visibleColumns;
+  }),
+  hiddenColumns: Ember.computed('hidden', 'tableColumns', function(){
+    let hiddenColumns = this.get('tableColumns').filter((table)=>{
+      let regExp = new RegExp(table.value, 'i');
+      return regExp.test(this.get('hidden'));
+    });
+    return hiddenColumns;
+  }),
+  visibleBooks: Ember.computed('visibleColumns.@each.type', function(){
+    return this.get('visibleColumns').filterBy('type', 'book');
+  }),
+  visibleSongs: Ember.computed('visibleColumns.@each.type', function(){
+    return this.get('visibleColumns').filterBy('type', 'song');
+  }),
   //filters model based on searchTerm value
   filteredModel: Ember.computed('model', 'q_all', 'q_title', 'q_song_no', 'q_editor', 'q_creator', 'q_book_title', 'q_year', 'q_languages', 'q_tags', function(){
     let model = this.get('model').filterBy('pdf.pdf_path.url'); //removes all records that don't have a pdf uploaded
     this.get('queryParams').forEach((filter)=> { // for each possible filter
-      if ((filter !== 'sortBy') && (this.get(filter).length > 0)) { //if the filter has content and isn't the sortBy queryparam
+      if ((filter !== 'sortBy') && (filter !== 'hidden') && (this.get(filter).length > 0)) { //if the filter has content and isn't the sortBy queryparam
         //guardian pattern to prevent invalid inputs
         let valid = new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$');
         while (this.get(filter).length > 0 && !valid.test(this.get(filter))){
@@ -52,5 +126,14 @@ export default Ember.Controller.extend({
   }),
   noResults: Ember.computed('filteredModel', function(){
     return !(this.get('filteredModel').length > 0);
-  }).property('filteredModel')
+  }).property('filteredModel'),
+  actions: {
+    hideColumns(params){
+      let hidden = '';
+      params.forEach((param)=>{
+        hidden += param.value+','
+      });
+      this.set('hidden', hidden);
+    }
+  }
 });

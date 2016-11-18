@@ -1,51 +1,78 @@
 <h2>Transcribed Renaissance Music</h2>
+<div class="edit-table wrappable">
+    <div class="flex-col">
+        <label class="input-med" for="filter-all">Filter All</label>
+      {{input id="filter-all" class="form-control input-med" value=q_all }}
+    </div>
+    <div class="flex-col">
+        <label class="input-long" for="hide-columns">Hidden Columns</label>
+      {{#power-select-multiple
+        id="hide-columns"
+        class="input-long"
+        selected=hiddenColumns
+        options=tableColumns
+        placeholder="all columns visible"
+        onchange=(action "hideColumns")
+        searchField="name"
+      as |column|}}
+        {{column.name}}
+      {{/power-select-multiple}}
+    </div>
+</div>
 
-<div><label> Filter All: {{input class="form-control" value=q_all }}</label></div>
+
 <table class="table table-striped">
   <thead>
   <tr>
-      <th colspan="3">Book</th>
-      <th colspan="5">Song</th>
+      {{#if visibleBooks}}<th colspan="{{visibleBooks.length}}">Book</th>{{/if}}
+      {{#if visibleSongs}}<th colspan="{{visibleSongs.length}}">Song</th>{{/if}}
   </tr>
-  <tr>
-      <th>{{#list-sortable sortBy "book.name"}}Title{{/list-sortable}}</th>
-      <th>{{#list-sortable sortBy "book.editor.name"}}Editor{{/list-sortable}}</th>
-      <th>{{#list-sortable sortBy "book.year"}}Year{{/list-sortable}}</th>
-      <th>{{#list-sortable sortBy "song_no"}}No.{{/list-sortable}}</th>
-      <th>{{#list-sortable sortBy "name"}}Name{{/list-sortable}}</th>
-      <th>Text Languages</th>
-      <th>Tags</th>
-      <th>Download</th>
+  <tr class="column-names">
+      {{#each tableColumns as |column|}}
+        {{#column-hider column.value hidden}}
+            <th>
+              {{#if column.sortable}}
+                {{#list-sortable sortBy column.model}}
+                  {{column.name}}
+                {{/list-sortable}}
+              {{else}}
+                {{column.name}}
+              {{/if}}
+          </th>
+        {{/column-hider}}
+      {{/each}}
   </tr>
 
-  <tr>
-      <th><label class="hidden"> Book Title: </label>{{input class="form-control" value=q_book_title }}</th>
-      <th><label class="hidden"> Editor: </label>{{input class="form-control" value=q_editor }}</th>
-      <th><label class="hidden"> Year: </label>{{input class="form-control" type="number" min="600" max="1800" size="4" value=q_year }}</th>
-      <th><label class="hidden"> Song Number: </label>{{input class="form-control" type="number" min="1" max="99" size="2" value=q_song_no }}</th>
-      <th><label class="hidden"> Song Name: </label>{{input class="form-control" value=q_title }}</th>
-      <th><label class="hidden"> Languages: </label>{{input class="form-control" value=q_languages }}</th>
-      <th><label class="hidden"> Tags: </label>{{input class="form-control" value=q_tags }}</th>
-      <th></th>
+  <tr class="filters">
+      {{#column-hider "title" hidden}}<th><label class="hidden"> Book Title: </label>{{input class="form-control" value=q_book_title }}</th>{{/column-hider}}
+      {{#column-hider "editor" hidden}}<th><label class="hidden"> Editor: </label>{{input class="form-control" value=q_editor }}</th>{{/column-hider}}
+      {{#column-hider "year" hidden}}<th><label class="hidden"> Year: </label>{{input class="form-control" type="number" min="600" max="1800" size="4" value=q_year }}</th>{{/column-hider}}
+      {{#column-hider "song-no" hidden}}<th><label class="hidden"> Song Number: </label>{{input class="form-control" type="number" min="1" max="99" size="2" value=q_song_no }}</th>{{/column-hider}}
+      {{#column-hider "name" hidden}}<th><label class="hidden"> Song Name: </label>{{input class="form-control" value=q_title }}</th>{{/column-hider}}
+      {{#column-hider "languages" hidden}}<th><label class="hidden"> Languages: </label>{{input class="form-control" value=q_languages }}</th>{{/column-hider}}
+      {{#column-hider "tags" hidden}}<th><label class="hidden"> Tags: </label>{{input class="form-control" value=q_tags }}</th>{{/column-hider}}
+      {{#column-hider "download" hidden}}<th></th>{{/column-hider}}
   </tr>
 
   </thead>
   <tbody>
   {{#if noResults}}
       <tr>
-          <td colspan="8">No songs found.  Try removing some filters!</td>
+          <td colspan="{{add visibleBooks.length visibleSongs.length}}">
+              No songs found.  Try removing some filters!
+          </td>
       </tr>
   {{else}}
     {{#each sortedSongs as |song|}}
         <tr class="listing">
-            <td>{{song.book.name}}</td>
-            <td>{{song.book.editor.name}}</td>
-            <td>{{song.book.year}}</td>
-            <td>{{song.song_no}}</td>
-            <td>{{song.name}}</td>
-            <td>{{csv-list song "languages"}}</td>
-            <td>{{csv-list song "tags"}}</td>
-            <td>{{link-to-pdf song}}</td>
+            {{#column-hider "title" hidden}}<td>{{song.book.name}}</td>{{/column-hider}}
+            {{#column-hider "editor" hidden}}<td>{{song.book.editor.name}}</td>{{/column-hider}}
+            {{#column-hider "year" hidden}}<td>{{song.book.year}}</td>{{/column-hider}}
+            {{#column-hider "song-no" hidden}}<td>{{song.song_no}}</td>{{/column-hider}}
+            {{#column-hider "name" hidden}}<td>{{song.name}}</td>{{/column-hider}}
+            {{#column-hider "languages" hidden}}<td>{{csv-list song "languages"}}</td>{{/column-hider}}
+            {{#column-hider "tags" hidden}}<td>{{csv-list song "tags"}}</td>{{/column-hider}}
+            {{#column-hider "download" hidden}}<td>{{link-to-pdf song}}</td>{{/column-hider}}
         </tr>
     {{/each}}
   {{/if}}

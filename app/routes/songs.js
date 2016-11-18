@@ -6,6 +6,7 @@ export default Ember.Route.extend({
   },
   queryParams: {
     sortBy: {as:'s', replace:true},
+    hidden: {replace:true},
     q_all: {replace:true},
     q_title: {replace:true},
     q_creator: {replace:true},
