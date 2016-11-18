@@ -127,11 +127,12 @@ export default Ember.Controller.extend({
   noResults: Ember.computed('filteredModel', function(){
     return !(this.get('filteredModel').length > 0);
   }).property('filteredModel'),
+
   actions: {
     hideColumns(params){
       let hidden = '';
       params.forEach((param)=>{
-        hidden += param.value+','
+        hidden += param.value+',';
       });
       this.set('hidden', hidden);
     }
