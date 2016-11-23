@@ -9,6 +9,6 @@ export default DS.Model.extend({
   thumb: DS.attr(),
   remove_thumb_path: DS.attr(),
 
-  songs: DS.hasMany('song'),
-  editor: DS.belongsTo('editor')
+  editor: DS.belongsTo('editor'),
+  songs: DS.hasMany('song')
 });

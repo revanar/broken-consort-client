@@ -1,10 +1,6 @@
  import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  didTransition(){
-    console.log('test');
-    this.send('setColumnVisibility');
-  },
   //query parameters
   queryParams: ['sortBy', 'hidden', 'q_all','q_title','q_creator','q_editor','q_song_no','q_book_title','q_year','q_languages','q_tags'],
   sortBy: '',
@@ -125,7 +121,7 @@ export default Ember.Controller.extend({
     return [this.get('sortBy')];
   }),
   noResults: Ember.computed('filteredModel', function(){
-    return !(this.get('filteredModel').length > 0);
+    return (this.get('filteredModel').length <= 0);
   }).property('filteredModel'),
 
   actions: {

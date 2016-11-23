@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   notify: Ember.inject.service('notify'),
   isUploading: false,
-  textTest: [],
+  newSong: {},
   actions: {
     // Will call a saveAll action once after a 3-second delay.
     // Helps throttle number of saveAll requests made when making multiple changes in a short period of time
@@ -47,54 +47,49 @@ export default Ember.Controller.extend({
     //use for deleting an existing record
     //eg if you want to delete a song, you could use {{action "deleteRecord" song}}
     deleteRecord(record){
+      let type = record.constructor.modelName;
       record.destroyRecord();
+      this.get(type+'s').removeObject(record);
+      this.get('notify').success(`${type} successfully deleted!`)
     },
     //Immediately saves any modified records of the specified type to the server
     //eg if you want to save all songs, you could use {{action "saveAll" "song"}}
     saveAll(type){
-      console.log('saving all' + type);
-      let didSave = false;
+      console.log('saving all ' + type + 's...');
+      let didSave = 0;
       //non-RSVP
-      if (this.get('model.' + type + 's') === undefined) {
-        this.get('model').forEach((record) => {
-          if (record.get('isDirty')) {
-            didSave = true;
-            record.save();
-          }
-        });
-        //RSVP
-      } else {
-        this.get('model.' + type + 's').forEach((record) => {
-          if (record.get('hasDirtyAttributes')) {
-            didSave = true;
-            record.save();
-          }
-        });
-      }
+      this.get(type+'s').forEach((record)=>{
+        if (record.get('hasDirtyAttributes')){
+          didSave += 1;
+          record.save();
+        }
+      });
       this.set('queuedSave', false);
-      if(didSave === true){
+      if(didSave > 0){
         this.get('notify').success(`All ${type}s saved!`);
+        console.log(didSave + ' records saved!');
       }
     },
     //Used to add and/or remove has-many relations from a record
     //eg if you wanted to change the tags relation of songs, you could use {{action "updateMany" "song" song "tag"}}
     //note: CHANGED TO UPDATE FROM RELATION INSTEAD OF FROM RECORD. THIS WORKS AND I DON'T KNOW WHY
     updateMany(record, rel_type, rel_values){
+      let type = record.constructor.modelName;
       let updateSet = new Set(rel_values.mapBy('id')); //creates set based on new set of values
       let existingSet = new Set(record.get(rel_type + 's').mapBy('id'));//creates set based on existing set of values
       let addSet = new Set([...updateSet].filter(x => !existingSet.has(x))); //create addSet based on values that are in updateSet but not existingSet
       addSet.forEach((id) => { //add relationships from addSet
-        let rel = this.get('store').peekRecord(rel_type, id);
-        record.get(rel_type + 's').pushObject(rel);
-        rel.send('becomeDirty');
+        let rel_value = this.get('store').peekRecord(rel_type, id);
+        record.get(rel_type+'s').pushObject(rel_value);
+        record.send('becomeDirty');
       });
       let removeSet = new Set([...existingSet].filter(x => !updateSet.has(x))); //create removeSet based on values that are in the existingSet but not in updateSet
       removeSet.forEach((id) => { //remove relationships from removeSet
-        let rel = this.get('store').peekRecord(rel_type, id);
-        record.get(rel_type + 's').removeObject(rel);
-        rel.send('becomeDirty');
+        let rel_value = this.get('store').peekRecord(rel_type, id);
+        record.get(rel_type + 's').removeObject(rel_value);
+        record.send('becomeDirty');
       });
-      this.send('autoSave', rel_type);
+      this.send('autoSave', type);
     },
     //Used to change between exsisting has-one relations for a record
     //eg if you wanted to switch a book's editor from one value to another, you could use {{action "updateOne" "book" book "editor"}}
@@ -103,6 +98,19 @@ export default Ember.Controller.extend({
       record.set(rel_type, rel_value);
       record.send('becomeDirty');
       this.send('autoSave', type);
+    },
+    createRecord(type, input){
+      let newRecord = {};
+      if (type==='song'){
+        newRecord = {
+          name: input.name,
+          book: input.book,
+        };
+      }
+      let record = this.get('store').createRecord(type, newRecord);
+      record.save().then((record)=>{
+        this.get(type+'s').pushObject(record);
+      });
     }
   }
 });

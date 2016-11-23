@@ -11,7 +11,7 @@
     <div class="input-long">Tags {{link-to "(edit)" 'tags.edit'}}</div>
     <div class="input-button">PDF</div>
   </div>
-  {{#each model.songs as |song|}}
+  {{#each songs as |song|}}
     <div class="edit-table item input-group-sm" {{action "autoSave" "song" on="change"}}>
         <label for="song-book-{{song.id}}" class="sr-only">Book</label>
         {{#power-select
@@ -101,7 +101,29 @@
   {{/each}}
 </div>
 
-{{#create-button type="song" classes="input-long" model=model}}New Song{{/create-button}}
+<form id="newSong" class="edit-table edit-table-box input-group-sm" method="post">
+  {{#power-select
+    tagName="div"
+    class="input-long"
+    selected=newSong.book
+    options=model.books
+    placeholder="unknown book"
+    onchange=(action (mut newSong.book))
+    searchField="name"
+  as |book|
+  }}
+    {{book.name}} by {{book.editor.name}}
+  {{/power-select}}
+
+  {{input
+    class="input-med form-control"
+    value=newSong.name
+    placeholder="unknown name"
+  }}
+    <button class="btn btn-default btn-sm" {{action 'createRecord' 'song' newSong}}>Add New Song</button>
+</form>
+
+
 
 
 

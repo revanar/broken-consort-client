@@ -10,7 +10,7 @@
         <div class="input-button">Thumb</div>
         <div class="input-long">Songs {{link-to "(edit)" 'songs.edit'}}</div>
     </div>
-    {{#each model.books as |book|}}
+    {{#each books as |book|}}
       <div class="edit-table item input-group-sm" {{action "autoSave" "book" on="change"}}>
           <label for="book-name-{{book.id}}" class="sr-only">Title</label>
           {{input
@@ -52,18 +52,7 @@
           }}
           {{file-uploader data-toggle="buttons" model=book}}
           {{file-uploader data-toggle="buttons" type="thumb" model=book}}
-          {{#power-select-multiple
-            tagName="div"
-            class="input-long"
-            selected=book.songs
-            options=model.songs
-            placeholder="no songs for this book"
-            onchange=(action "updateMany" book "song")
-            searchField="name"
-            as |song|
-          }}
-            {{song.song_no}}. {{song.name}}
-          {{/power-select-multiple}}
+          <div class="input-long">{{song-list model=book}}</div>
           {{#delete-button classes="btn-sm" name=book.name onconfirm=(action "deleteRecord" book)}}Delete{{/delete-button}}
       </div>
     {{/each}}

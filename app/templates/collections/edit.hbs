@@ -8,7 +8,7 @@
         <div class="input-button">PDF</div>
         <div class="input-button">Thumb</div>
     </div>
-  {{#each model as |collection|}}
+  {{#each collections as |collection|}}
       <div class="edit-table item input-group-sm" {{action "autoSave" "collection" on="change"}}>
           <label for="collection-name-{{collection.id}}" class="sr-only">Name</label>
           {{input

@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const ColumnHiderComponent = Ember.Component.extend({
   didReceiveAttrs(){
-    this.send('executeHide')
+    this.send('executeHide');
   },
   tagName: '',
   visible: true,

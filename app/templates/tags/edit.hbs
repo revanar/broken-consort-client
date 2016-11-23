@@ -5,7 +5,7 @@
         <div class="input-med">Name</div>
         <div class="input-long">Songs {{link-to "(edit)" 'songs.edit'}}</div>
     </div>
-    {{#each model.tags as |tag|}}
+    {{#each tags as |tag|}}
       <div class="edit-table item input-group-sm" {{action "autoSave" "language" on="change"}}>
           <label for="tag-name-{{tag.id}}" class="sr-only">Name</label>
           {{input

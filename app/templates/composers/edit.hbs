@@ -5,7 +5,7 @@
         <div class="input-med">Name</div>
         <div class="input-long">Songs {{link-to "(edit)" 'songs.edit'}}</div>
     </div>
-  {{#each model.composers as |composer|}}
+  {{#each composers as |composer|}}
       <div class="edit-table item input-group-sm" {{action "autoSave" "composer" on="change"}}>
           <label for="composer-name-{{composer.id}}" class="sr-only">Name</label>
         {{input
@@ -15,19 +15,7 @@
           placeholder="unnamed composer"
         }}
           <label for="composer-songs-{{composer.id}}" class="sr-only">Songs</label>
-        {{#power-select-multiple
-          id=(concat "composer-songs-" composer.id)
-          tagName="div"
-          class="input-long"
-          selected=composer.songs
-          options=model.songs
-          placeholder="no songs"
-          onchange=(action "updateMany" composer "song")
-          searchField="name"
-        as |song|
-        }}
-          {{song.name}}
-        {{/power-select-multiple}}
+        <div class="input-long">{{csv-list composer "songs"}}</div>
         {{#delete-button classes="btn-sm" name=composer.name onconfirm=(action "deleteRecord" composer)}}Delete{{/delete-button}}
       </div>
   {{/each}}

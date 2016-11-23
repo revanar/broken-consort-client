@@ -11,13 +11,11 @@ export default Ember.Route.extend({
     });
   },
   controllerName: 'edit',
+  setupController: function(controller, model){
+    this._super(controller, model);
+    controller.set('songs', model.songs.toArray());
+  },
   deactivate() {
     this.controller.send('saveAll', 'song');
-  },
-  actions: {
-    refreshPage(){
-      console.log('refresh fired');
-      this.get('target.router').refresh();
-    }
   }
 });

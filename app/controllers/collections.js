@@ -22,6 +22,6 @@ export default Ember.Controller.extend({
     return model;
   }),
   noResults: Ember.computed('filteredModel', function(){
-    return !(this.get('filteredModel').length > 0);
+    return (this.get('filteredModel').length <= 0);
   }).property('filteredModel')
 });

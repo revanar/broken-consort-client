@@ -8,6 +8,10 @@ export default Ember.Route.extend({
     });
   },
   controllerName: 'edit',
+  setupController: function(controller, model){
+    this._super(controller, model);
+    controller.set('composers', model.composers.toArray());
+  },
   deactivate(){
     this.controller.send('saveAll', 'composer');
   }
