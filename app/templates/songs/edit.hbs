@@ -100,28 +100,103 @@
     </div>
   {{/each}}
 </div>
+<div class="edit-table-box">
+    <div class="edit-table header">
+        <div class="input-long">Book {{link-to "(edit)" 'books.edit'}}</div>
+        <div class="input-xshort">Song No.</div>
+        <div class="input-med">Name</div>
+        <div class="input-med">Composer {{link-to "(edit)" 'composers.edit'}}</div>
+        <div class="input-xshort">Parts No.</div>
+        <div class="input-long">Languages {{link-to "(edit)" 'languages.edit'}}</div>
+        <div class="input-long">Tags {{link-to "(edit)" 'tags.edit'}}</div>
+    </div>
+    <form id="newRecord" class="edit-table input-group-sm" method="post">
+        <label for="new-song-book" class="sr-only">Book</label>
+      {{#power-select
+        id="new-song-book"
+        tagName="div"
+        class="input-long"
+        selected=newRecord.book
+        options=model.books
+        placeholder="unknown book"
+        onchange=(action (mut newRecord.book))
+        searchField="name"
+      as |book|
+      }}
+        {{book.name}} by {{book.editor.name}}
+      {{/power-select}}
+        <label for="new-song-song-no" class="sr-only">Song No.</label>
+      {{input
+        id="new-song-song-no"
+        class="input-xshort form-control"
+        type="number" min="1" max="99"
+        value=newRecord.song_no
+        placeholder="?"
+      }}
+        <label for="new-song-name" class="sr-only">Name</label>
+      {{input
+        class="input-med form-control"
+        value=newRecord.name
+        placeholder="unknown name"
+      }}
+        <label for="new-song-composer" class="sr-only">Composer</label>
+      {{#power-select-with-create
+        id="new-song-composer"
+        tagName="div"
+        class="input-med"
+        selected=newRecord.composer
+        options=model.composers
+        placeholder="unknown composer"
+        onchange=(action (mut newRecord.composer))
+        oncreate=(action "createOne" "newRecord" "composer")
+        searchField="name"
+      as |composer|
+      }}
+        {{composer.name}}
+      {{/power-select-with-create}}
+        <label for="new-song-parts-no" class="sr-only">Parts No.</label>
+      {{input
+        id="new-song-parts-no"
+        class="input-xshort form-control"
+        type="number" min="1" max="9"
+        value=newRecord.parts_no
+        placeholder="?"
+      }}
+        <label for="new-song-languages" class="sr-only">Languages</label>
+      {{#power-select-multiple
+        id="new-song-languages"
+        tagName="div"
+        class="input-long"
+        selected=newRecord.languages
+        options=model.languages
+        placeholder="no languages"
+        onchange=(action (mut newRecord.languages))
+        onkeydown=(action "createMany" "newRecord" "language")
+        searchField="name"
+      as |language|
+      }}
+        {{language.name}}
+      {{/power-select-multiple}}
+        <label for="new-song-tags" class="sr-only">Tags</label>
+      {{#power-select-multiple
+        id="new-song-tags"
+        tagName="div"
+        class="input-long"
+        selected=newRecord.tags
+        options=model.tags
+        placeholder="no tags"
+        onchange=(action (mut newRecord.tags))
+        onkeydown=(action "createMany" "newRecord" "tag")
+        searchField="name"
+      as |tag|
+      }}
+        {{tag.name}}
+      {{/power-select-multiple}}
+        <button class="btn btn-default btn-sm input-button" {{action 'createRecord' 'song' newRecord}}>Add New Song</button>
+    </form>
+</div>
 
-<form id="newSong" class="edit-table edit-table-box input-group-sm" method="post">
-  {{#power-select
-    tagName="div"
-    class="input-long"
-    selected=newSong.book
-    options=model.books
-    placeholder="unknown book"
-    onchange=(action (mut newSong.book))
-    searchField="name"
-  as |book|
-  }}
-    {{book.name}} by {{book.editor.name}}
-  {{/power-select}}
 
-  {{input
-    class="input-med form-control"
-    value=newSong.name
-    placeholder="unknown name"
-  }}
-    <button class="btn btn-default btn-sm" {{action 'createRecord' 'song' newSong}}>Add New Song</button>
-</form>
 
 
 
