@@ -16,7 +16,11 @@
         }}
           <label for="editor-books-{{editor.id}}" class="sr-only">Books</label>
         <div class="input-long">{{csv-list editor "books"}}</div>
-        {{#delete-button classes="btn-sm" name=editor.name onconfirm=(action "deleteRecord" editor)}}Delete{{/delete-button}}
+        {{hold-button
+          delay=deleteDelay
+          class="delete-editor"
+          action=(action "deleteRecord" editor)
+        }}
       </div>
   {{/each}}
 </div>

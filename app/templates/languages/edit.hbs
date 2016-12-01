@@ -28,7 +28,11 @@
           }}
             {{song.name}}
           {{/power-select-multiple}}
-          {{#delete-button classes="btn-sm" name=language.name onconfirm=(action "deleteRecord" language)}}Delete{{/delete-button}}
+          {{hold-button
+            delay=deleteDelay
+            class="delete-language"
+            action=(action "deleteRecord" language)
+          }}
       </div>
     {{/each}}
 </div>

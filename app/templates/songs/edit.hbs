@@ -96,7 +96,11 @@
           {{tag.name}}
         {{/power-select-multiple}}
         {{file-uploader data-toggle="buttons" model=song}}
-        {{#delete-button classes="btn-sm" name=song.name onconfirm=(action "deleteRecord" song)}}Delete{{/delete-button}}
+        {{hold-button
+          delay=deleteDelay
+          class="delete-song"
+          action=(action "deleteRecord" song)
+        }}
     </div>
   {{/each}}
 </div>

@@ -4,6 +4,8 @@ export default Ember.Controller.extend({
   notify: Ember.inject.service('notify'),
   isUploading: false,
   newRecord: Ember.Object.create(),
+  //how long the hold-button for deleting records will wait
+  deleteDelay: 1000,
   actions: {
     // Will call a saveAll action once after a 3-second delay.
     // Helps throttle number of saveAll requests made when making multiple changes in a short period of time
@@ -67,7 +69,7 @@ export default Ember.Controller.extend({
       let type = record.constructor.modelName;
       record.destroyRecord();
       this.get(type+'s').removeObject(record);
-      this.get('notify').success(`${type} successfully deleted!`)
+      this.get('notify').success(`${type} successfully deleted!`);
     },
     //Immediately saves any modified records of the specified type to the server
     //eg if you want to save all songs, you could use {{action "saveAll" "song"}}
@@ -116,14 +118,12 @@ export default Ember.Controller.extend({
       this.send('autoSave', type);
     },
     createRecord(type, input){
-      console.log(input);
-      //set available record contents based on type of record being updated
+      //set available record contents based on existing fields with content
       let newRecord = {};
       let inputkeys = Object.keys(input);
       inputkeys.forEach(function(key){
         newRecord[key] = input[key];
       });
-      console.log(newRecord);
       //add record and push contents onto page
       let record = this.get('store').createRecord(type, newRecord);
       record.save().then((record)=>{
@@ -135,7 +135,7 @@ export default Ember.Controller.extend({
         this.set('newRecord.name', null);
       }
       //report success
-      this.get('notify').success(`${type} successfully created!`)
+      this.get('notify').success(`${type} successfully created!`);
     }
   }
 });

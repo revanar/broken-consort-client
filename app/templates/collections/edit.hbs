@@ -34,7 +34,11 @@
           }}
           {{file-uploader data-toggle="buttons" model=collection}}
           {{file-uploader data-toggle="buttons" type="thumb" model=collection}}
-          {{#delete-button classes="btn-sm" name=collection.name onconfirm=(action "deleteRecord" collection)}}Delete{{/delete-button}}
+          {{hold-button
+            delay=deleteDelay
+            class="delete-collection"
+            action=(action "deleteRecord" collection)
+          }}
       </div>
   {{/each}}
 </div>

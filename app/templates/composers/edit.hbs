@@ -16,7 +16,11 @@
         }}
           <label for="composer-songs-{{composer.id}}" class="sr-only">Songs</label>
         <div class="input-long">{{csv-list composer "songs"}}</div>
-        {{#delete-button classes="btn-sm" name=composer.name onconfirm=(action "deleteRecord" composer)}}Delete{{/delete-button}}
+        {{hold-button
+          delay=deleteDelay
+          class="delete-composer"
+          action=(action "deleteRecord" composer)
+        }}
       </div>
   {{/each}}
 </div>

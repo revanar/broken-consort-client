@@ -1,7 +1,5 @@
 @import 'ember-power-select/themes/bootstrap';
 @import "ember-power-select";
-@import "ember-modal-dialog/ember-modal-structure";
-@import "ember-modal-dialog/ember-modal-appearance";
 
 
 
@@ -122,15 +120,40 @@ footer{
 .view-btn{
   width: 75px;
 }
-//style for delete modal
-.delete-button{
-  margin-left: 10px;
+
+//for delete button
+@mixin delete-button($text, $width){
+  white-space: nowrap;
+  width: $width;
+  &.ember-hold-button.rectangle {
+    height: 30px;
+    font-size: 12px;
+    line-height: 1.5;
+    background: #d9534f;
+    border: 1px solid #d43f3a;
+    &:before{
+      content: $text;
+      padding: 5px 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+  }
+  &.ember-hold-button.rectangle span{
+    height: 100%;
+    background: #c9302c;
+  }
 }
-.modal-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+.delete-book {@include delete-button('Delete Book', 100px);}
+.delete-collection {@include delete-button('Delete Collection', 120px);}
+.delete-composer {@include delete-button('Delete Composer', 120px);}
+.delete-editor {@include delete-button('Delete Editor', 100px);}
+.delete-language {@include delete-button('Delete Language', 120px);}
+.delete-song {@include delete-button('Delete Song', 100px);}
+.delete-tag {@include delete-button('Delete Tag', 100px);}
 
 //styles for books and collections pages
 .div-hover {

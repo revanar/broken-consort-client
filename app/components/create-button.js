@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   actions: {
     createRecord(type, input, model){
       let record = this.get('store').createRecord(type, {name:input});
-      this.get('model').save(record);
+      model.save(record);
     },
   }
 });
