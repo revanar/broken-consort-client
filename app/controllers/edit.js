@@ -3,7 +3,10 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   notify: Ember.inject.service('notify'),
   isUploading: false,
-  newRecord: Ember.Object.create(),
+  newRecord: Ember.Object.create({
+    languages: [],
+    tags: [],
+  }),
   //how long the hold-button for deleting records will wait
   deleteDelay: 1000,
   actions: {
@@ -30,8 +33,9 @@ export default Ember.Controller.extend({
         }).save().then((result) => {
           //for new records
           if (typeof record === 'string'){
-            this.get(record).addObject(`${rel_type}s`);
-            this.get(`${record}.${rel_type}s`).addObject(result);
+            let existingRecords = this.get(record).get(`${rel_type}s`);
+            existingRecords.pushObject(result);
+            this.get(record).set(`${rel_type}s`, existingRecords);
             //note: new records don't trigger auto-save
             //the "createRecord" action needs to fire to persist a new record
           } else {
