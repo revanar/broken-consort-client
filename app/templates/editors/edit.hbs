@@ -24,5 +24,20 @@
       </div>
   {{/each}}
 </div>
-
-<button class="btn btn-default" {{action "createRecord" "editor"}}>Add New Editor</button>
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+    </div>
+    <form id="newRecord" class="edit-table input-group-sm" method="post">
+        <label for="new-editor-name" class="sr-only">Name</label>
+        {{input
+          id="new-editor-name"
+          class="input-med form-control"
+          value=newRecord.name
+          placeholder="unnamed editor"
+        }}
+        <button class="btn btn-default btn-sm input-button" {{action 'createRecord' 'editor' newRecord}}>
+            Add New Editor
+        </button>
+    </form>
+</div>

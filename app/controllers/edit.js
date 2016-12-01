@@ -134,9 +134,15 @@ export default Ember.Controller.extend({
         this.get(type+'s').pushObject(record);
       });
       //some inputs should remain filled out to facilitate bulk data entry, but others should be changed
+      this.set('newRecord.name', null);
+      if (this.get('newRecord.desc')){
+        this.set('newRecord.desc', null);
+      }
       if (type==='song'){
         this.set('newRecord.song_no', Number(input.song_no) + 1 || null);
-        this.set('newRecord.name', null);
+      }
+      if (type==='tag' || type==='language'){
+        this.set('newRecord.songs', null);
       }
       //report success
       this.get('notify').success(`${type} successfully created!`);

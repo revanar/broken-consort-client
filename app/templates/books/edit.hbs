@@ -29,7 +29,7 @@
             placeholder="unknown editor"
             onchange=(action "updateOne" book "editor")
             oncreate=(action "createOne" book "editor")
-            searchField="name"
+
             as |editor|
           }}
             {{editor.name}}
@@ -60,4 +60,55 @@
           }}
       </div>
     {{/each}}
+</div>
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Title</div>
+        <div class="input-med">Editor {{link-to "(edit)" 'editors.edit'}}</div>
+        <div class="input-xshort">Year</div>
+        <div class="input-xlong">Description</div>
+    </div>
+    <form id="newRecord" class="edit-table input-group-sm" method="post">
+        <label for="new-book-name" class="sr-only">Title</label>
+        {{input
+          id="new-book-name"
+          class="input-med form-control"
+          value=newRecord.name
+          placeholder="unknown title"
+        }}
+        <label for="new-book-editor" class="sr-only">Editor</label>
+        {{#power-select-with-create
+          id="new-book-editor"
+          tagName="div"
+          class="input-med"
+          selected=newRecord.editor
+          options=model.editors
+          placeholder="unknown editor"
+          onchange=(action (mut newRecord.editor))
+          oncreate=(action "createOne" "newRecord" "editor")
+          searchField="name"
+        as |editor|
+        }}
+          {{editor.name}}
+        {{/power-select-with-create}}
+        <label for="new-book-year" class="sr-only">Year</label>
+        {{input
+          id="new-book-year"
+          class="input-xshort form-control"
+          type="number" min="600" max="1800"
+          value=newRecord.year
+          placeholder="????"
+        }}
+        <label for="new-book-desc" class="sr-only">Description</label>
+        {{textarea
+          id="new-book-desc"
+          class="input-xlong form-control"
+          cols="40" rows="1"
+          placeholder="no description"
+          value=newRecord.desc
+        }}
+        <button class="btn btn-default btn-sm input-button" {{action 'createRecord' 'book' newRecord}}>
+            Add New Book
+        </button>
+    </form>
 </div>

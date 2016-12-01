@@ -42,5 +42,34 @@
       </div>
   {{/each}}
 </div>
-
-<button class="btn btn-default" {{action "createRecord" "collection"}}>Create New Collection</button>
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+        <div class="input-med">Creator</div>
+        <div class="input-xlong">Description</div>
+    </div>
+    <form id="newRecord" class="edit-table input-group-sm" method="post">
+        <label for="new-collection-name" class="sr-only">Name</label>
+        {{input
+          id="new-collection-name"
+          class="input-med form-control"
+          value=newRecord.name
+          placeholder="unknown name"
+        }}
+        <label for="new-collection-creator" class="sr-only">Creator</label>
+        {{input
+          id="new-collection-creator"
+          class="input-med form-control"
+          value=newRecord.creator
+          placeholder="unknown creator"
+        }}
+        <label for="new-collection-desc" class="sr-only">Descripton</label>
+        {{textarea
+          id=(concat "collection-desc-" collection.id)
+          class="input-xlong form-control"
+          cols="40" rows="1"
+          placeholder="no description"
+          value=collection.desc
+        }}
+    </form>
+</div>

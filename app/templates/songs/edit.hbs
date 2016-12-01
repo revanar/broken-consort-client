@@ -104,7 +104,7 @@
     </div>
   {{/each}}
 </div>
-<div class="edit-table-box">
+<div class="edit-table-box table-responsive">
     <div class="edit-table header">
         <div class="input-long">Book {{link-to "(edit)" 'books.edit'}}</div>
         <div class="input-xshort">Song No.</div>
@@ -196,7 +196,9 @@
       }}
         {{tag.name}}
       {{/power-select-multiple}}
-        <button class="btn btn-default btn-sm input-button" {{action 'createRecord' 'song' newRecord}}>Add New Song</button>
+        <button class="btn btn-default btn-sm input-button" {{action 'createRecord' 'song' newRecord}}>
+            Add New Song
+        </button>
     </form>
 </div>
 

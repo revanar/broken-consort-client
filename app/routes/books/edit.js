@@ -11,6 +11,7 @@ export default Ember.Route.extend({
   controllerName: 'edit',
   setupController: function(controller, model){
     controller.set('books', model.books.toArray());
+    controller.set('model', model);
   },
   deactivate() {
     this.controller.send('saveAll', 'book');

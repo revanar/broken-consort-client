@@ -25,4 +25,20 @@
   {{/each}}
 </div>
 
-<button class="btn btn-default" {{action "createRecord" "composer"}}>Add New Composer</button>
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+    </div>
+    <form id="newRecord" class="edit-table input-group-sm" method="post">
+        <label for="new-composer-name" class="sr-only">Name</label>
+        {{input
+          id="new-composer-name"
+          class="input-med form-control"
+          value=newRecord.name
+          placeholder="unnamed composer"
+        }}
+        <button class="btn btn-default btn-sm input-button" {{action 'createRecord' 'composer' newRecord}}>
+            Add New Composer
+        </button>
+    </form>
+</div>

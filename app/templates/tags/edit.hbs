@@ -36,5 +36,35 @@
       </div>
     {{/each}}
 </div>
-
-<button class="btn btn-default" {{action "createRecord" "tag"}}>Add New Tag</button>
+<div class="edit-table-box table-responsive">
+    <div class="edit-table header">
+        <div class="input-med">Name</div>
+        <div class="input-long">Songs {{link-to "(edit)" 'songs.edit'}}</div>
+    </div>
+    <form id="newRecord" class="edit-table input-group-sm" method="post">
+        <label for="new-tag-name" class="sr-only">Name</label>
+        {{input
+          id="new-tag-name"
+          class="input-med form-control"
+          value=newRecord.name
+          placeholder="unnamed tag"
+        }}
+        <label for="new-tag-songs" class="sr-only">Songs</label>
+        {{#power-select-multiple
+          id="new-tag-songs"
+          tagName="div"
+          class="input-long"
+          selected=newRecord.songs
+          options=model.songs
+          placeholder="no songs"
+          onchange=(action (mut newRecord.songs))
+          searchField="name"
+        as |song|
+        }}
+          {{song.name}}
+        {{/power-select-multiple}}
+        <button class="btn btn-default btn-sm input-button" {{action 'createRecord' 'tag' newRecord}}>
+            Add New Tag
+        </button>
+    </form>
+</div>
