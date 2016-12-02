@@ -133,17 +133,21 @@ export default Ember.Controller.extend({
   }).property('filteredModel'),
 
   actions: {
+    //function toggles whether or not the vlaue sent to it appears in the hidden queryParam
     toggleVisibility(value){
+      //create a set from existing params
       let hidden = new Set(this.get('hidden').split(','));
-      let hiddenStr = '';
       if (hidden.has(value)){
         hidden.delete(value);
       } else {
         hidden.add(value);
       }
+      let hiddenStr = '';
       hidden.forEach((item)=>{
         hiddenStr += item+','
       });
+      hiddenStr = hiddenStr.slice(0,-1);
+      //slice off the final comma
       this.set('hidden', hiddenStr);
     },
     togglePanel(){
