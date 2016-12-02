@@ -1,23 +1,32 @@
 <h2>Transcribed Renaissance Music</h2>
-<div class="edit-table wrappable">
-    <div class="flex-col input-group-sm">
-        <label class="input-med" for="filter-all">Filter All</label>
-      {{input id="filter-all" class="form-control input-med" value=q_all}}
+
+<div class="input-group-sm">
+    <label class="input-long" for="filter-all">Filter All</label>
+  {{input id="filter-all" class="form-control input-long" value=q_all}}
+</div>
+
+<a class="input-long btn btn-default" href={{href-to 'songs'}}>Reset Table</a>
+
+<div class="input-group-sm {{if showHideColumns "dropup"}}">
+    <button class="input-long" type="button" {{action "togglePanel"}}>
+        Hide Columns <span class="caret"></span>
+    </button>
+  {{#if isExpanded}}
+    <div class="input-long panel panel-default">
+        <label class="input-long panel-heading" for="hide-columns">Currently Visible Columns</label>
+        {{#power-select-multiple
+          id="hide-columns"
+          class="panel-body"
+          selected=visibleColumns
+          options=tableColumns
+          placeholder="all columns visible"
+          onchange=(action "hideColumns")
+          searchField="name"
+        as |column|}}
+          {{column.name}}
+        {{/power-select-multiple}}
     </div>
-    <div class="flex-col">
-        <label class="input-long" for="hide-columns">Hidden Columns</label>
-      {{#power-select-multiple
-        id="hide-columns"
-        class="input-long"
-        selected=hiddenColumns
-        options=tableColumns
-        placeholder="all columns visible"
-        onchange=(action "hideColumns")
-        searchField="name"
-      as |column|}}
-        {{column.name}}
-      {{/power-select-multiple}}
-    </div>
+  {{/if}}
 </div>
 
 

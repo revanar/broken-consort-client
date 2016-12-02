@@ -5,6 +5,7 @@ export default Ember.Controller.extend({
   queryParams: ['sortBy', 'hidden', 'q_all','q_title','q_creator','q_editor','q_song_no','q_book_title','q_year','q_languages','q_tags'],
   sortBy: '',
   hidden: '',
+  isExpanded: false,
   q_all: '',
   q_title: '',
   q_creator: '',
@@ -64,18 +65,10 @@ export default Ember.Controller.extend({
     }
   ],
   visibleColumns: Ember.computed('hidden', 'tableColumns', function(){
-    let visibleColumns = this.get('tableColumns').filter((table)=>{
+    return this.get('tableColumns').filter((table)=>{
       let regExp = new RegExp(table.value, 'i');
       return !regExp.test(this.get('hidden'));
     });
-    return visibleColumns;
-  }),
-  hiddenColumns: Ember.computed('hidden', 'tableColumns', function(){
-    let hiddenColumns = this.get('tableColumns').filter((table)=>{
-      let regExp = new RegExp(table.value, 'i');
-      return regExp.test(this.get('hidden'));
-    });
-    return hiddenColumns;
   }),
   visibleBooks: Ember.computed('visibleColumns.@each.type', function(){
     return this.get('visibleColumns').filterBy('type', 'book');
@@ -118,19 +111,34 @@ export default Ember.Controller.extend({
   sortedSongs: Ember.computed.sort('filteredModel', 'sortDefinition').property('filteredModel', 'sortDefinition'),
   //when sortBy changes, ensures the model updates
   sortDefinition: Ember.computed('sortBy', function(){
-    return [this.get('sortBy')];
+    //for some reason, in Ember 2.10.0, an ember.computed.sort fails if the sort definition isn't
+    //"a function or array of strings", so some value had to be given to it if no sortBy value is specified.
+    //This pattern only exists to prevent said bug.
+    if (this.get('sortBy')){
+      return [this.get('sortBy')];
+    } else {
+      return ['null'];
+    }
   }),
   noResults: Ember.computed('filteredModel', function(){
     return (this.get('filteredModel').length <= 0);
   }).property('filteredModel'),
 
   actions: {
-    hideColumns(params){
+    hideColumns(visibleCols, object){
+      let visibleSet = new Set(visibleCols.mapBy('value'));
+      let fullSet = new Set(object.options.mapBy('value'));
+      let hiddenSet = new Set([...fullSet].filter(x => !visibleSet.has(x)));
+
       let hidden = '';
-      params.forEach((param)=>{
-        hidden += param.value+',';
+      hiddenSet.forEach((item)=>{
+        hidden += item+',';
       });
+      console.log(hidden);
       this.set('hidden', hidden);
+    },
+    togglePanel(){
+      this.toggleProperty('isExpanded');
     }
   }
 });
