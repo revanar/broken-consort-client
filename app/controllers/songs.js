@@ -2,7 +2,7 @@
 
 export default Ember.Controller.extend({
   //query parameters
-  queryParams: ['sortBy', 'hidden', 'q_all','q_title','q_creator','q_editor','q_song_no','q_book_title','q_year','q_languages','q_tags'],
+  queryParams: ['sortBy', 'hidden', 'q_all','q_title','q_creator','q_editor','q_song_no', 'q_parts_no','q_book_title','q_year','q_languages','q_tags'],
   sortBy: '',
   hidden: '',
   isExpanded: false,
@@ -11,6 +11,7 @@ export default Ember.Controller.extend({
   q_creator: '',
   q_editor: '',
   q_song_no: '',
+  q_parts_no: '',
   q_book_title: '',
   q_year: '',
   q_languages: '',
@@ -48,6 +49,12 @@ export default Ember.Controller.extend({
       type: 'song',
       sortable: true
     },{
+      name: 'Parts No.',
+      value: 'parts-no',
+      model: 'parts_no',
+      type: 'song',
+      sortable: true
+    },{
       name: 'Text Languages',
       value: 'languages',
       type: 'song',
@@ -77,7 +84,7 @@ export default Ember.Controller.extend({
     return this.get('visibleColumns').filterBy('type', 'song');
   }),
   //filters model based on searchTerm value
-  filteredModel: Ember.computed('model', 'q_all', 'q_title', 'q_song_no', 'q_editor', 'q_creator', 'q_book_title', 'q_year', 'q_languages', 'q_tags', function(){
+  filteredModel: Ember.computed('model', 'q_all', 'q_title', 'q_song_no', 'q_parts_no', 'q_editor', 'q_creator', 'q_book_title', 'q_year', 'q_languages', 'q_tags', function(){
     let model = this.get('model').filterBy('pdf.pdf_path.url'); //removes all records that don't have a pdf uploaded
     this.get('queryParams').forEach((filter)=> { // for each possible filter
       if ((filter !== 'sortBy') && (filter !== 'hidden') && (this.get(filter).length > 0)) { //if the filter has content and isn't the sortBy queryparam
@@ -98,6 +105,7 @@ export default Ember.Controller.extend({
           return languages.length > 0 || tags.length > 0 ||
             ((filter === "q_all" || filter === "q_title") ? regExp.test(model.get('name')) : false) ||
             ((filter === "q_all" || filter === "q_song_no") ? regExp.test(model.get('song_no')) : false) ||
+            ((filter === "q_all" || filter === "q_parts_no") ? regExp.test(model.get('parts_no')) : false) ||
             ((filter === "q_all" || filter === "q_editor") ? regExp.test(model.get('book').get('editor').get('name')) : false) ||
             ((filter === "q_all" || filter === "q_creator") ? regExp.test(model.get('composer').get('name')) : false) ||
             ((filter === "q_all" || filter === "q_book_title") ? regExp.test(model.get('book').get('name')) : false) ||
@@ -125,17 +133,18 @@ export default Ember.Controller.extend({
   }).property('filteredModel'),
 
   actions: {
-    hideColumns(visibleCols, object){
-      let visibleSet = new Set(visibleCols.mapBy('value'));
-      let fullSet = new Set(object.options.mapBy('value'));
-      let hiddenSet = new Set([...fullSet].filter(x => !visibleSet.has(x)));
-
-      let hidden = '';
-      hiddenSet.forEach((item)=>{
-        hidden += item+',';
+    toggleVisibility(value){
+      let hidden = new Set(this.get('hidden').split(','));
+      let hiddenStr = '';
+      if (hidden.has(value)){
+        hidden.delete(value);
+      } else {
+        hidden.add(value);
+      }
+      hidden.forEach((item)=>{
+        hiddenStr += item+','
       });
-      console.log(hidden);
-      this.set('hidden', hidden);
+      this.set('hidden', hiddenStr);
     },
     togglePanel(){
       this.toggleProperty('isExpanded');

@@ -13,18 +13,11 @@
     </button>
   {{#if isExpanded}}
     <div class="input-long panel panel-default">
-        <label class="input-long panel-heading" for="hide-columns">Currently Visible Columns</label>
-        {{#power-select-multiple
-          id="hide-columns"
-          class="panel-body"
-          selected=visibleColumns
-          options=tableColumns
-          placeholder="all columns visible"
-          onchange=(action "hideColumns")
-          searchField="name"
-        as |column|}}
-          {{column.name}}
-        {{/power-select-multiple}}
+        <div class="panel-body">
+            {{#each tableColumns as |column|}}
+              <button class="btn input-short {{if (array-contains visibleColumns column) "btn-default" "btn-danger"}}" {{action "toggleVisibility" column.value}}>{{column.name}}</button>
+            {{/each}}
+        </div>
     </div>
   {{/if}}
 </div>
@@ -58,6 +51,7 @@
       {{#column-hider "year" hidden}}<th><label class="hidden"> Year: </label>{{input class="form-control" type="number" min="600" max="1800" size="4" value=q_year }}</th>{{/column-hider}}
       {{#column-hider "song-no" hidden}}<th><label class="hidden"> Song Number: </label>{{input class="form-control" type="number" min="1" max="99" size="2" value=q_song_no }}</th>{{/column-hider}}
       {{#column-hider "name" hidden}}<th><label class="hidden"> Song Name: </label>{{input class="form-control" value=q_title }}</th>{{/column-hider}}
+      {{#column-hider "parts-no" hidden}}<th><label class="hidden">Number of Parts:</label>{{input class="form-control" type="number" min="1" max="9" value=q_parts_no}}</th>{{/column-hider}}
       {{#column-hider "languages" hidden}}<th><label class="hidden"> Languages: </label>{{input class="form-control" value=q_languages }}</th>{{/column-hider}}
       {{#column-hider "tags" hidden}}<th><label class="hidden"> Tags: </label>{{input class="form-control" value=q_tags }}</th>{{/column-hider}}
       {{#column-hider "download" hidden}}<th></th>{{/column-hider}}
@@ -79,6 +73,7 @@
             {{#column-hider "year" hidden}}<td>{{song.book.year}}</td>{{/column-hider}}
             {{#column-hider "song-no" hidden}}<td>{{song.song_no}}</td>{{/column-hider}}
             {{#column-hider "name" hidden}}<td>{{song.name}}</td>{{/column-hider}}
+            {{#column-hider "parts-no" hidden}}<td>{{song.parts_no}}</td>{{/column-hider}}
             {{#column-hider "languages" hidden}}<td>{{csv-list song "languages"}}</td>{{/column-hider}}
             {{#column-hider "tags" hidden}}<td>{{csv-list song "tags"}}</td>{{/column-hider}}
             {{#column-hider "download" hidden}}<td>{{link-to-pdf song}}</td>{{/column-hider}}
