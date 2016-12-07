@@ -23,7 +23,11 @@ export default Ember.Controller.extend({
       value: 'title',
       model: 'book.name',
       type:'book',
-      sortable: true
+      sortable: true,
+      param: Ember.computed('q_title', function(){
+        return this.get('q_title');
+      }),
+      paramName: "q_title",
     },{
       name: 'Editor',
       value: 'editor',
@@ -46,6 +50,12 @@ export default Ember.Controller.extend({
       name: 'Name',
       value: 'name',
       model: 'name',
+      type: 'song',
+      sortable: true
+    },{
+      name: 'Composer',
+      value: 'composer',
+      model: 'composer.name',
       type: 'song',
       sortable: true
     },{
@@ -72,6 +82,7 @@ export default Ember.Controller.extend({
     }
   ],
   visibleColumns: Ember.computed('hidden', 'tableColumns', function(){
+    //a filtered version of tableColumns that only shows tableColumns that aren't hidden
     return this.get('tableColumns').filter((table)=>{
       let regExp = new RegExp(table.value, 'i');
       return !regExp.test(this.get('hidden'));
@@ -123,9 +134,9 @@ export default Ember.Controller.extend({
     //"a function or array of strings", so some value had to be given to it if no sortBy value is specified.
     //This pattern only exists to prevent said bug.
     if (this.get('sortBy')){
-      return [this.get('sortBy')];
+      return [this.get('sortBy'),'book.name','song_no'];
     } else {
-      return ['null'];
+      return ['book.name','song_no'];
     }
   }),
   noResults: Ember.computed('filteredModel', function(){
@@ -152,6 +163,9 @@ export default Ember.Controller.extend({
     },
     togglePanel(){
       this.toggleProperty('isExpanded');
+    },
+    updateParam(param, value){
+      this.set(param, value);
     }
   }
 });

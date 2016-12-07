@@ -1,0 +1,4 @@
+<label for="song-filter-{{for}}" class="sr-only">
+  {{yield}}
+</label>
+{{input id=(concat "song-filter-" for) class="form-control" value=value onChange=onChange type=type min=min max=max size=size}}
