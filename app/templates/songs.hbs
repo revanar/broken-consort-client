@@ -1,11 +1,10 @@
 <h2>Transcribed Renaissance Music</h2>
 
 <div class="input-group-sm">
-    <label class="input-long" for="filter-all">Filter All</label>
-  {{input id="filter-all" class="form-control input-long" value=q_all}}
+    {{#song-filter labelVisible=true class="input-long" for="all" param=filterParams onChange=(action "updateParam" filterParams)}}Filter All:{{/song-filter}}
 </div>
 
-<a class="input-long btn btn-default" href={{href-to 'songs'}}>Reset Table</a>
+<a class="input-long btn btn-default" {{action "resetParams" preventDefault=false}} href={{href-to "songs"}}>Reset Table</a>
 
 <div class="input-group-sm {{if showHideColumns "dropup"}}">
     <button class="input-long" type="button" {{action "togglePanel"}}>
@@ -48,46 +47,13 @@
   <tr class="filters">
       {{#each tableColumns as |column|}}
         {{#column-hider column.value hidden}}
-          {{#song-filter for=column.value param=column.param onChange=(action "updateParam" column.paramName) type=column.type min=column.min max=column.max size=column.size}}
-            {{column.name}}
-          {{/song-filter}}
+          {{#if column.filterable}}
+            {{#song-filter for=column.value param=filterParams onChange=(action "updateParam" filterParams) type=column.type min=column.min max=column.max size=column.size}}
+              {{column.name}}
+            {{/song-filter}}
+          {{/if}}
         {{/column-hider}}
       {{/each}}
-{{!--
-      {{#column-hider "title" hidden}}
-        {{#song-filter for="book-title" param=q_book_title onChange=(action "updateParam" "q_book_title")}}
-            Book Title:
-        {{/song-filter}}
-      {{/column-hider}}
-      {{#column-hider "editor" hidden}}
-        {{#song-filter for="editor" param=q_editor onChange=(action "updateParam" "q_editor")}}
-          Editor:
-        {{/song-filter}}
-      {{/column-hider}}
-      {{#column-hider "year" hidden}}
-        {{#song-filter for="year" param=q_year onChange=(action "updateParam" "q_year") type="number" min="600" max="1800" size="4"}}
-          Year:
-        {{/song-filter}}
-      {{/column-hider}}
-      {{#column-hider "song-no" hidden}}
-        {{#song-filter for="song-no" param=q_song_no onChange=(action "updateParam" "q_song_no") type="number" min="1" max="99" size="2"}}
-          Song Number:
-        {{/song-filter}}
-      {{/column-hider}}
-      {{#column-hider "name" hidden}}
-        {{#song-filter for="name" param=q_title onChange=(action "updateParam" "q_title")}}
-          Song Name:
-        {{/song-filter}}
-      {{/column-hider}}
-      {{#column-hider "composer" hidden}}
-        {{#song-filter for="
-      {{/column-hider}}
-      {{#column-hider "composer" hidden}}<th><label class="hidden">Composer:</label>{{input class="form-control" value=q_creator}}</th>{{/column-hider}}
-      {{#column-hider "parts-no" hidden}}<th><label class="hidden">Number of Parts:</label>{{input class="form-control" type="number" min="1" max="9" value=q_parts_no}}</th>{{/column-hider}}
-      {{#column-hider "languages" hidden}}<th><label class="hidden"> Languages: </label>{{input class="form-control" value=q_languages }}</th>{{/column-hider}}
-      {{#column-hider "tags" hidden}}<th><label class="hidden"> Tags: </label>{{input class="form-control" value=q_tags }}</th>{{/column-hider}}
-      {{#column-hider "download" hidden}}<th></th>{{/column-hider}}
-      --}}
   </tr>
 
   </thead>

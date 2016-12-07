@@ -3,7 +3,7 @@
 {{#each sortedSongs as |song|}}
   <li seq={{song.song_no}}>
       {{#if song.pdf.pdf_path.url}}
-        {{#link-to "songs" (query-params q_title=song.name)}}
+        {{#link-to "songs" (query-params filter=(concat "name:" song.name))}}
           {{song.name}}
         {{/link-to}}
       {{else}}

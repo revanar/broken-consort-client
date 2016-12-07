@@ -2,85 +2,104 @@
 
 export default Ember.Controller.extend({
   //query parameters
-  queryParams: ['sortBy', 'hidden', 'q_all','q_title','q_creator','q_editor','q_song_no', 'q_parts_no','q_book_title','q_year','q_languages','q_tags'],
+  queryParams: ['sortBy', 'hidden', 'filter'],
   sortBy: '',
   hidden: '',
   isExpanded: false,
-  q_all: '',
-  q_title: '',
-  q_creator: '',
-  q_editor: '',
-  q_song_no: '',
-  q_parts_no: '',
-  q_book_title: '',
-  q_year: '',
-  q_languages: '',
-  q_tags: '',
+  filter: '',
 
   tableColumns:[
     {
       name: 'Title',
       value: 'title',
       model: 'book.name',
-      type:'book',
+      modelType:'book',
       sortable: true,
-      param: Ember.computed('q_title', function(){
-        return this.get('q_title');
-      }),
-      paramName: "q_title",
+      filterable: true
     },{
       name: 'Editor',
       value: 'editor',
       model: 'book.editor.name',
-      type: 'book',
-      sortable: true
+      modelType: 'book',
+      sortable: true,
+      filterable: true
     },{
       name: 'Year',
       value: 'year',
       model: 'book.year',
-      type: 'book',
-      sortable: true
+      modelType: 'book',
+      sortable: true,
+      filterable: true,
+      type: 'number',
+      min: '600',
+      max: '1800',
+      size: '4',
     },{
       name: 'Song No.',
       value: 'song-no',
       model: 'song_no',
-      type: 'song',
-      sortable: true
+      modelType: 'song',
+      sortable: true,
+      filterable: true,
+      type: 'number',
+      min: '1',
+      max: '99',
+      size: '2'
     },{
       name: 'Name',
       value: 'name',
       model: 'name',
-      type: 'song',
-      sortable: true
+      modelType: 'song',
+      sortable: true,
+      filterable: true
     },{
       name: 'Composer',
       value: 'composer',
       model: 'composer.name',
-      type: 'song',
-      sortable: true
+      modelType: 'song',
+      sortable: true,
+      filterable: true
     },{
       name: 'Parts No.',
       value: 'parts-no',
       model: 'parts_no',
-      type: 'song',
-      sortable: true
+      modelType: 'song',
+      sortable: true,
+      filterable: true,
+      type: 'number',
+      min: '1',
+      max: '9',
+      size: '1'
     },{
       name: 'Text Languages',
       value: 'languages',
-      type: 'song',
-      sortable: false
+      modelType: 'song',
+      sortable: false,
+      filterable: true
     },{
       name: 'Tags',
       value: 'tags',
-      type: 'song',
-      sortable: false
+      modelType: 'song',
+      sortable: false,
+      filterable: true
     },{
       name: 'Download',
       value: 'download',
-      type: 'song',
-      sortable: false
+      modelType: 'song',
+      sortable: false,
+      filterable: false
     }
   ],
+
+  filterParams: Ember.computed('filter', function(){
+    let params = this.get('filter').split(",");
+    let paramObj = {};
+    params.forEach((param)=>{
+      let keyVal = param.split(":");
+      paramObj[keyVal[0]] = keyVal[1];
+    });
+    return paramObj;
+  }),
   visibleColumns: Ember.computed('hidden', 'tableColumns', function(){
     //a filtered version of tableColumns that only shows tableColumns that aren't hidden
     return this.get('tableColumns').filter((table)=>{
@@ -88,42 +107,35 @@ export default Ember.Controller.extend({
       return !regExp.test(this.get('hidden'));
     });
   }),
-  visibleBooks: Ember.computed('visibleColumns.@each.type', function(){
-    return this.get('visibleColumns').filterBy('type', 'book');
+  visibleBooks: Ember.computed('visibleColumns.@each.modelType', function(){
+    return this.get('visibleColumns').filterBy('modelType', 'book');
   }),
-  visibleSongs: Ember.computed('visibleColumns.@each.type', function(){
-    return this.get('visibleColumns').filterBy('type', 'song');
+  visibleSongs: Ember.computed('visibleColumns.@each.modelType', function(){
+    return this.get('visibleColumns').filterBy('modelType', 'song');
   }),
   //filters model based on searchTerm value
-  filteredModel: Ember.computed('model', 'q_all', 'q_title', 'q_song_no', 'q_parts_no', 'q_editor', 'q_creator', 'q_book_title', 'q_year', 'q_languages', 'q_tags', function(){
+  filteredModel: Ember.computed('model', 'filterParams', function(){
     let model = this.get('model').filterBy('pdf.pdf_path.url'); //removes all records that don't have a pdf uploaded
-    this.get('queryParams').forEach((filter)=> { // for each possible filter
-      if ((filter !== 'sortBy') && (filter !== 'hidden') && (this.get(filter).length > 0)) { //if the filter has content and isn't the sortBy queryparam
-        //guardian pattern to prevent invalid inputs
-        let valid = new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$');
-        while (this.get(filter).length > 0 && !valid.test(this.get(filter))){
-          this.set(filter, this.get(filter).slice(0,-1));
-        }
-        //filtering bit
-        let regExp = new RegExp(this.get(filter), 'i'); //filter model on fields based on what the filter name is
-        model = model.filter(function (model) {
-          //filters for hasMany relationships
-          let languages = (filter === "q_all" || filter === "q_languages") ?
-            model.get('languages').filter(item => {return regExp.test(item.get('name'));}) : false;
-          let tags = (filter === "q_all" || filter === "q_tags") ?
-            model.get('tags').filter(item => {return regExp.test(item.get('name'));}) : false;
-          //returns true for any data items that need to be kept
-          return languages.length > 0 || tags.length > 0 ||
-            ((filter === "q_all" || filter === "q_title") ? regExp.test(model.get('name')) : false) ||
-            ((filter === "q_all" || filter === "q_song_no") ? regExp.test(model.get('song_no')) : false) ||
-            ((filter === "q_all" || filter === "q_parts_no") ? regExp.test(model.get('parts_no')) : false) ||
-            ((filter === "q_all" || filter === "q_editor") ? regExp.test(model.get('book').get('editor').get('name')) : false) ||
-            ((filter === "q_all" || filter === "q_creator") ? regExp.test(model.get('composer').get('name')) : false) ||
-            ((filter === "q_all" || filter === "q_book_title") ? regExp.test(model.get('book').get('name')) : false) ||
-            ((filter === "q_all" || filter === "q_year") ? regExp.test(model.get('book').get('year')) : false);
-        });
-      }
-    });
+    let filterParams = this.get('filterParams');
+    if (Object.keys(filterParams)[0].length > 0) for (var key in filterParams){
+      let exp = filterParams[key];
+      exp = exp.replace(/[{}"()]/g, ""); //removes any dubious characters from filter params
+      let regExp = new RegExp(exp, 'i');
+      model = model.filter(function(model) {
+        let languages = (key === "all" || key === "languages") ?
+          model.get('languages').filter(item => {return regExp.test(item.get('name'));}) : false;
+        let tags = (key === "all" || key === "tags") ?
+          model.get('tags').filter(item => {return regExp.test(item.get('name'));}) : false;
+        return languages.length > 0 || tags.length > 0 ||
+          ((key==="all" || key==="title") ? regExp.test(model.get('book').get('name')) : false) ||
+          ((key==="all" || key==="editor") ? regExp.test(model.get('book').get('editor').get('name')) : false) ||
+          ((key==="all" || key==="year") ? regExp.test(model.get('book').get('year')) : false) ||
+          ((key==="all" || key==="song-no") ? regExp.test(model.get('song_no')): false) ||
+          ((key==="all" || key==="name") ? regExp.test(model.get('name')) : false) ||
+          ((key==="all" || key==="composer") ? regExp.test(model.get('composer').get('name')) : false) ||
+          ((key==="all" || key==="parts-no") ? regExp.test(model.get('parts_no')) : false);
+      });
+    }
     return model;
   }),
   //this is the model after filters and sorting have been applied
@@ -164,8 +176,16 @@ export default Ember.Controller.extend({
     togglePanel(){
       this.toggleProperty('isExpanded');
     },
-    updateParam(param, value){
-      this.set(param, value);
+    updateParam(param, value, key){
+      if (value) param[key] = value; else delete param[key];
+      let str = JSON.stringify(param);
+      str = str.replace(/[{}"]/g, "");
+      this.set('filter', str);
+    },
+    resetParams(){
+      //note:  This is needed because filterParams are really sticky otherwise!
+      Ember.$('.song-filter').val('');
+      this.set('filterParams', '');
     }
   }
 });
